@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections;
 using PmtsControlLibrary.DBPlugin;
+using PmtsControlLibrary.WEBPlugin;
 
 namespace PmtsControlLibrary
 {
@@ -22,7 +23,7 @@ namespace PmtsControlLibrary
     public partial class HRVHistory : UserControl
     {
         private ArrayList historyArr = new ArrayList();
-        private HRVControlDB hrvd = null;
+        private HRVControlWEB hrvd = null;
         private int _nowPage = 1;//当前页号
         private int _num = 15;//一页默认数据量
         private double _totalPage = 0;//总页数
@@ -36,7 +37,7 @@ namespace PmtsControlLibrary
             historyArr   = new ArrayList();
             if (hrvd == null)
             {
-                hrvd = new HRVControlDB(SystemMeg);
+                hrvd = new HRVControlWEB(SystemMeg);
             }
             GetHrvHistoryData();
             //button声音

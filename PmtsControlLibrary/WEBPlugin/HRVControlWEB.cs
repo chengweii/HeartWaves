@@ -6,6 +6,8 @@ using System.Collections;
 using MySql.Data.MySqlClient;
 using System.Windows;
 using PmtsControlLibrary.Common;
+using HeartWavesSDK.Model;
+using HeartWavesSDK.Common;
 
 namespace PmtsControlLibrary.WEBPlugin
 {
@@ -105,6 +107,143 @@ namespace PmtsControlLibrary.WEBPlugin
         /// <param name="ids"></param>
         public void DeleteHrvData(ArrayList ids)
         {
+            try
+            {
+                var request = new DeleteRecordRequest()
+                {
+                    user_id = user,
+                    r_id = string.Join(",", ids.ToArray())
+
+                };
+                var resp = HeartWavesSDK.API.APIClient._DeleteRecord(request);
+
+                if (null == resp || null == resp.data)
+                {
+                    MessageBox.Show("网络异常，请稍后重试");
+                }
+                else if (resp.data.success == "1")
+                {
+                    MessageBox.Show(resp.data.message);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 常量列表和历史记录列表查询
+        /// </summary>
+        /// <param name="where">常量列表的条件</param>
+        public ArrayList GetConstAndHistoryListData(int timeType = 0, int mood = 0)
+        {
+            ArrayList retArr = new ArrayList();
+            return retArr;
+        }
+
+        /// <summary>
+        /// 根据历史记录ID取得详细信息
+        /// </summary>
+        /// <returns></returns>
+        public Hashtable GetHistoryByID(int SID)
+        {
+            Hashtable hInfo = new Hashtable();
+
+            try
+            {
+                var request = new RecordDetailRequest()
+                {
+                    user_id = user,
+                    r_id = Convert.ToString(SID)
+                };
+                var resp = HeartWavesSDK.API.APIClient._GetRecordDetail(request);
+
+                if (null == resp || null == resp.data)
+                {
+                    MessageBox.Show("网络异常，请稍后重试");
+                }
+                else if (resp.data.success != "1")
+                {
+                    MessageBox.Show(resp.data.message);
+                }
+                else
+                {
+                    if (resp.data.datas != null)
+                    {
+                        hInfo["fMean"] = resp.data.datas.fmean;
+                        hInfo["HRVScore"] = resp.data.datas.hrvscore;
+                        hInfo["score"] = resp.data.datas.synthesisscore;
+                        hInfo["Pressure"] = resp.data.datas.pressureindex;
+                        hInfo["adjust"] = resp.data.datas.deflatingindex;
+                        hInfo["stable"] = resp.data.datas.stabilityindex;
+                        hInfo["report"] = resp.data.datas.report;
+                        hInfo["NB"] = resp.data.datas.nb;
+                        hInfo["StartTime"] = resp.data.datas.s_time;
+
+                        ArrayList hrvData = MyJSONHelper.JsonToObject<ArrayList>(resp.data.datas.hrvdata);
+
+                        hInfo["Time"] = hrvData.Count / 2.0;
+                        hInfo["hrvData"] = hrvData;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            return hInfo;
+        }
+
+        /// <summary>
+        /// 按照SID取得事件标记
+        /// </summary>
+        /// <param name="SID"></param>
+        /// <returns></returns>
+        public ArrayList GetMarkByID(int SID)
+        {
+            ArrayList markList = new ArrayList();
+            try
+            {
+                var request = new RecordDetailRequest()
+                {
+                    user_id = user,
+                    r_id = Convert.ToString(SID)
+                };
+                var resp = HeartWavesSDK.API.APIClient._GetRecordDetail(request);
+
+                if (null == resp || null == resp.data)
+                {
+                    MessageBox.Show("网络异常，请稍后重试");
+                }
+                else if (resp.data.success != "1")
+                {
+                    MessageBox.Show(resp.data.message);
+                }
+                else
+                {
+                    if (resp.data.datas != null)
+                    {
+                        ArrayList hrvmark = MyJSONHelper.JsonToObject<ArrayList>(resp.data.datas.hrvmark);
+
+                        foreach (var entity in hrvmark)
+                        {
+                            Hashtable markInfo = new Hashtable();
+                            markInfo["Time"] = resp.data.datas.s_time;
+                            markInfo["Content"] = entity;
+                            markInfo["DateTime"] = resp.data.datas.s_time;
+                            markList.Add(markInfo);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            return markList;
         }
 
     }
