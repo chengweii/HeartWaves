@@ -246,5 +246,62 @@ namespace PmtsControlLibrary.WEBPlugin
             return markList;
         }
 
+        /// <summary>
+        /// 常量列表和历史记录列表查询
+        /// </summary>
+        /// <param name="where">常量列表的条件</param>
+        public ArrayList GetConstAndHistoryListData(int timeType = 0, int mood = 0, string type = "1", string pageNum = "0")
+        {
+            ArrayList retArr = new ArrayList();
+            try
+            {
+                var request = new GetRecordRequest()
+                {
+                    user_id = user,
+                    type = type,
+                    pageNum = pageNum
+                };
+                var resp = HeartWavesSDK.API.APIClient._GetRecord(request);
+
+                if (null == resp || null == resp.data)
+                {
+                    MessageBox.Show("网络异常，请稍后重试");
+                }
+                else if (resp.data.success != "1")
+                {
+                    MessageBox.Show(resp.data.message);
+                }
+                else
+                {
+                    if (resp.data.data != null)
+                    {
+                        int i = 0;
+                        foreach (var entity in resp.data.data)
+                        {
+                            i++;
+                            Hashtable tmp = new Hashtable();
+                            tmp["arrayIndex"] = i;
+                            tmp["mhrt"] = entity.fmean;
+                            tmp["hrvScore"] = entity.hrvscore;
+                            tmp["totalScore"] = entity.synthesisscore;
+                            tmp["pressure"] = entity.pressureindex;
+                            tmp["adjust"] = entity.deflatingindex;
+                            tmp["stable"] = entity.stabilityindex;
+                            tmp["id"] = entity.id;
+                            tmp["startTime"] = entity.s_time;
+                            tmp["totalTime"] = entity.time_length;
+                            retArr.Add(tmp);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            return retArr;
+        }
+
     }
 }
