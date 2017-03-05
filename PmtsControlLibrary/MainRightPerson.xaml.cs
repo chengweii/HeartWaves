@@ -32,6 +32,8 @@ namespace PmtsControlLibrary
    /////0904
         public static ArrayList TmpHrvRecord = new ArrayList();
 
+        private GetUserInfoWEB udbWEB = new GetUserInfoWEB();
+
         public MainRightPerson()
         {
             InitializeComponent();
@@ -136,7 +138,7 @@ namespace PmtsControlLibrary
                 }
             }**/
              
-            this.SystemNoticeText.Text = udb.GetNotice();
+            this.SystemNoticeText.Text = udbWEB.GetNotice();
         }
 
 
@@ -216,8 +218,7 @@ namespace PmtsControlLibrary
 //lich
             if (UserInfoStatic.ipAdd != null) //非游客
             {
-                GetUserInfo udb = new GetUserInfo();
-                this.SystemNoticeText.Text = udb.GetNotice();
+                this.SystemNoticeText.Text = udbWEB.GetNotice();
                 strNotice = this.SystemNoticeText.Text;
 
                 NoticeTimer = new DispatcherTimer();
@@ -242,8 +243,7 @@ namespace PmtsControlLibrary
 
         private void OnTimerNotice(object source, EventArgs e)
         {
-            GetUserInfo udb = new GetUserInfo();
-            this.SystemNoticeText.Text = udb.GetNotice();
+            this.SystemNoticeText.Text = udbWEB.GetNotice();
             if (strNotice != this.SystemNoticeText.Text)
             {
                 strNotice = this.SystemNoticeText.Text;
