@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace HeartWavesSDK.Model
@@ -16,11 +17,25 @@ namespace HeartWavesSDK.Model
         }
     }
 
+    [DataContract]
     public class IndexAuthoDatum
     {
+        [DataMember(Name = "id")]
         public string id { get; set; }
+
+        [DataMember(Name = "name")]
         public string name { get; set; }
-        public string fid { get; set; }
+
+        [DataMember(Name = "is_is")]
+        public string is_is { get; set; }
+
+        [DataMember(Name = "0")]
+        public List<IndexAuthoDatum> children { get; set; }
+
+        public IndexAuthoDatum()
+        {
+            children = new List<IndexAuthoDatum>();
+        }
     }
 
     public class IndexAuthoData
@@ -33,5 +48,5 @@ namespace HeartWavesSDK.Model
         {
             data = new List<IndexAuthoDatum>();
         }
-    }  
+    }
 }
