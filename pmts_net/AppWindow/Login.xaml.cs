@@ -314,7 +314,6 @@ namespace pmts_net.AppWindow
                     Main main = new Main("127.0.0.1", this.userText.Text);
 
                     UserInfoStatic.UserInfo = resp.data.userInfo;
-                    UserInfoStatic.UserInfo.password = this.pwdText.Password;
 
                     main.Show();
                     this.Close();

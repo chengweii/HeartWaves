@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Collections;
+using pmts_net.AppWindow;
+using PmtsControlLibrary.WEBPlugin;
 
 namespace PmtsControlLibrary
 {
@@ -21,7 +23,7 @@ namespace PmtsControlLibrary
     {
         private pmts_net.AppWindow.Main Main;
         private String user = "";
-        private pmts_net.Plugin.WorkMood MoodDB = null;
+        private WorkMoodWEB MoodDB = null;
         private String[] HighText = new String[31];
         private Boolean isInput = false;
         private String hostIP = "";
@@ -35,7 +37,7 @@ namespace PmtsControlLibrary
             hostIP = HostIp;
             if (MoodDB == null)
             {
-                MoodDB = new pmts_net.Plugin.WorkMood(user, hostIP);
+                MoodDB = new WorkMoodWEB(user, hostIP);
             }
             ArrayList dates = MoodDB.OnGetMoodDate(DateTime.Now);
             SetCalendarHighLight(DateTime.Now, dates);
@@ -77,10 +79,6 @@ namespace PmtsControlLibrary
         /// <param name="e"></param>
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            if (MoodDB == null)
-            {
-                MoodDB = new pmts_net.Plugin.WorkMood(user, hostIP);
-            }
             if (MoodDB.OnInsertMood(this.MoodValueSlider.Value, this.MoodText.Text))
             {
                 moodValue = this.MoodValueSlider.Value;
@@ -89,7 +87,6 @@ namespace PmtsControlLibrary
                 this.MoodText.Clear();
                 this.MoodValueSlider.Value = 50;
             }
-
         }
 
         /// <summary>
@@ -154,11 +151,6 @@ namespace PmtsControlLibrary
             }
             DateTime newDate = new DateTime(newYear, newMonth, 1);
 
-
-            if (MoodDB == null)
-            {
-                MoodDB = new pmts_net.Plugin.WorkMood(user, hostIP);
-            }
             ArrayList dates = MoodDB.OnGetMoodDate(newDate);
             SetCalendarHighLight(newDate, dates);
             SetCalendarDispaly(newDate);
@@ -181,10 +173,6 @@ namespace PmtsControlLibrary
             }
             DateTime newDate = new DateTime(newYear, newMonth, 1);
 
-            if (MoodDB == null)
-            {
-                MoodDB = new pmts_net.Plugin.WorkMood(user, hostIP);
-            }
             ArrayList dates = MoodDB.OnGetMoodDate(newDate);
             SetCalendarHighLight(newDate, dates);
             SetCalendarDispaly(newDate);
@@ -213,11 +201,7 @@ namespace PmtsControlLibrary
                 this.InputPage.Visibility = System.Windows.Visibility.Hidden;
                 this.DetailePage.Visibility = System.Windows.Visibility.Visible;
                 DateTime selectDate = (DateTime)this.fsCalendar1.SelectedDate;
-                if (MoodDB == null)
-                {
-                    MoodDB = new pmts_net.Plugin.WorkMood(user, hostIP);
-                }
-                List<pmts_net.Plugin.MoodDataList> moodList = MoodDB.OnGetMoodDetail(selectDate);
+                List<MoodDataList> moodList = MoodDB.OnGetMoodDetail(selectDate);
 
                 this.ShowMoodDetaile.DataContext = moodList;
                 this.ShowMoodDetaile.Items.Refresh();

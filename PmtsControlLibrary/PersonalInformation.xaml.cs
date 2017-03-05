@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections;
 using PmtsControlLibrary.DBPlugin;
+using PmtsControlLibrary.WEBPlugin;
 
 namespace PmtsControlLibrary
 {
@@ -67,16 +68,15 @@ namespace PmtsControlLibrary
             p.Open(new Uri(@"Train/game/Button.mp3", UriKind.Relative));
             p.Play();
         }
+
+        private GetUserInfoWEB userWEB = new GetUserInfoWEB();
+
         /// <summary>
         /// 读取数据库并刷新数据
         /// </summary>
         public void UpDate(Hashtable Meg)
         {
-            if (userDb == null)
-            {
-                userDb = new GetUserInfo(Meg);
-            }
-            radarData = userDb.GetUserRadarData();
+            radarData = userWEB.GetUserRadarData();
             DrawRadar();
             //this.TextName.Text = UserInfoStatic.UserName;
             this.TextName.Text = UserInfoStatic.UserInfo.username;
@@ -346,7 +346,7 @@ namespace PmtsControlLibrary
                 {
                     MessageBox.Show(ex.Message);
                 }
-                
+
 
                 //Hashtable userInfo = new Hashtable();
                 //userInfo["name"] = this.TextName.Text;

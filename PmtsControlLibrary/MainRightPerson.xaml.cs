@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using PmtsControlLibrary.DBPlugin;
 using System.Windows.Threading;
+using PmtsControlLibrary.WEBPlugin;
 
 
 namespace PmtsControlLibrary
@@ -29,7 +30,7 @@ namespace PmtsControlLibrary
         private DispatcherTimer NoticeTimer;//读取HRV时的Timer
         private String strNotice = "";
 
-   /////0904
+        /////0904
         public static ArrayList TmpHrvRecord = new ArrayList();
 
         private GetUserInfoWEB udbWEB = new GetUserInfoWEB();
@@ -40,11 +41,11 @@ namespace PmtsControlLibrary
         }
         public MainRightPerson(Hashtable sysMeg)
         {
-//lich
+            //lich
             InitializeComponent();
             if (UserInfoStatic.ipAdd != null) // 非游客
             {
-                uInfo = Common.CommonUtils.getUserInfoHashTableFromStatic();
+                uInfo = udbWEB.GetUserInfoByUID();
             }
             else //游客
             {
@@ -62,11 +63,11 @@ namespace PmtsControlLibrary
                 uInfo["W"] = 0;
                 uInfo["HRVS"] = 0;
                 uInfo["mr"] = "";
-/*
+                /*
                 medal["ALLC"] = 0;
                 medal["ALLT"] = 0;
                 medal["ALLE"] = 0;
-*/  
+                */
             }
             if (UserInfoStatic.ipAdd == null)
             {
@@ -78,37 +79,23 @@ namespace PmtsControlLibrary
             //UserInfoStatic.UserWorkType = uInfo["pType"].ToString();
             //UserInfoStatic.UserWorkArea = uInfo["wArea"].ToString();
             //UserInfoStatic.UserMR = uInfo["mr"].ToString();
-  
-        }
 
-        private string getAgeFromBirthday(string birthday) { 
-             TimeSpan nowTick = new TimeSpan(DateTime.Now.Ticks);
-             TimeSpan birTick = new TimeSpan(Convert.ToDateTime(birthday).Ticks);
-             TimeSpan diffTick = nowTick.Subtract(birTick).Duration();
-             return Math.Floor((diffTick.TotalDays / 365)).ToString();
-        }
-
-        private string getSexNameByValue(string sex)
-        {
-             return "1" == sex ? "男" : "女";
         }
 
         private const string WELCOME_MSG = "您好，";
 
         public void OnRefreshInfo()
         {
-            GetUserInfo udb = new GetUserInfo();
-            uInfo = udb.GetUserInfoByUID();
-            medal = udb.GetUserMedal();
+            medal = udbWEB.GetUserMedal();
             if (uInfo != null)
             {
                 this.UserNameText.Text = WELCOME_MSG + uInfo["name"].ToString();
-               // this.PoliceTypeText.Text = uInfo["pType"].ToString();
+                // this.PoliceTypeText.Text = uInfo["pType"].ToString();
                 if (!String.IsNullOrEmpty(uInfo["age"].ToString()))
                 {
-                    this.AgeText.Text = getAgeFromBirthday(uInfo["age"].ToString());
+                    this.AgeText.Text = uInfo["age"].ToString();
                 }
-                this.SexText.Text = getSexNameByValue(uInfo["sex"].ToString());
+                this.SexText.Text = uInfo["sex"].ToString();
                 //this.AreaText.Text = uInfo["area"].ToString();
                 UserInfoStatic.O = Convert.ToDouble(uInfo["O"]);
                 UserInfoStatic.R = Convert.ToDouble(uInfo["R"]);
@@ -137,15 +124,14 @@ namespace PmtsControlLibrary
                     this.EPAllShow.Visibility = System.Windows.Visibility.Visible;
                 }
             }**/
-             
+
             this.SystemNoticeText.Text = udbWEB.GetNotice();
         }
 
 
         public void OnRefreshMedal()
         {
-            GetUserInfo udb = new GetUserInfo();
-            medal = udb.GetUserMedal();
+            medal = udbWEB.GetUserMedal();
             /*
             if (medal != null)
             {
@@ -181,14 +167,14 @@ namespace PmtsControlLibrary
         /// <param name="e"></param>
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-//lich
+            //lich
             if (uInfo != null)
             {
-                this.UserNameText.Text = WELCOME_MSG + UserInfoStatic.UserInfo.username;
-                this.SexText.Text = getSexNameByValue(uInfo["sex"].ToString());
-                this.AgeText.Text = getAgeFromBirthday(UserInfoStatic.UserInfo.birthday);
+                this.UserNameText.Text = WELCOME_MSG + uInfo["name"].ToString();
+                this.SexText.Text = uInfo["sex"].ToString();
+                this.AgeText.Text = uInfo["age"].ToString();
                 //this.usermood.Source=
-               //this.AreaText.Text = uInfo["area"].ToString();
+                //this.AreaText.Text = uInfo["area"].ToString();
                 UserInfoStatic.O = Convert.ToDouble(uInfo["O"]);
                 UserInfoStatic.R = Convert.ToDouble(uInfo["R"]);
                 UserInfoStatic.T = Convert.ToDouble(uInfo["T"]);
@@ -215,7 +201,7 @@ namespace PmtsControlLibrary
                     this.EPAllShow.Visibility = System.Windows.Visibility.Visible;
                 }
             }*/
-//lich
+            //lich
             if (UserInfoStatic.ipAdd != null) //非游客
             {
                 this.SystemNoticeText.Text = udbWEB.GetNotice();

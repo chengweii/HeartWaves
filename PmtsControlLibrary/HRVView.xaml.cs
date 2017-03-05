@@ -19,6 +19,7 @@ using pmts_net.HMRead;
 using System.Windows.Threading;
 using PmtsControlLibrary.DBPlugin;
 using Visifire.Charts;
+using PmtsControlLibrary.WEBPlugin;
 
 namespace PmtsControlLibrary
 {

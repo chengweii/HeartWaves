@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using PmtsControlLibrary.DBPlugin;
 using pmts_net.HMRead;
+using PmtsControlLibrary.WEBPlugin;
 
 namespace PmtsControlLibrary
 {
@@ -23,7 +24,7 @@ namespace PmtsControlLibrary
     public partial class TrainDesensitization : UserControl
     {
         private double[,] EPRange = { { 0, 0.6, 1 }, { 0.6, 1.5, 2 }, { 1.5, 4, 3 }, { 4, 7, 5 }, { 7, 15, 8 }, { 15, 25, 10 }, { 25, 45, 12 }, { 45, 70, 15 }, { 70, 100, 20 }, { 100, 150, 25 }, { 150, 230, 35 }, { 230, 350, 50 }, { 350, 450, 70 }, { 450, 600, 80 }, { 600, 65530, 100 } };
-        private TrainDB tdb = new TrainDB();
+        private TrainWEB tdb = null;
         private System.Windows.Threading.DispatcherTimer startTimer = new System.Windows.Threading.DispatcherTimer();
         private ArrayList playList = new ArrayList();
         private int playIndex = 0;
@@ -47,7 +48,7 @@ namespace PmtsControlLibrary
         public TrainDesensitization()
         {
             InitializeComponent();
-            tdb = new TrainDB();
+            tdb = new TrainWEB();
             this.Unloaded += OnCloseTrain;
             playIndex = 0;
 

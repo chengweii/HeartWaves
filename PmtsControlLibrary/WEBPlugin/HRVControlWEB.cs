@@ -7,7 +7,7 @@ using MySql.Data.MySqlClient;
 using System.Windows;
 using PmtsControlLibrary.Common;
 
-namespace PmtsControlLibrary.DBPlugin
+namespace PmtsControlLibrary.WEBPlugin
 {
     public class HRVControlWEB
     {

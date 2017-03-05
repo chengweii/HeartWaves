@@ -6,9 +6,9 @@ using System.Collections;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 
-namespace PmtsControlLibrary.DBPlugin
+namespace PmtsControlLibrary.WEBPlugin
 {
-    class GetUserInfoWEB
+    public class GetUserInfoWEB
     {
         private String user = "";
         private Hashtable meg = new Hashtable();
@@ -31,92 +31,50 @@ namespace PmtsControlLibrary.DBPlugin
         public Hashtable GetUserRadarData()
         {
             Hashtable retHas = new Hashtable();
-            retHas["o"] = Math.Floor(0.1);
-            retHas["r"] = Math.Floor(0.1);
-            retHas["t"] = Math.Floor(0.1);
-            retHas["e"] = Math.Floor(0.1);
-            retHas["w"] = Math.Floor(0.1);
-            retHas["hs"] = Math.Floor(0.1);
-            return retHas;
-
-            String sqlStr = "SELECT Observe, Rember, Thinking, Emotion, Willpower, HRVScore FROM users_property WHERE User_ID =?User_ID";
-            MySqlCommand cmd = new MySqlCommand(sqlStr, DBCon);
-            cmd.Parameters.Add("?User_ID", MySqlDbType.VarChar).Value = user;//user;
-            if (DBCon.State == System.Data.ConnectionState.Closed)
-            {
-                DBCon.Open();
-            }
-            try
-            {
-                MySqlDataReader read = cmd.ExecuteReader();
-                read.Read();
-                retHas["o"] = Math.Floor(Convert.ToSingle(read["Observe"]));
-                retHas["r"] = Math.Floor(Convert.ToSingle(read["Rember"]));
-                retHas["t"] = Math.Floor(Convert.ToSingle(read["Thinking"]));
-                retHas["e"] = Math.Floor(Convert.ToSingle(read["Emotion"]));
-                retHas["w"] = Math.Floor(Convert.ToSingle(read["Willpower"]));
-                retHas["hs"] = Math.Floor(Convert.ToSingle(read["HRVScore"]));
-            }
-            catch (MySqlException ex)
-            {
-                System.Diagnostics.Debug.Write("用户信息和雷达图读取SQL：" + ex.Message + "\n");
-            }
-            finally
-            {
-                DBCon.Clone();
-                DBCon.Dispose();
-                cmd.Dispose();
-            }
+            retHas["o"] = UserInfoStatic.UserInfo.observe;
+            retHas["r"] = UserInfoStatic.UserInfo.rember;
+            retHas["t"] = UserInfoStatic.UserInfo.thinking;
+            retHas["e"] = UserInfoStatic.UserInfo.emotion;
+            retHas["w"] = UserInfoStatic.UserInfo.willpower;
+            retHas["hs"] = UserInfoStatic.UserInfo.hrvscore;
             return retHas;
         }
+
+        private string getAgeFromBirthday(string birthday)
+        {
+            TimeSpan nowTick = new TimeSpan(DateTime.Now.Ticks);
+            TimeSpan birTick = new TimeSpan(Convert.ToDateTime(birthday).Ticks);
+            TimeSpan diffTick = nowTick.Subtract(birTick).Duration();
+            return Math.Floor((diffTick.TotalDays / 365)).ToString();
+        }
+
+        private string getSexNameByValue(string sex)
+        {
+            return "1" == sex ? "男" : "女";
+        }
+
         /// <summary>
         /// 取得用户基本信息
         /// </summary>
         /// <returns></returns>
         public Hashtable GetUserInfoByUID()
         {
-            Hashtable info = Common.CommonUtils.getUserInfoHashTableFromStatic();
-            return info;
-
-            String sqlStr = "SELECT * FROM users as u LEFT JOIN users_property as up ON u.User_ID=up.User_ID  WHERE u.User_ID=?uid";
-            MySqlCommand cmd = new MySqlCommand(sqlStr, DBCon);
-            cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = user;
-            try
-            {
-                if (DBCon.State == System.Data.ConnectionState.Closed)
-                {
-                    DBCon.Open();
-                }
-                MySqlDataReader myRead = cmd.ExecuteReader();
-                if (myRead.Read())
-                {
-                    info = new Hashtable();
-                    info["name"] = myRead["USER_Name"];
-                    info["sex"] = myRead["USER_Sex"];
-                    info["age"] = myRead["USER_Birthday"];
-                    info["area"] = myRead["USER_WorkArea"];
-                    info["pType"] = myRead["USER_PoliceType"];
-                    info["wYear"] = myRead["USER_WorkYear"];
-                    info["wArea"] = myRead["USER_WorkArea"];
-                    info["O"] = myRead["Observe"];
-                    info["R"] = myRead["Rember"];
-                    info["T"] = myRead["Thinking"];
-                    info["E"] = myRead["Emotion"];
-                    info["W"] = myRead["Willpower"];
-                    info["HRVS"] = myRead["HRVScore"];
-                    info["mr"] = myRead["USER_MedicalRecord"];
-                }
-            }
-            catch (MySqlException ex)
-            {
-
-            }
-            finally
-            {
-                DBCon.Close();
-                DBCon.Dispose();
-                cmd.Dispose();
-            }
+            Hashtable info = new Hashtable();
+            info["realname"] = UserInfoStatic.UserInfo.realname;
+            info["name"] = UserInfoStatic.UserInfo.username;
+            info["sex"] = getSexNameByValue(UserInfoStatic.UserInfo.sex);
+            info["age"] = getAgeFromBirthday(UserInfoStatic.UserInfo.birthday);
+            info["area"] = UserInfoStatic.UserInfo.workingplace;
+            info["pType"] = UserInfoStatic.UserInfo.position;
+            info["wYear"] = UserInfoStatic.UserInfo.workingplace;
+            info["wArea"] = "";
+            info["O"] = UserInfoStatic.UserInfo.observe;
+            info["R"] = UserInfoStatic.UserInfo.rember;
+            info["T"] = UserInfoStatic.UserInfo.thinking;
+            info["E"] = UserInfoStatic.UserInfo.emotion;
+            info["W"] = UserInfoStatic.UserInfo.willpower;
+            info["HRVS"] = UserInfoStatic.UserInfo.hrvscore;
+            info["mr"] = UserInfoStatic.UserInfo.medicalhistory;
             return info;
         }
         /// <summary>
@@ -201,7 +159,7 @@ namespace PmtsControlLibrary.DBPlugin
                     cmd.Parameters.Add("?age", MySqlDbType.DateTime).Value = userInfo["age"];
                 }
 
-               
+
                 cmd.Parameters.Add("?workyear", MySqlDbType.Int32).Value = userInfo["workyear"];
                 cmd.Parameters.Add("?workarea", MySqlDbType.VarChar).Value = userInfo["workarea"];
                 cmd.Parameters.Add("?worktype", MySqlDbType.VarChar).Value = userInfo["worktype"];

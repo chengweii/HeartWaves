@@ -17,6 +17,7 @@ using System.Windows.Threading;
 using System.IO;
 using Visifire.Charts;
 using PmtsHrvChart;
+using PmtsControlLibrary.WEBPlugin;
 
 namespace PmtsControlLibrary
 {
@@ -28,7 +29,7 @@ namespace PmtsControlLibrary
         private double[,] EPRange = { { 0, 0.6, 1 }, { 0.6, 1.5, 2 }, { 1.5, 4, 3 }, { 4, 7, 5 }, { 7, 15, 8 }, { 15, 25, 10 }, { 25, 45, 12 }, { 45, 70, 15 }, { 70, 100, 20 }, { 100, 150, 25 }, { 150, 230, 35 }, { 230, 350, 50 }, { 350, 450, 70 }, { 450, 600, 80 }, { 600, 65530, 100 } };//ep档位范围
         private Hashtable tInfo = new Hashtable();
         private UserControl tListView = null;
-        private DBPlugin.TrainDB tdb = new DBPlugin.TrainDB();
+        private TrainWEB tdb = null;
         private System.Windows.Forms.Integration.WindowsFormsHost host = new System.Windows.Forms.Integration.WindowsFormsHost();
         private AxShockwaveFlashObjects.AxShockwaveFlash shockwave = new AxShockwaveFlashObjects.AxShockwaveFlash();
         private HDRead hd = new HDRead();
@@ -50,8 +51,8 @@ namespace PmtsControlLibrary
         public TrainPlayerView()
         {
             InitializeComponent();
-           
-//            enabledDevice();
+
+            //            enabledDevice();
             //button声音
             Grid uiButton = this.Content as Grid;
             UIElementCollection Childrens = uiButton.Children;
@@ -60,7 +61,6 @@ namespace PmtsControlLibrary
                 //ui转成控件
                 if (ui is Button)
                 {
-
                     ui.MouseEnter += new MouseEventHandler(ui_MouseEnter);
                 }
             }
@@ -77,12 +77,12 @@ namespace PmtsControlLibrary
             InitializeComponent();
             tInfo = t;
             tListView = trainList;
-            tdb = new DBPlugin.TrainDB();
+            tdb = new TrainWEB();
             mainWindow = Main;
-//            enabledDevice();
+            //            enabledDevice();
             HRVPrompt.Visibility = System.Windows.Visibility.Hidden;
 
-            
+
         }
 
         private bool enabledDevice()
@@ -115,12 +115,12 @@ namespace PmtsControlLibrary
                     HRVPrompt.Visibility = System.Windows.Visibility.Hidden;
                     HrvChartGrid2.Visibility = System.Windows.Visibility.Hidden;
                     xietiaoView.Visibility = System.Windows.Visibility.Hidden;
-                    PlayerView.Margin = new Thickness(0,0,0,57);
+                    PlayerView.Margin = new Thickness(0, 0, 0, 57);
                     PlayerView.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
                     PlayerView.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
                     PlayerView.Height = 589;
                     TrainDesensitization des = new TrainDesensitization();
-                    
+
                     this.PlayerView.Children.Add(des);
                 }
                 else if (Convert.ToInt32(tInfo["tid"]) == 1 || Convert.ToInt32(tInfo["tid"]) == 2 || Convert.ToInt32(tInfo["tid"]) == 3 || Convert.ToInt32(tInfo["tid"]) == 4 || Convert.ToInt32(tInfo["tid"]) == 5 || Convert.ToInt32(tInfo["tid"]) == 6)
@@ -151,7 +151,7 @@ namespace PmtsControlLibrary
                     cmd += "<property id=\"E\"><number>" + UserInfoStatic.E + "</number></property>";
                     cmd += "<property id=\"W\"><number>" + UserInfoStatic.W + "</number></property>";
                     cmd += "</object></arguments></invoke>";
-                      
+
                     shockwave.CallFunction(cmd);
                     shockwave.Play();
                 }
@@ -206,14 +206,14 @@ namespace PmtsControlLibrary
         /// <param name="e"></param>
         private void FromFlashCall(object sender, AxShockwaveFlashObjects._IShockwaveFlashEvents_FlashCallEvent e)
         {
-           System.Diagnostics.Debug.Write("解析nodeXml：" + e.request.ToString() + "\n");         
+            System.Diagnostics.Debug.Write("解析nodeXml：" + e.request.ToString() + "\n");
             Hashtable requestInfo = NodeXmlToHashtable(e.request.ToString());
- //           MessageBox.Show(requestInfo["rType"].ToString());
+            //           MessageBox.Show(requestInfo["rType"].ToString());
             if (requestInfo != null)
             {
                 if (requestInfo["rType"].ToString() == "test")
                 {
-//                    MessageBox.Show("test");
+                    //                    MessageBox.Show("test");
                     Hashtable historyInfo = new Hashtable();
                     historyInfo["trid"] = tdb.GetTrainRecordID();
                     historyInfo["tid"] = tInfo["tid"];
@@ -244,8 +244,8 @@ namespace PmtsControlLibrary
                     }
                     TrainBack tb = tListView as TrainBack;
 
-                     //结束游戏
-                //    MessageBox.Show("结束游戏");
+                    //结束游戏
+                    //    MessageBox.Show("结束游戏");
 
                     isGameStart = false;
                     if (HRVData.Count > 128)
@@ -326,7 +326,7 @@ namespace PmtsControlLibrary
                     OnChartPaint(HRVData);//初始化曲线图表
                     OnAnimationForEP(0);//协调状态条
                     EPScore = 0;
-               //     MessageBox.Show("开始游戏");
+                    //     MessageBox.Show("开始游戏");
                 }
                 else if (requestInfo["rType"].ToString() == "enter")
                 {
@@ -448,7 +448,7 @@ namespace PmtsControlLibrary
             try
             {
                 hd.GetHRV();
-                
+
                 if (isGameStart)
                 {
                     ArrayList tmpHRVArr = hd.HRVArr;
@@ -471,7 +471,7 @@ namespace PmtsControlLibrary
                         }
                     }
                 }
-                
+
                 ArrayList tempEPArr = hd.EPArr;
                 for (int ep = 0; ep < tempEPArr.Count; ep++)
                 {
@@ -495,7 +495,7 @@ namespace PmtsControlLibrary
                     {
                         HRVPrompt.Visibility = System.Windows.Visibility.Visible;
 
-                        
+
                         //hrvp = new HRVPrompt();
                         //hrvp.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
                         //hrvp.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
@@ -562,7 +562,7 @@ namespace PmtsControlLibrary
         {
             this.shockwave.Dispose();
             this.host.Dispose();
-            
+
             Grid main = (Grid)this.Parent;
             main.Children.Remove(this);
             tListView.Visibility = System.Windows.Visibility.Visible;
@@ -604,12 +604,12 @@ namespace PmtsControlLibrary
                     epMaskValue = (i * (698 / 15)) + epOffice;
                     EPScore += EPRange[i, 2];
                     string ScoreStr = Convert.ToString(Math.Floor(EPScore)).PadLeft(6, '0');
-                    
+
                 }
             }
             epDoubleAnime.To = epMaskValue / 698;
             epStory.Begin();
-            
+
         }
     }
 }
