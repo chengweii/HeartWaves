@@ -17,6 +17,8 @@ using System.Xml;
 
 using System.Windows.Threading;
 using System.IO;
+using HeartWavesSDK.Model;
+using HeartWavesSDK.API;
 
 namespace PmtsControlLibrary
 {
@@ -33,7 +35,7 @@ namespace PmtsControlLibrary
         private bool isPlaying = false;
         private ClassTopView ctv = null;
         private TreeView courseTreeView = null;
-        
+
         public ClassPlayerView()
         {
             InitializeComponent();
@@ -70,6 +72,20 @@ namespace PmtsControlLibrary
                 this.mainWindow.Children.Add(ctv);
             }
             courseTreeView = new TreeView();
+
+            initIndexAuthoDatum();
+        }
+
+        private List<IndexAuthoDatum> indexAuthoDatumList = null;
+
+        private void initIndexAuthoDatum()
+        {
+            var request = new IndexAuthoRequest()
+            {
+                id = "1"
+            };
+            var response = APIClient._IndexAutho(request);
+            indexAuthoDatumList = response.data.data;
         }
 
         private void viewGrid_Loaded(object sender, RoutedEventArgs e)
@@ -116,19 +132,49 @@ namespace PmtsControlLibrary
                 DirectoryInfo[] chldFolders = folder.GetDirectories();
                 foreach (DirectoryInfo chldFolder in chldFolders)
                 {
-                    TreeViewItem chldNode = new TreeViewItem();
-                    chldNode.Header = chldFolder.Name;
-                    chldNode.Tag = chldFolder.FullName;
-                    chldNode.Foreground = new SolidColorBrush(Colors.White);  //用固态画刷填充前景色
-                    chldNode.IsExpanded = true;
-                    GetFiles(chldFolder.FullName, chldNode);
-                    courseTreeView.Items.Add(chldNode);
+                    if (hasAuth(chldFolder.Name))
+                    {
+                        TreeViewItem chldNode = new TreeViewItem();
+                        chldNode.Header = chldFolder.Name;
+                        chldNode.Tag = chldFolder.FullName;
+                        chldNode.Foreground = new SolidColorBrush(Colors.White);  //用固态画刷填充前景色
+                        chldNode.IsExpanded = true;
+                        GetFiles(chldFolder.FullName, chldNode);
+                        courseTreeView.Items.Add(chldNode);
+                    }
                 }
                 if (!this.ClassListTreeView.Children.Contains(courseTreeView))
                 {
                     this.ClassListTreeView.Children.Add(courseTreeView);
                 }
             }
+        }
+
+        private bool hasAuth(string categoryName)
+        {
+            var category = findCategory(categoryName, indexAuthoDatumList);
+            return indexAuthoDatumList != null && category != null;
+        }
+
+        private IndexAuthoDatum findCategory(string categoryName, List<IndexAuthoDatum> categoryList)
+        {
+            IndexAuthoDatum result = null;
+            foreach (var category in categoryList)
+            {
+                if (category.name.Equals(categoryName))
+                {
+                    result = category;
+                    break;
+                }
+                else
+                {
+                    if (category.children != null)
+                        result = findCategory(categoryName, category.children);
+                    if (result != null)
+                        break;
+                }
+            }
+            return result;
         }
 
 
@@ -208,14 +254,17 @@ namespace PmtsControlLibrary
             FileInfo[] chldFiles = folder.GetFiles("*.*");
             foreach (FileInfo chlFile in chldFiles)
             {
-                TreeViewItem chldNode = new TreeViewItem();
-                var rs1 = chlFile.Name.ToLower().Replace(".mp4", "");
                 var rs2 = chlFile.Name.Split('.')[0];
+                if (hasAuth(rs2))
+                {
+                    TreeViewItem chldNode = new TreeViewItem();
+                    var rs1 = chlFile.Name.ToLower().Replace(".mp4", "");
 
-                chldNode.Header = rs2;
-                chldNode.Tag = chlFile.FullName;
-                chldNode.Foreground = new SolidColorBrush(Colors.White);  //用固态画刷填充前景色
-                node.Items.Add(chldNode);
+                    chldNode.Header = rs2;
+                    chldNode.Tag = chlFile.FullName;
+                    chldNode.Foreground = new SolidColorBrush(Colors.White);  //用固态画刷填充前景色
+                    node.Items.Add(chldNode);
+                }
             }
 
 
