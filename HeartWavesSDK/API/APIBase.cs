@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using HeartWavesSDK.Common;
+using System.Collections;
 
 namespace HeartWavesSDK.API
 {
@@ -47,6 +48,10 @@ namespace HeartWavesSDK.API
                     {
                         value = listToString((List<String>)orign);
                     }
+                    else if (orign is ArrayList)
+                    {
+                        value = arrayListToString((ArrayList)orign);
+                    }
                     else
                     {
                         value = orign.ToString();
@@ -61,6 +66,11 @@ namespace HeartWavesSDK.API
         private static string listToString(List<String> list)
         {
             return "[" + string.Join(",", ((List<String>)list).ToArray()) + "]";
+        }
+
+        private static string arrayListToString(ArrayList list)
+        {
+            return "[" + string.Join(",", ((ArrayList)list).ToArray()) + "]";
         }
     }
 }

@@ -24,7 +24,7 @@ namespace PmtsControlLibrary
     public partial class MainRightPerson : UserControl
     {
         private Hashtable uInfo = new Hashtable();
-        private Hashtable medal = null;
+        private Hashtable medal = new Hashtable();
 
         private DispatcherTimer NoticeTimer;//读取HRV时的Timer
         private String strNotice = "";
@@ -42,9 +42,7 @@ namespace PmtsControlLibrary
             InitializeComponent();
             if (UserInfoStatic.ipAdd != null) // 非游客
             {
-                GetUserInfo udb = new GetUserInfo(sysMeg);
-                uInfo = udb.GetUserInfoByUID();
-                medal = udb.GetUserMedal();
+                uInfo = Common.CommonUtils.getUserInfoHashTableFromStatic();
             }
             else //游客
             {
@@ -68,19 +66,33 @@ namespace PmtsControlLibrary
                 medal["ALLE"] = 0;
 */  
             }
-            UserInfoStatic.UserName = uInfo["name"].ToString();
             if (UserInfoStatic.ipAdd == null)
             {
                 UserInfoStatic.UserSex = "－";
                 UserInfoStatic.UserAge = "－";
                 UserInfoStatic.UserWork = "未知";
             }
-            UserInfoStatic.UserWorkYear = Convert.ToInt32(uInfo["wYear"]);
-            UserInfoStatic.UserWorkType = uInfo["pType"].ToString();
-            UserInfoStatic.UserWorkArea = uInfo["wArea"].ToString();
-            UserInfoStatic.UserMR = uInfo["mr"].ToString();
+            //UserInfoStatic.UserWorkYear = Convert.ToInt32(uInfo["wYear"]);
+            //UserInfoStatic.UserWorkType = uInfo["pType"].ToString();
+            //UserInfoStatic.UserWorkArea = uInfo["wArea"].ToString();
+            //UserInfoStatic.UserMR = uInfo["mr"].ToString();
   
         }
+
+        private string getAgeFromBirthday(string birthday) { 
+             TimeSpan nowTick = new TimeSpan(DateTime.Now.Ticks);
+             TimeSpan birTick = new TimeSpan(Convert.ToDateTime(birthday).Ticks);
+             TimeSpan diffTick = nowTick.Subtract(birTick).Duration();
+             return Math.Floor((diffTick.TotalDays / 365)).ToString();
+        }
+
+        private string getSexNameByValue(string sex)
+        {
+             return "1" == sex ? "男" : "女";
+        }
+
+        private const string WELCOME_MSG = "您好，";
+
         public void OnRefreshInfo()
         {
             GetUserInfo udb = new GetUserInfo();
@@ -88,23 +100,13 @@ namespace PmtsControlLibrary
             medal = udb.GetUserMedal();
             if (uInfo != null)
             {
-                this.UserNameText.Text = uInfo["name"].ToString();
+                this.UserNameText.Text = WELCOME_MSG + uInfo["name"].ToString();
                // this.PoliceTypeText.Text = uInfo["pType"].ToString();
                 if (!String.IsNullOrEmpty(uInfo["age"].ToString()))
                 {
-                    TimeSpan nowTick = new TimeSpan(DateTime.Now.Ticks);
-                    TimeSpan birTick = new TimeSpan(Convert.ToDateTime(uInfo["age"].ToString()).Ticks);
-                    TimeSpan diffTick = nowTick.Subtract(birTick).Duration();
-                    this.AgeText.Text = Math.Floor((diffTick.TotalDays / 365)).ToString();
+                    this.AgeText.Text = getAgeFromBirthday(uInfo["age"].ToString());
                 }
-                if (uInfo["sex"].ToString() == "1")
-                {
-                    this.SexText.Text = "男";
-                }
-                else
-                {
-                    this.SexText.Text = "女";
-                }
+                this.SexText.Text = getSexNameByValue(uInfo["sex"].ToString());
                 //this.AreaText.Text = uInfo["area"].ToString();
                 UserInfoStatic.O = Convert.ToDouble(uInfo["O"]);
                 UserInfoStatic.R = Convert.ToDouble(uInfo["R"]);
@@ -180,28 +182,10 @@ namespace PmtsControlLibrary
 //lich
             if (uInfo != null)
             {
-                this.UserNameText.Text = "您好，" + uInfo["name"].ToString();
-                //this.PoliceTypeText.Text = uInfo["pType"].ToString();
- /*
-                if (!String.IsNullOrEmpty(uInfo["age"].ToString()))
-                {
-                    TimeSpan nowTick = new TimeSpan(DateTime.Now.Ticks);
-                    TimeSpan birTick = new TimeSpan(Convert.ToDateTime(uInfo["age"].ToString()).Ticks);
-                    TimeSpan diffTick = nowTick.Subtract(birTick).Duration();
-                    this.AgeText.Text = Math.Floor((diffTick.TotalDays / 365)).ToString();
-                }
-                
-                if (uInfo["sex"].ToString() == "1")
-                {
-                    this.SexText.Text = "男";
-                }
-                else
-                {
-                    this.SexText.Text = "女";
-                }
-  */
-                this.SexText.Text = UserInfoStatic.UserSex;
-                this.AgeText.Text = UserInfoStatic.UserAge;
+                this.UserNameText.Text = WELCOME_MSG + UserInfoStatic.UserInfo.username;
+                this.SexText.Text = getSexNameByValue(uInfo["sex"].ToString());
+                this.AgeText.Text = getAgeFromBirthday(UserInfoStatic.UserInfo.birthday);
+                //this.usermood.Source=
                //this.AreaText.Text = uInfo["area"].ToString();
                 UserInfoStatic.O = Convert.ToDouble(uInfo["O"]);
                 UserInfoStatic.R = Convert.ToDouble(uInfo["R"]);

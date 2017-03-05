@@ -22,8 +22,8 @@ using System.Xml.Serialization;
 using System.IO;
 using pmts_net;
 using System.Runtime.InteropServices;
-using hrv;
-using ProtoBuf;
+using HeartWavesSDK.API;
+using HeartWavesSDK.Model;
 
 namespace pmts_net.AppWindow
 {
@@ -64,11 +64,12 @@ namespace pmts_net.AppWindow
             foreach (UIElement ui in Childrens)
             {
                 //ui转成控件
-                if (ui is Button) {
+                if (ui is Button)
+                {
 
                     ui.MouseEnter += new MouseEventHandler(ui_MouseEnter);
                 }
-            }  
+            }
 
 
             int proNum = 0;
@@ -253,111 +254,75 @@ namespace pmts_net.AppWindow
             if (String.IsNullOrEmpty(this.userText.Text) || String.IsNullOrEmpty(this.pwdText.Password))
             {
                 PmtsMessageBox.CustomControl1.Show("请输入用户ID或密码", PmtsMessageBox.ServerMessageBoxButtonType.OK);
+                return;
+            }
+
+            bool isAdd = true;
+            if (objNodeXml.uList.Count > 0)
+            {
+                for (int i = 0; i < objNodeXml.uList.Count; i++)
+                {
+                    String nameStr = objNodeXml.uList[i].uName;
+                    if (nameStr == this.userText.Text)
+                    {
+                        isAdd = false;
+                        break;
+                    }
+                }
             }
             else
             {
-                bool isAdd = true;
-                if (objNodeXml.uList.Count > 0)
-                {
-                    for (int i = 0; i < objNodeXml.uList.Count; i++)
-                    {
-                        String nameStr = objNodeXml.uList[i].uName;
-                        if (nameStr == this.userText.Text)
-                        {
-                            isAdd = false;
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    isAdd = true;
-                }
-                if (isAdd)
-                {
-                    try
-                    {
-                        LogUserList addUser = new LogUserList();
-                        addUser.uName = this.userText.Text;
-                        objNodeXml.uList.Add(addUser);
-                        String xmlTest = "./Config/UserList.xml";
-                        XmlSerializer objSerializer = new XmlSerializer(typeof(NodeXml));
-                        StreamWriter objStream = new StreamWriter(xmlTest);
-                        objSerializer.Serialize(objStream, objNodeXml);
-                        objStream.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        System.Diagnostics.Debug.Write("生成XML时出错：" + ex.Message + "\n");
-                    }
-                }
-                /*-------------------------------------------------------------------------------------*/
+                isAdd = true;
+            }
+            if (isAdd)
+            {
                 try
                 {
-                    //开始线程
-                    /*                    Thread udpT = new Thread(OnUdpReceive);
-                                        udpT.Name = "UDP_GET_IP";
-                                        udpT.IsBackground = true;
-                                        udpT.Start();
-                                        //启用超时定时器
-                                        timeOut = new DispatcherTimer();
-                                        timeOut.Interval = new TimeSpan(0, 0, 5);
-                                        timeOut.Tick += OnUDPTimeOut;
-                                        timeOut.Start();
-                     by lich*/
-                    /*                   string returnData = @"^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$";
-                                       GetIpAddress methodFroIp = OnIpChanged;
-                                       this.Dispatcher.BeginInvoke(DispatcherPriority.Normal, methodFroIp, returnData);
-                    */
-                    //if (ConnectServer("125.34.96.86", 8998))
-                    if (ConnectServer("119.57.66.214", 8998))
-                    {
-                        MessageBox.Show("Connect Server Succeed");
-
-                        var reqest = new Request()
-                        {
-                            type = Request.Type.LOGIN,
-                        };
-                        var loginReq = new LoginReq() { username = this.userText.Text, password = this.pwdText.Password };
-
-                        ProtoBuf.Extensible.AppendValue<LoginReq>(reqest, 100, loginReq);
-
-                        var stream = hrvClient.GetStream();
-                        ProtoBuf.Serializer.SerializeWithLengthPrefix(stream, reqest, ProtoBuf.PrefixStyle.Base128);
-                        var response = ProtoBuf.Serializer.DeserializeWithLengthPrefix<Response>(stream, ProtoBuf.PrefixStyle.Base128);
-
-                        var loginResp = ProtoBuf.Extensible.GetValue<LoginResp>(response.respSuccess, 100);
-
-                        var result = loginResp.result;
-                        UserInfo userinfo = loginResp.userInfo;
-                        this.userText.Text = loginResp.userInfo.birthday;
-                        if (response.status == Response.Status.OK)
-                        {
-                            MessageBox.Show("OK");
-                            Main mainWindow = new Main("127.0.0.1", this.userText.Text);
-                            mainWindow.Show();
-                            this.Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show("ERROR");
-                        }
-                        stream.Close();
-
-                    }
-                    else
-                        MessageBox.Show("Connect Server Error");
-                    
-
+                    LogUserList addUser = new LogUserList();
+                    addUser.uName = this.userText.Text;
+                    objNodeXml.uList.Add(addUser);
+                    String xmlTest = "./Config/UserList.xml";
+                    XmlSerializer objSerializer = new XmlSerializer(typeof(NodeXml));
+                    StreamWriter objStream = new StreamWriter(xmlTest);
+                    objSerializer.Serialize(objStream, objNodeXml);
+                    objStream.Close();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    System.Diagnostics.Debug.Write("生成XML时出错：" + ex.Message + "\n");
                 }
-                /*---------------------------------------记录用户登录历史（完成后需要移动到OnIpChanged方法中）----------------------------------------------*/
-                //Main mainWindow = new Main("127.0.0.1", this.userText.Text);
-                //mainWindow.Show();
-                //this.Close();
+            }
+
+            try
+            {
+                var resp = APIClient._Login(new LoginRequest()
+                {
+                    username = this.userText.Text,
+                    password = this.pwdText.Password,
+                });
+
+                if (null == resp || null == resp.data)
+                {
+                    MessageBox.Show("网络异常，请稍后重试");
+                }
+                else if (resp.data.success != "1")
+                {
+                    MessageBox.Show(resp.data.message);
+                }
+                else
+                {
+                    Main main = new Main("127.0.0.1", this.userText.Text);
+
+                    UserInfoStatic.UserInfo = resp.data.userInfo;
+                    UserInfoStatic.UserInfo.password = this.pwdText.Password;
+
+                    main.Show();
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
         /// <summary>

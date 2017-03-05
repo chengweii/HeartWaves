@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 using MySql.Data.MySqlClient;
+using System.Windows;
 
 namespace PmtsControlLibrary.DBPlugin
 {
@@ -205,6 +206,8 @@ namespace PmtsControlLibrary.DBPlugin
                 sqlCmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = user;
                 sqlCmd.Parameters.Add("?newScore", MySqlDbType.Int32).Value = newHrvScore;
                 sqlCmd.ExecuteNonQuery();
+
+                
             }
             catch (MySqlException e)
             {

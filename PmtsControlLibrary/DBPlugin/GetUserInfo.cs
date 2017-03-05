@@ -29,6 +29,8 @@ namespace PmtsControlLibrary.DBPlugin
         /// </summary>
         private void DBConnection()
         {
+            return;
+
             if (DBCon == null || DBCon.State == System.Data.ConnectionState.Broken)
             {
                 String dbip = UserInfoStatic.ipAdd;
@@ -46,6 +48,14 @@ namespace PmtsControlLibrary.DBPlugin
         public Hashtable GetUserRadarData()
         {
             Hashtable retHas = new Hashtable();
+            retHas["o"] = Math.Floor(0.1);
+            retHas["r"] = Math.Floor(0.1);
+            retHas["t"] = Math.Floor(0.1);
+            retHas["e"] = Math.Floor(0.1);
+            retHas["w"] = Math.Floor(0.1);
+            retHas["hs"] = Math.Floor(0.1);
+            return retHas;
+
             String sqlStr = "SELECT Observe, Rember, Thinking, Emotion, Willpower, HRVScore FROM users_property WHERE User_ID =?User_ID";
             MySqlCommand cmd = new MySqlCommand(sqlStr, DBCon);
             cmd.Parameters.Add("?User_ID", MySqlDbType.VarChar).Value = user;//user;
@@ -82,7 +92,9 @@ namespace PmtsControlLibrary.DBPlugin
         /// <returns></returns>
         public Hashtable GetUserInfoByUID()
         {
-            Hashtable info = null;
+            Hashtable info = Common.CommonUtils.getUserInfoHashTableFromStatic();
+            return info;
+
             String sqlStr = "SELECT * FROM users as u LEFT JOIN users_property as up ON u.User_ID=up.User_ID  WHERE u.User_ID=?uid";
             MySqlCommand cmd = new MySqlCommand(sqlStr, DBCon);
             cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = user;
@@ -131,6 +143,12 @@ namespace PmtsControlLibrary.DBPlugin
         public Hashtable GetUserMedal()
         {
             Hashtable mInfo = null;
+            mInfo = new Hashtable();
+            mInfo["ALLC"] = "";
+            mInfo["ALLT"] = "";
+            mInfo["ALLE"] = "";
+            return mInfo;
+
             String sqlStr = "SELECT * FROM users_property WHERE User_ID=?uid";
             MySqlCommand cmd = new MySqlCommand(sqlStr, DBCon);
             try
@@ -166,6 +184,9 @@ namespace PmtsControlLibrary.DBPlugin
         /// <param name="userInfo"></param>
         public bool OnUpdateUserInfo(Hashtable userInfo)
         {
+
+            return false;
+
             String sqlStr = "UPDATE users SET  ";
             sqlStr += "USER_Name=?name,  ";
             if (userInfo["pwd"].ToString() != "NoChange")
@@ -223,6 +244,8 @@ namespace PmtsControlLibrary.DBPlugin
         /// <returns></returns>
         public String GetNotice()
         {
+            return "";
+
             String notice = "";
             String sqlStr = "SELECT * FROM systemnotice";
             MySqlCommand cmd = new MySqlCommand(sqlStr, DBCon);

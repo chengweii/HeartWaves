@@ -24,7 +24,7 @@
         <Grid x:Name="LayoutRoot" Height="624" Width="1184" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Image Source="/PmtsControlLibrary;component/Image/classbg.png"></Image>
             <Grid  Margin="8,20,0,78" HorizontalAlignment="Left"  Width=" 926">
-                <MediaElement x:Name="videoScreenMediaElement" LoadedBehavior="Manual" UnloadedBehavior="Pause" Source="pack://siteoforigin:,,,/Resources/课程学习/一、HRV原理及自主平衡三步法/1、心率变异性概念介绍.mp4" ScrubbingEnabled="True" Volume="{Binding ElementName=volumeSlider, Path=Value}"  MediaOpened="videoScreenMediaElement_MediaOpened" MediaEnded="videoScreenMediaElement_MediaEnded" Stretch="Fill" />
+                <MediaElement x:Name="videoScreenMediaElement" LoadedBehavior="Manual" UnloadedBehavior="Pause" Source="pack://siteoforigin:,,,/Resources/课程学习/一、HRV原理及自主平衡三步法/1、心率变异性概念介绍.mp4" ScrubbingEnabled="True" Volume="{Binding ElementName=volumeSlider, Path=Value}"  MediaOpened="videoScreenMediaElement_MediaOpened" MediaEnded="videoScreenMediaElement_MediaEnded" MouseDown="videoScreenMediaElement_MouseDown" Stretch="Fill" />
             </Grid>
             <Image Height="604" HorizontalAlignment="Left" Margin="8,20,0,78" Name="classImage" Stretch="Fill" VerticalAlignment="Top" Width="926" Source="/PmtsControlLibrary;component/Image/CoureMain.png" />
             <Grid Margin="8,0,0,20" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="926" Height="60" Background="White">

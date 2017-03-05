@@ -73,19 +73,25 @@ namespace PmtsControlLibrary
             }
             courseTreeView = new TreeView();
 
-            initIndexAuthoDatum();
+            initFullScreenVideo();
         }
 
-        private List<IndexAuthoDatum> indexAuthoDatumList = null;
-
-        private void initIndexAuthoDatum()
+        private MediaElement myPlayer = null;
+        void initFullScreenVideo()
         {
-            var request = new IndexAuthoRequest()
-            {
-                id = "1"
-            };
-            var response = APIClient._IndexAutho(request);
-            indexAuthoDatumList = response.data.data;
+            myPlayer = new MediaElement();
+            Grid parent = (Grid)mainWindow.Parent;
+            Grid root = (Grid)parent.Parent;
+
+            myPlayer.Margin = new Thickness(0, 0, 0, 0);
+            myPlayer.Width = root.ActualWidth;
+            myPlayer.Height = root.ActualHeight;
+            myPlayer.Stretch = Stretch.Fill;
+
+            myPlayer.LoadedBehavior = MediaState.Manual;
+            myPlayer.MouseDown += videoScreenMediaElement_MouseDown2;
+
+            root.Children.Add(myPlayer);
         }
 
         private void viewGrid_Loaded(object sender, RoutedEventArgs e)
@@ -132,7 +138,7 @@ namespace PmtsControlLibrary
                 DirectoryInfo[] chldFolders = folder.GetDirectories();
                 foreach (DirectoryInfo chldFolder in chldFolders)
                 {
-                    if (hasAuth(chldFolder.Name))
+                    if (UserInfoStatic.hasAuth(chldFolder.Name))
                     {
                         TreeViewItem chldNode = new TreeViewItem();
                         chldNode.Header = chldFolder.Name;
@@ -149,34 +155,6 @@ namespace PmtsControlLibrary
                 }
             }
         }
-
-        private bool hasAuth(string categoryName)
-        {
-            var category = findCategory(categoryName, indexAuthoDatumList);
-            return indexAuthoDatumList != null && category != null;
-        }
-
-        private IndexAuthoDatum findCategory(string categoryName, List<IndexAuthoDatum> categoryList)
-        {
-            IndexAuthoDatum result = null;
-            foreach (var category in categoryList)
-            {
-                if (category.name.Equals(categoryName))
-                {
-                    result = category;
-                    break;
-                }
-                else
-                {
-                    if (category.children != null)
-                        result = findCategory(categoryName, category.children);
-                    if (result != null)
-                        break;
-                }
-            }
-            return result;
-        }
-
 
         //
         void courseTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -255,7 +233,7 @@ namespace PmtsControlLibrary
             foreach (FileInfo chlFile in chldFiles)
             {
                 var rs2 = chlFile.Name.Split('.')[0];
-                if (hasAuth(rs2))
+                if (UserInfoStatic.hasAuth(rs2))
                 {
                     TreeViewItem chldNode = new TreeViewItem();
                     var rs1 = chlFile.Name.ToLower().Replace(".mp4", "");
@@ -480,7 +458,24 @@ namespace PmtsControlLibrary
 
         }
 
+        private void videoScreenMediaElement_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            myPlayer.Source = videoScreenMediaElement.Source;
+            videoScreenMediaElement.Visibility = Visibility.Hidden;
+            myPlayer.Position = videoScreenMediaElement.Position;
+            videoScreenMediaElement.Pause();
+            myPlayer.Play();
+            myPlayer.Visibility = Visibility.Visible;
+        }
 
+        private void videoScreenMediaElement_MouseDown2(object sender, MouseButtonEventArgs e)
+        {
+            videoScreenMediaElement.Position = myPlayer.Position;
+            myPlayer.Pause();
+            videoScreenMediaElement.Play();
+            myPlayer.Visibility = Visibility.Hidden;
+            videoScreenMediaElement.Visibility = Visibility.Visible;
+        }
 
         /*
         //获取视频目录  

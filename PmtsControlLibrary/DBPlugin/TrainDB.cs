@@ -69,12 +69,12 @@ namespace PmtsControlLibrary.DBPlugin
             var tArr = new ArrayList();
 
             var nameList = new List<string>() { 
-                "临危不惧",
-                "临危不惧",
-                "临危不惧",
-                "临危不惧",
-                "临危不惧",
-                "临危不惧",
+                "亲子教育",
+                "情感生活",
+                "情绪压力",
+                "恐惧",
+                "爆刀",
+                "暴力",
             };
 
 

@@ -75,21 +75,8 @@ namespace PmtsControlLibrary
             this.TrainButtonGrid.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             this.TrainButtonGrid.VerticalAlignment = System.Windows.VerticalAlignment.Top;
 
-
-            this.GameButton1.Tag = "../Image/Train/game4.png";//何韵
-            this.GameButton2.Tag = "../Image/Train/game3.png";//梅花
-            this.GameButton3.Tag = "../Image/Train/game5.png";//丝绸之路
-            this.GameButton4.Tag = "../Image/Train/game6.png";//菩提树
-            this.GameButton5.Tag = "../Image/Train/game8.png";//生命之泉
-            this.GameButton6.Tag = "../Image/Train/game7.png";//星空
-
-            this.GameButton1.Click += OnOpenTrain1;
-            this.GameButton2.Click += OnOpenTrain2;
-            this.GameButton3.Click += OnOpenTrain3;
-            this.GameButton4.Click += OnOpenTrain4;
-            this.GameButton5.Click += OnOpenTrain5;
-            this.GameButton6.Click += OnOpenTrain6;
-
+            gamePanel_Loaded();
+            
             //button声音
             Grid uiButton = this.Content as Grid;
             UIElementCollection Childrens = uiButton.Children;
@@ -102,6 +89,9 @@ namespace PmtsControlLibrary
                 }
             }
         }
+
+
+
         //鼠标在button上
         void ui_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -114,6 +104,53 @@ namespace PmtsControlLibrary
         {
             mainWindow.Children.Remove(this);
         }
+
+        private void gamePanel_Loaded() {
+            this.GameButton1.Tag = "../Image/Train/game2.png";//荷韵
+            this.GameButton2.Tag = "../Image/Train/game2.png";//梅花
+            this.GameButton3.Tag = "../Image/Train/game2.png";//丝绸之路
+            this.GameButton4.Tag = "../Image/Train/game2.png";//菩提树
+            this.GameButton5.Tag = "../Image/Train/game2.png";//生命之泉
+            this.GameButton6.Tag = "../Image/Train/game2.png";//星空
+
+            if (UserInfoStatic.hasAuth("荷韵"))
+            {
+                this.GameButton1.Tag = "../Image/Train/game4.png";
+                this.GameButton1.Click += OnOpenTrain1;
+            }
+
+            if (UserInfoStatic.hasAuth("梅花"))
+            {
+                this.GameButton2.Tag = "../Image/Train/game3.png";
+                this.GameButton2.Click += OnOpenTrain2;
+            }
+
+            if (UserInfoStatic.hasAuth("丝路"))
+            {
+                this.GameButton3.Tag = "../Image/Train/game5.png";
+                this.GameButton3.Click += OnOpenTrain3;
+            }
+
+            if (UserInfoStatic.hasAuth("菩提树"))
+            {
+                this.GameButton4.Tag = "../Image/Train/game6.png";
+                this.GameButton4.Click += OnOpenTrain4;
+            }
+
+            if (UserInfoStatic.hasAuth("生命之泉"))
+            {
+                this.GameButton5.Tag = "../Image/Train/game8.png";
+                this.GameButton5.Click += OnOpenTrain5;
+            }
+
+            if (UserInfoStatic.hasAuth("星空"))
+            {
+                this.GameButton6.Tag = "../Image/Train/game7.png";
+                this.GameButton6.Click += OnOpenTrain6;
+            }
+            
+        }
+
         /// <summary>
         /// 载入认知训练图标
         /// </summary>
@@ -132,17 +169,20 @@ namespace PmtsControlLibrary
                 {
                     Hashtable tmp = (Hashtable)tList[i];
                     TrainList tl = new TrainList(mainWindow, tmp, this);
-                    tl.Margin = new Thickness(30, 30, 0, 0);
-                    if (tmp["tid"].ToString() == tNumTmp["tid"].ToString())
+                    if (UserInfoStatic.hasAuth(tmp["tname"].ToString()))
                     {
-                        tNumIndex += 1;
-                        tmp["historyNum"] = tNumTmp["num"];
-                        if (tNumIndex < tNumList.Count)
+                        tl.Margin = new Thickness(30, 30, 0, 0);
+                        if (tmp["tid"].ToString() == tNumTmp["tid"].ToString())
                         {
-                            tNumTmp = (Hashtable)tNumList[tNumIndex];
+                            tNumIndex += 1;
+                            tmp["historyNum"] = tNumTmp["num"];
+                            if (tNumIndex < tNumList.Count)
+                            {
+                                tNumTmp = (Hashtable)tNumList[tNumIndex];
+                            }
                         }
+                        this.TrainButtonGrid.Children.Add(tl);
                     }
-                    this.TrainButtonGrid.Children.Add(tl);
                 }
             }
             else
@@ -150,9 +190,12 @@ namespace PmtsControlLibrary
                 for (int i = 0; i < tList.Count; i++)
                 {
                     Hashtable tmp = (Hashtable)tList[i];
-                    TrainList tl = new TrainList(mainWindow, tmp, this);
-                    tl.Margin = new Thickness(30, 30, 0, 0);
-                    this.TrainButtonGrid.Children.Add(tl);
+                    if (UserInfoStatic.hasAuth(tmp["tname"].ToString()))
+                    {
+                        TrainList tl = new TrainList(mainWindow, tmp, this);
+                        tl.Margin = new Thickness(30, 30, 0, 0);
+                        this.TrainButtonGrid.Children.Add(tl);
+                    }
                 }
             }
 
@@ -169,9 +212,12 @@ namespace PmtsControlLibrary
             for (int i = 0; i < tList.Count; i++)
             {
                 Hashtable tmp = (Hashtable)tList[i];
-                TrainList tl = new TrainList(mainWindow, tmp, this);
-                tl.Margin = new Thickness(30, 30, 0, 0);
-                this.simulatioTrainButtonGrid.Children.Add(tl);
+                if (UserInfoStatic.hasAuth(tmp["tname"].ToString()))
+                {
+                    TrainList tl = new TrainList(mainWindow, tmp, this);
+                    tl.Margin = new Thickness(30, 30, 0, 0);
+                    this.simulatioTrainButtonGrid.Children.Add(tl);
+                }
             }
         }
 
@@ -192,19 +238,22 @@ namespace PmtsControlLibrary
                 for (int i = 0; i < tList.Count; i++)
                 {
                     Hashtable tmp = (Hashtable)tList[i];
-                    TrainHandleList tl = new TrainHandleList(mainWindow, tmp, this);
-                    //                   tl = new TrainHandleList(mainWindow, tmp, this);
-                    tl.Margin = new Thickness(30, 50, 0, 0);
-                    if (tmp["tid"].ToString() == tNumTmp["tid"].ToString())
+                    if (UserInfoStatic.hasAuth(tmp["tname"].ToString()))
                     {
-                        tNumIndex += 1;
-                        tmp["historyNum"] = tNumTmp["num"];
-                        if (tNumIndex < tNumList.Count)
+                        TrainHandleList tl = new TrainHandleList(mainWindow, tmp, this);
+                        //                   tl = new TrainHandleList(mainWindow, tmp, this);
+                        tl.Margin = new Thickness(30, 50, 0, 0);
+                        if (tmp["tid"].ToString() == tNumTmp["tid"].ToString())
                         {
-                            tNumTmp = (Hashtable)tNumList[tNumIndex];
+                            tNumIndex += 1;
+                            tmp["historyNum"] = tNumTmp["num"];
+                            if (tNumIndex < tNumList.Count)
+                            {
+                                tNumTmp = (Hashtable)tNumList[tNumIndex];
+                            }
                         }
+                        this.handleTrainButtonGrid.Children.Add(tl);
                     }
-                    this.handleTrainButtonGrid.Children.Add(tl);
                 }
             }
             else
@@ -212,10 +261,13 @@ namespace PmtsControlLibrary
                 for (int i = 0; i < tList.Count; i++)
                 {
                     Hashtable tmp = (Hashtable)tList[i];
-                    TrainHandleList tl = new TrainHandleList(mainWindow, tmp, this);
-                    //                   tl = new TrainHandleList(mainWindow, tmp, this);
-                    tl.Margin = new Thickness(30, 50, 0, 0);
-                    this.handleTrainButtonGrid.Children.Add(tl);
+                    if (UserInfoStatic.hasAuth(tmp["tname"].ToString()))
+                    {
+                        TrainHandleList tl = new TrainHandleList(mainWindow, tmp, this);
+                        //                   tl = new TrainHandleList(mainWindow, tmp, this);
+                        tl.Margin = new Thickness(30, 50, 0, 0);
+                        this.handleTrainButtonGrid.Children.Add(tl);
+                    }
                 }
             }
         }

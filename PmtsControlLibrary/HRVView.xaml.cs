@@ -36,6 +36,8 @@ namespace PmtsControlLibrary
         private ArrayList IBIData = new ArrayList();//IBI柱状图数组
         private ArrayList PPGData = new ArrayList();//PPG折线图
         private ArrayList EPData = new ArrayList();//EP值数组
+        private ArrayList IBIDatas = new ArrayList();//IBIDatas值数组
+        
         private double EPScore = 0;//EP得分
         private bool isStart = false;//HRV测量是否开始的FLG
         private Grid mainWindow = new Grid();//主窗体中放置控件的层
@@ -60,10 +62,15 @@ namespace PmtsControlLibrary
         private HRVSettingView hrvSeting = null;//设置
         private bool MusicPlayerIsMuted = false;
         private double SelectComboBox = 0;
-        private string MusicPlayerOpen =null;
+        private string MusicPlayerOpen = null;
         private bool MuscePlayerdefaultCheckBox = true;//默认音乐
 
+        HMMath hdMath = new HMMath();
+        Hashtable HRVDataCalc = new Hashtable();
+
         private Breathing breath = null;//呼吸助手
+
+        private HRVControlWEB hrvweb = null;
 
         /// <summary>
         /// 构造函数
@@ -79,9 +86,10 @@ namespace PmtsControlLibrary
             mainWindow = Main;
             systemMeg = Meg;
             MusicPlayer = new MediaPlayer(); ;
-//lich
-            if(UserInfoStatic.ipAdd != null)
-                hrvdb = new HRVControlDB(systemMeg);
+            //lich
+            if (UserInfoStatic.ipAdd != null)
+                //hrvdb = new HRVControlDB(systemMeg);
+                hrvweb = new HRVControlWEB(systemMeg);
             if (ppgChart != null)
             {
                 ppgChart.Visibility = System.Windows.Visibility.Hidden;
@@ -239,7 +247,7 @@ namespace PmtsControlLibrary
             }
             epDoubleAnime.To = epMaskValue / 698;
             epStory.Begin();
-//lich
+            //lich
             if (EPValue >= 599 && UserInfoStatic.ipAdd != null)
             {
                 hrvdb.UpEpLevel();
@@ -335,8 +343,8 @@ namespace PmtsControlLibrary
             hrvMark.MarkDateTime = markDateTime;
             this.HrvChartGrid.Children.Add(hrvMark);
 
-//            int returnvalue = this.HrvChartGrid.Children.Add(hrvMark);
-//            PmtsMessageBox.CustomControl1.Show("suoyin"+returnvalue, PmtsMessageBox.ServerMessageBoxButtonType.OK);
+            //            int returnvalue = this.HrvChartGrid.Children.Add(hrvMark);
+            //            PmtsMessageBox.CustomControl1.Show("suoyin"+returnvalue, PmtsMessageBox.ServerMessageBoxButtonType.OK);
         }
         /// <summary>
         /// 关闭事件标记框的叉子
@@ -346,7 +354,7 @@ namespace PmtsControlLibrary
         private void OnCloseMark(object sender, MouseEventArgs e)
         {
             HrvMarkButton.IsEnabled = true;
-           this.HrvChartGrid.Children.Remove(hrvMark);
+            this.HrvChartGrid.Children.Remove(hrvMark);
 
             hrvMark = null;
         }
@@ -371,7 +379,7 @@ namespace PmtsControlLibrary
                 this.HRVChartView.OnAddMarkLable(Convert.ToInt32(Math.Floor(hrvMark.SaveTime * 2)), hrvMark.markContent.Text);
 
                 HrvMarkButton.IsEnabled = true;
-               this.HrvChartGrid.Children.Remove(hrvMark);
+                this.HrvChartGrid.Children.Remove(hrvMark);
 
                 hrvMark = null;
             }
@@ -399,8 +407,9 @@ namespace PmtsControlLibrary
                 //hvRight = null;
                 //hv = null;
                 hRight.StopAnime();
-                
+
                 MusicPlayer.Stop();
+
             }
             else
             {
@@ -415,7 +424,7 @@ namespace PmtsControlLibrary
                 PPGData = new ArrayList();//初始化PPG数组
                 hrvMarkArr = new ArrayList();//初始化时间标记数组
                 OnChartPaint(HRVData);//清空绘图区域的曲线
-
+                IBIDatas = new ArrayList();//初始化IBI数组
                 this.HRVChartView.BottomTickInit(0);//时间轴清零
                 this.HRVChartView.ClearMarkLable();
                 String cmd = "<invoke name=\"c2flash\" returntype=\"xml\"><arguments><number>-30</number></arguments></invoke>";
@@ -428,7 +437,7 @@ namespace PmtsControlLibrary
                 {
                     if (hd.StartDriver())
                     {
- //                       MessageBox.Show("开始成功");
+                        //                       MessageBox.Show("开始成功");
                         //hRight.constantButton.IsEnabled = false;
                         //hRight.historyButton.IsEnabled = false;
                         hRight.HRText.Text = "";
@@ -441,14 +450,14 @@ namespace PmtsControlLibrary
                         isStart = true;
                         this.HrvStartButton.Content = "停 止";
                         //this.SelectComboBox.IsEnabled = false;
-                         setButton.IsEnabled = false;
+                        setButton.IsEnabled = false;
                         ///startTime = DateTime.Now;
                         if (this.SelectComboBox > 0)
                         {
                             HRVScaleTimer = new DispatcherTimer();
                             HRVScaleTimer.Tick += OnStopHrvScale;
                             if (this.SelectComboBox == 1)
-                           {
+                            {
                                 HRVScaleTimer.Interval = new TimeSpan(0, 5, 20);
                             }
                             else if (this.SelectComboBox == 2)
@@ -459,7 +468,7 @@ namespace PmtsControlLibrary
                             HRVScaleTimer.Start();
                         }
                         //YINYUE
-                        
+
                         //MusicPlayer.Open(new Uri(@"Resources/PureMusic.mp3", UriKind.Relative));
 
                         if (MusicPlayerOpen == null || MuscePlayerdefaultCheckBox == true)
@@ -472,7 +481,8 @@ namespace PmtsControlLibrary
                         {
                             MusicPlayer.IsMuted = false;
                         }
-                        else { 
+                        else
+                        {
                             MusicPlayer.IsMuted = true;
                         }
                     }
@@ -513,7 +523,7 @@ namespace PmtsControlLibrary
                 {
                     mainWindow.Children.Remove(hrvp);
                 }
-               // this.SelectComboBox.IsEnabled = true;
+                // this.SelectComboBox.IsEnabled = true;
                 setButton.IsEnabled = true;
                 HRVReadTimer.Stop();//停止TIMER
                 //停止设备
@@ -529,8 +539,8 @@ namespace PmtsControlLibrary
                     {
                         this.Visibility = System.Windows.Visibility.Hidden;//暂时隐藏hrv测量主界面
                         //hRight.Visibility = System.Windows.Visibility.Hidden;//暂时隐藏右侧信息面板
-                        HMMath hdMath = new HMMath(HRVData, EPData);//计算14项数据，调节指数，稳定指数，综合得分和给出评价报告
-                        Hashtable HRVDataCalc = hdMath.HRVCalc();//用于存放HRV测量后计算的相关数据
+                        hdMath = new HMMath(HRVData, EPData);//计算14项数据，调节指数，稳定指数，综合得分和给出评价报告
+                        HRVDataCalc = hdMath.HRVCalc();//用于存放HRV测量后计算的相关数据
                         HRVDataCalc["HRVScore"] = EPScore;//HRV得分
                         HRVDataCalc["Time"] = (Single)HRVData.Count / 2.0;//测试时间，单位是秒
                         HRVDataCalc["EndTime"] = DateTime.Now;//结束时间，datetime格式
@@ -549,10 +559,8 @@ namespace PmtsControlLibrary
                         mainWindow.Children.Add(hrvd);
                         //开始数据库操作
                         //lich
-                        if (UserInfoStatic.ipAdd != null)
-                            hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc);
-                        else
-                        {
+
+                        if (UserInfoStatic.ipAdd == null){
                             UserHrvRecord hrvRecord = new UserHrvRecord();
                             hrvRecord.HRVData = HRVData;
                             hrvRecord.EPData = EPData;
@@ -587,9 +595,14 @@ namespace PmtsControlLibrary
 
                             MainRightPerson.TmpHrvRecord.Add(hrvRecord);
                         }
-                        
+
                         MusicPlayer.Stop();
                     }
+
+                    if (UserInfoStatic.ipAdd != null)
+                       //hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc);
+                       hrvweb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc, PPGData,"1");
+
                     //startTime = new DateTime();
                 }
                 else
@@ -664,8 +677,8 @@ namespace PmtsControlLibrary
                         break;
                     }
                     IBIData.Add(tempIBIArr[i]);
-           
-                    
+
+
                 }
                 List<string> listx = new List<string>();
                 List<string> listy = new List<string>();
@@ -696,9 +709,9 @@ namespace PmtsControlLibrary
                     //    }
                     //    else
                     //    {
-                     //       hRight.HRText.Text = "";
+                    //       hRight.HRText.Text = "";
                     //    }
-                   // }
+                    // }
                 }
                 if (PPGData.Count > 256)
                 {
@@ -823,8 +836,8 @@ namespace PmtsControlLibrary
             this.Visibility = System.Windows.Visibility.Visible;
             hRight.Visibility = System.Windows.Visibility.Visible;
             this.mainWindow.Children.Remove(hrvc);
-           // hRight.constantButton.IsEnabled = true;
-           // hRight.historyButton.IsEnabled = true;
+            // hRight.constantButton.IsEnabled = true;
+            // hRight.historyButton.IsEnabled = true;
         }
         /// <summary>
         /// 退出窗口时执行
@@ -868,10 +881,10 @@ namespace PmtsControlLibrary
                 hRight = new HRVRight();
                 hRight.VerticalAlignment = System.Windows.VerticalAlignment.Top;
                 hRight.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
- //lich  
-               // hRight.Margin = new Thickness(0, 100, 10, 0);
+                //lich  
+                // hRight.Margin = new Thickness(0, 100, 10, 0);
                 hRight.Margin = new Thickness(0, 100, 30, 0);
-               //hRight.constantButton.Click += OnOpenConstant;
+                //hRight.constantButton.Click += OnOpenConstant;
                 //hRight.historyButton.Click += OnOpenHRVHistory;
                 hRight.BreathingButton.Click += breathingButton_Click;
             }
@@ -880,8 +893,8 @@ namespace PmtsControlLibrary
                 hRight.HRText.Text = "";
                 hRight.OnAnime(1.15);
             }
-           // hRight.historyButton.IsEnabled = true;
-           // hRight.constantButton.IsEnabled = true;
+            // hRight.historyButton.IsEnabled = true;
+            // hRight.constantButton.IsEnabled = true;
             if (!this.mainWindow.Children.Contains(hRight))
             {
                 this.mainWindow.Children.Add(hRight);
@@ -904,7 +917,7 @@ namespace PmtsControlLibrary
             breath = new Breathing(this.LayoutRoot, hRight.BreathingButton);
             breath.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
             breath.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
-            breath.Margin = new Thickness(0, 0, -160,-60);
+            breath.Margin = new Thickness(0, 0, -160, -60);
             this.LayoutRoot.Children.Add(breath);
             hRight.BreathingButton.IsEnabled = false;
         }
@@ -953,7 +966,7 @@ namespace PmtsControlLibrary
             hrvbutton.IsEnabled = false;
             ibibutton.IsEnabled = true;
             ppgbutton.IsEnabled = true;
-            HrvImage.Source = new BitmapImage(new Uri("/PmtsControlLibrary;component/Image/hrvbgd.png", UriKind.Relative)); 
+            HrvImage.Source = new BitmapImage(new Uri("/PmtsControlLibrary;component/Image/hrvbgd.png", UriKind.Relative));
             HRVChartView.Visibility = System.Windows.Visibility.Visible;
             VerScrollBar.Visibility = System.Windows.Visibility.Visible;
             HorSrollBar.Visibility = System.Windows.Visibility.Visible;
@@ -976,7 +989,7 @@ namespace PmtsControlLibrary
             hrvbutton.IsEnabled = true;
             ibibutton.IsEnabled = false;
             ppgbutton.IsEnabled = true;
-            HrvImage.Source = new BitmapImage(new Uri("/PmtsControlLibrary;component/Image/ibibgd.png", UriKind.Relative)); 
+            HrvImage.Source = new BitmapImage(new Uri("/PmtsControlLibrary;component/Image/ibibgd.png", UriKind.Relative));
             HRVChartView.Visibility = System.Windows.Visibility.Hidden;
             VerScrollBar.Visibility = System.Windows.Visibility.Hidden;
             HorSrollBar.Visibility = System.Windows.Visibility.Hidden;
@@ -1021,8 +1034,8 @@ namespace PmtsControlLibrary
                 {
                     ibiChart.Visibility = System.Windows.Visibility.Hidden;
                 }
-//                ibiChart.Background = new SolidColorBrush(Color.FromArgb(255, 27, 47, 71));// 
-//                ibiChart.BorderThickness = new Thickness(0);
+                //                ibiChart.Background = new SolidColorBrush(Color.FromArgb(255, 27, 47, 71));// 
+                //                ibiChart.BorderThickness = new Thickness(0);
 
                 // Create an ImageBrush
                 ImageBrush brush = new ImageBrush();
@@ -1058,12 +1071,12 @@ namespace PmtsControlLibrary
                 //向图标添加标题
                 //ibiChart.Titles.Add(title);
 
-               // Axis yAxis = new Axis();
+                // Axis yAxis = new Axis();
                 //设置图标中Y轴的最小值永远为0           
-               // yAxis.AxisMinimum = 0;
+                // yAxis.AxisMinimum = 0;
                 //设置图表中Y轴的后缀          
-              //  yAxis.Suffix = "斤";
-              //  ibiChart.AxesY.Add(yAxis);
+                //  yAxis.Suffix = "斤";
+                //  ibiChart.AxesY.Add(yAxis);
                 AxisLabels xLabel = new AxisLabels();
                 xLabel.FontColor = new SolidColorBrush(Colors.Transparent);
 
@@ -1098,18 +1111,18 @@ namespace PmtsControlLibrary
                 // Set image brush to Chart Background
                 plot.Background = brushF;
 
-   //             plot.Background = new SolidColorBrush(Colors.Transparent);
+                //             plot.Background = new SolidColorBrush(Colors.Transparent);
                 ibiChart.PlotArea = plot;
 
                 HrvChartGrid2.Children.Add(ibiChart);
-                
+
             }
             // 创建一个新的数据线。               
             DataSeries dataSeries = new DataSeries();
 
             // 设置数据线的格式
             dataSeries.RenderAs = RenderAs.StackedColumn;//柱状Stacked
- 
+
             // 设置数据点              
             DataPoint dataPoint;
             for (int i = 0; i < valuex.Count; i++)
@@ -1133,13 +1146,13 @@ namespace PmtsControlLibrary
             }
             // 添加数据线到数据序列。   
             ibiChart.Series.Add(dataSeries);
-            if(ibiChart.Series.Count > 1)
+            if (ibiChart.Series.Count > 1)
             {
                 ibiChart.Series.RemoveAt(0);
             }
 
             //将生产的图表增加到Grid，然后通过Grid添加到上层Grid.           
-            
+
 
             // Image simpleImage = new Image();
             // simpleImage.Width = 400;
@@ -1158,11 +1171,11 @@ namespace PmtsControlLibrary
             // gr.Children.Add(simpleImage);
             //}
             //gr.Background = System.Windows.Media.Brush;
-//            Grid gr = new Grid();
-//            gr.Children.Add(ibiChart);
-//            HrvChartGrid2.Children.Add(gr);
-   
-            
+            //            Grid gr = new Grid();
+            //            gr.Children.Add(ibiChart);
+            //            HrvChartGrid2.Children.Add(gr);
+
+
             // }
 
         }
@@ -1197,7 +1210,7 @@ namespace PmtsControlLibrary
                 ppgChart.Width = 810;
                 ppgChart.Height = 260;
                 ppgChart.Margin = new Thickness(0, 0, 0, -20);
-                
+
                 //是否启用打印和保持图片
                 ppgChart.ToolBarEnabled = false;
 
@@ -1206,22 +1219,22 @@ namespace PmtsControlLibrary
                 ppgChart.View3D = false;//3D效果显示
 
                 //创建一个标题的对象
-/*                Title title = new Title();
+                /*                Title title = new Title();
 
-                //设置标题的名称
-                title.Text = name;
-                title.Padding = new Thickness(0, 5, 10, 0);
+                                //设置标题的名称
+                                title.Text = name;
+                                title.Padding = new Thickness(0, 5, 10, 0);
 
-                //向图标添加标题
-                ppgChart.Titles.Add(title);
-*/
+                                //向图标添加标题
+                                ppgChart.Titles.Add(title);
+                */
                 //初始化一个新的Axis
-             //   Axis xaxis = new Axis();
-              //  xaxis.AxisMinimum = 0;
+                //   Axis xaxis = new Axis();
+                //  xaxis.AxisMinimum = 0;
                 //设置图表中Y轴的后缀          
-             //   xaxis.Suffix = " ";
+                //   xaxis.Suffix = " ";
                 //给图标添加Axis            
-              //  ppgChart.AxesX.Add(xaxis);
+                //  ppgChart.AxesX.Add(xaxis);
 
                 Axis yAxis = new Axis();
                 //设置图标中Y轴的最小值永远为0           
@@ -1250,8 +1263,8 @@ namespace PmtsControlLibrary
 
             dataSeries.RenderAs = RenderAs.Spline;//折线图
             dataSeries.Color = new SolidColorBrush(Color.FromArgb(150, 62, 233, 253));
-//            dataSeries.ShadowEnabled = false;
-            
+            //            dataSeries.ShadowEnabled = false;
+
             // 设置数据点              
             DataPoint dataPoint;
             for (int i = 0; i < lsTime.Count; i++)
@@ -1273,21 +1286,21 @@ namespace PmtsControlLibrary
 
             // 添加数据线到数据序列。                
             ppgChart.Series.Add(dataSeries);
-            if(ppgChart.Series.Count > 1)
+            if (ppgChart.Series.Count > 1)
             {
                 ppgChart.Series.RemoveAt(0);
             }
 
             //将生产的图表增加到Grid，然后通过Grid添加到上层Grid.           
-/*            Grid gr = new Grid();
-            gr.Children.Add(ppgChart);
+            /*            Grid gr = new Grid();
+                        gr.Children.Add(ppgChart);
 
-            HrvChartGrid2.Children.Add(gr);
-*/
-//            Grid gr = new Grid();
-//            gr.Children.Add(ppgChart);
+                        HrvChartGrid2.Children.Add(gr);
+            */
+            //            Grid gr = new Grid();
+            //            gr.Children.Add(ppgChart);
 
-              
+
 
         }
         #endregion
@@ -1335,11 +1348,11 @@ namespace PmtsControlLibrary
         private void setButton_Click(object sender, RoutedEventArgs e)
         {
             setButton.IsEnabled = false;
-                //弹出事件标记框
+            //弹出事件标记框
             hrvSeting = new HRVSettingView();
             hrvSeting.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             hrvSeting.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            hrvSeting.Margin = new Thickness(220,220, 0, 0);
+            hrvSeting.Margin = new Thickness(220, 220, 0, 0);
 
             hrvSeting.closeSettingButton.Click += OnCloseSetting;
             hrvSeting.saveSettingButton.Click += OnSaveSetting;
@@ -1381,9 +1394,12 @@ namespace PmtsControlLibrary
             {
                 PmtsMessageBox.CustomControl1.Show("请选择是否开启背景音乐", PmtsMessageBox.ServerMessageBoxButtonType.OK);
             }
-            else if (hrvSeting.basisCheckBox.IsChecked == false && hrvSeting.fiveminCheckBox.IsChecked == false && hrvSeting.tenminCheckBox.IsChecked == false) {
+            else if (hrvSeting.basisCheckBox.IsChecked == false && hrvSeting.fiveminCheckBox.IsChecked == false && hrvSeting.tenminCheckBox.IsChecked == false)
+            {
                 PmtsMessageBox.CustomControl1.Show("请选择监测类型", PmtsMessageBox.ServerMessageBoxButtonType.OK);
-            }else if(hrvSeting.defaultCheckBox.IsChecked ==false && hrvSeting.stringstring == null && hrvSeting.onCheckBox.IsChecked == true){
+            }
+            else if (hrvSeting.defaultCheckBox.IsChecked == false && hrvSeting.stringstring == null && hrvSeting.onCheckBox.IsChecked == true)
+            {
                 PmtsMessageBox.CustomControl1.Show("请选择自选音乐地址", PmtsMessageBox.ServerMessageBoxButtonType.OK);
             }
             else
@@ -1418,7 +1434,8 @@ namespace PmtsControlLibrary
                     MusicPlayerOpen = hrvSeting.stringstring;
                     MuscePlayerdefaultCheckBox = false;
                 }
-                if(hrvSeting.defaultCheckBox.IsChecked ==true){
+                if (hrvSeting.defaultCheckBox.IsChecked == true)
+                {
                     MuscePlayerdefaultCheckBox = true;
                     MusicPlayerOpen = @"Resources/PureMusic.mp3";
                 }

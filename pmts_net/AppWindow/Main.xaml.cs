@@ -40,13 +40,13 @@ namespace pmts_net.AppWindow
         private RecordCenter record = null;//记录中心
         private Breathing breath = null;//呼吸助手
         private DispatcherTimer GCTimer = new DispatcherTimer();//垃圾回收Timer
+
         private PersonalInformation info = null;//个人信息框
         private Hashtable SystemMeg = new Hashtable();
         private String hostIP = "";//服务器端IP地址
         private NotifyIcon notifyIcon;//定义托盘图标
         private MainRightPerson mr = null;//主页面右侧信息栏
         private Rectangle mark = new Rectangle();//屏蔽层（截屏？）
-
 
         /*
          * usb操作代码
@@ -361,7 +361,7 @@ namespace pmts_net.AppWindow
 
             //载入hrv右侧面板结束
             //隐藏4个主要按钮和右侧的信息栏
-//0904
+            //0904
             MainImage.ImageSource = new BitmapImage(new Uri("./UI/back-hrv.png", UriKind.Relative));
             this.mainLogos.Visibility = System.Windows.Visibility.Hidden;
             this.mr.Visibility = System.Windows.Visibility.Hidden;

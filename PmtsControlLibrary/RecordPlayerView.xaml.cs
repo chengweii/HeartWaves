@@ -100,7 +100,27 @@ namespace PmtsControlLibrary
                     ui.MouseEnter += new MouseEventHandler(ui_MouseEnter);
                 }
             }
+            initFullScreenVideo();
         }
+
+        private MediaElement myPlayer = null;
+        void initFullScreenVideo()
+        {
+            myPlayer = new MediaElement();
+            Grid parent = (Grid)mainWindow.Parent;
+            Grid root = (Grid)parent.Parent;
+
+            myPlayer.Margin = new Thickness(0, 0, 0, 0);
+            myPlayer.Width = root.ActualWidth;
+            myPlayer.Height = root.ActualHeight;
+            myPlayer.Stretch = Stretch.Fill;
+
+            myPlayer.LoadedBehavior = MediaState.Manual;
+            myPlayer.MouseDown += videoScreenMediaElement_MouseDown2;
+
+            root.Children.Add(myPlayer);
+        }
+
         //鼠标在button上
         void ui_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -202,7 +222,7 @@ namespace PmtsControlLibrary
             if (isGameStart)
             {
                 //结束游戏
-  //              MessageBox.Show("结束游戏");
+                //              MessageBox.Show("结束游戏");
                 isGameStart = false;
                 if (HRVData.Count > 128)
                 {
@@ -214,7 +234,7 @@ namespace PmtsControlLibrary
                     HRVDataCalc["EndTime"] = DateTime.Now;//结束时间，datetime格式
                     HRVDataCalc["StartTime"] = startTime;//开始时间，datetime格式
                     //                HRVDataCalc["TimeType"] = this.SelectComboBox + 1;//HRV检测时间类型
-//                    HRVDataCalc["TimeType"] = Convert.ToInt32(tInfo["tid"]);//HRV检测时间类型
+                    //                    HRVDataCalc["TimeType"] = Convert.ToInt32(tInfo["tid"]);//HRV检测时间类型
                     HRVDataCalc["TimeType"] = 100;//HRV检测时间类型
                     //                HRVDataCalc["Mood"] = this.systemMeg["Mood"];//测量时心情状态
                     HRVDataCalc["Mood"] = 101;
@@ -351,7 +371,7 @@ namespace PmtsControlLibrary
         private bool firstLoad = true;
         private void OnLoadListView(object sender, RoutedEventArgs e)
         {
-            if (firstLoad) 
+            if (firstLoad)
             {
                 firstLoad = false;
                 courseTreeView.SelectedItemChanged += new RoutedPropertyChangedEventHandler<object>(courseTreeView_SelectedItemChanged);
@@ -366,13 +386,16 @@ namespace PmtsControlLibrary
                 DirectoryInfo[] chldFolders = folder.GetDirectories();
                 foreach (DirectoryInfo chldFolder in chldFolders)
                 {
-                    TreeViewItem chldNode = new TreeViewItem();
-                    chldNode.Header = chldFolder.Name;
-                    chldNode.Foreground = new SolidColorBrush(Colors.White);  //用固态画刷填充前景色
-                    chldNode.IsExpanded = true;
-                    chldNode.Tag = chldFolder.FullName;
-                    GetFiles(chldFolder.FullName, chldNode);
-                    courseTreeView.Items.Add(chldNode);
+                    if (UserInfoStatic.hasAuth(chldFolder.Name))
+                    {
+                        TreeViewItem chldNode = new TreeViewItem();
+                        chldNode.Header = chldFolder.Name;
+                        chldNode.Foreground = new SolidColorBrush(Colors.White);  //用固态画刷填充前景色
+                        chldNode.IsExpanded = true;
+                        chldNode.Tag = chldFolder.FullName;
+                        GetFiles(chldFolder.FullName, chldNode);
+                        courseTreeView.Items.Add(chldNode);
+                    }
                 }
                 if (!this.ClassListTreeView.Children.Contains(courseTreeView))
                 {
@@ -452,8 +475,8 @@ namespace PmtsControlLibrary
                     }
 
                 }
-                
-                
+
+
                 MusicPlayer.Open(selecteUri);
                 MusicPlayer.Play();
                 videoScreenMediaElement.IsMuted = true;
@@ -462,9 +485,9 @@ namespace PmtsControlLibrary
                 isMusicing = true;
                 myplay();
                 mute.Source = new BitmapImage(new Uri("/PmtsControlLibrary;component/Image/mute.png", UriKind.Relative));
-               
-                   
-                
+
+
+
             }
             if (extension.ToLower() == ".mp4")
             {
@@ -499,29 +522,34 @@ namespace PmtsControlLibrary
             DirectoryInfo[] chldFolders = folder.GetDirectories();
             foreach (DirectoryInfo chldFolder in chldFolders)
             {
-                TreeViewItem chldNode = new TreeViewItem();
-                chldNode.Header = chldFolder.Name;
-                chldNode.Foreground = new SolidColorBrush(Colors.White);  //用固态画刷填充前景色
-                chldNode.IsExpanded = true;
-                chldNode.Tag = chldFolder.FullName;
-                GetFiles(chldFolder.FullName, chldNode);
-                node.Items.Add(chldNode);
+                if (UserInfoStatic.hasAuth(chldFolder.Name))
+                {
+                    TreeViewItem chldNode = new TreeViewItem();
+                    chldNode.Header = chldFolder.Name;
+                    chldNode.Foreground = new SolidColorBrush(Colors.White);  //用固态画刷填充前景色
+                    chldNode.IsExpanded = true;
+                    chldNode.Tag = chldFolder.FullName;
+                    GetFiles(chldFolder.FullName, chldNode);
+                    node.Items.Add(chldNode);
+                }
             }
             FileInfo[] chldFiles = folder.GetFiles("*.*");
             foreach (FileInfo chlFile in chldFiles)
             {
-                var rs1 = chlFile.Name.ToLower().Replace(".mp4", "");
                 var rs2 = chlFile.Name.Split('.')[0];
-                if (!rs2.Equals("1"))
+                if (UserInfoStatic.hasAuth(rs2))
                 {
-                    TreeViewItem chldNode = new TreeViewItem();
-                    chldNode.Header = rs2;
-                    chldNode.Tag = chlFile.FullName;
-                    chldNode.Foreground = new SolidColorBrush(Colors.White);  //用固态画刷填充前景色
-                    chldNode.IsExpanded = true;
-                    node.Items.Add(chldNode);
+                    var rs1 = chlFile.Name.ToLower().Replace(".mp4", "");
+                    if (!rs2.Equals("1"))
+                    {
+                        TreeViewItem chldNode = new TreeViewItem();
+                        chldNode.Header = rs2;
+                        chldNode.Tag = chlFile.FullName;
+                        chldNode.Foreground = new SolidColorBrush(Colors.White);  //用固态画刷填充前景色
+                        chldNode.IsExpanded = true;
+                        node.Items.Add(chldNode);
+                    }
                 }
-
             }
         }
 
@@ -552,7 +580,7 @@ namespace PmtsControlLibrary
             //this.changeVolume.ValueChanged += changeVolume_ValueChanged;
             cdb.OnUpCourseLook(tmp);
 
- //           MessageBox.Show("开始。。。");
+            //           MessageBox.Show("开始。。。");
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
@@ -587,21 +615,21 @@ namespace PmtsControlLibrary
         {
 
             myplay();
-           
+
         }
 
         void myplay()
         {
-            
-            
+
+
             //调整ep槽
-            
+
             //启动计时器
             if (!tmrProgress.IsEnabled)
             {
                 tmrProgress.Start();
             }
-             if (isPlaying)
+            if (isPlaying)
             {
                 tmrProgress.Start();
                 videoScreenMediaElement.Pause();
@@ -618,9 +646,9 @@ namespace PmtsControlLibrary
                 MusicPlayer.Play();
                 if (!isGameStart)
                 {
-   //                 MessageBox.Show("开始。。。");
+                    //                 MessageBox.Show("开始。。。");
                     if (enabledDevice())
-                    {   
+                    {
                         isGameStart = true;
                         HRVData = new ArrayList();//初始化HRV曲线数组
                         EPData = new ArrayList();//初始化EP数组
@@ -641,7 +669,7 @@ namespace PmtsControlLibrary
             play.IsChecked = false;
             isPlaying = false;
 
-            
+
         }
 
 
@@ -680,7 +708,7 @@ namespace PmtsControlLibrary
 
                     currentPositionTime.Text = currentPosition;
 
-                    
+
                     //注
                     //playProgressSlider.Value = videoScreenMediaElement.Position.TotalSeconds;
                     if (MusicPlayer.Position == MusicPlayer.NaturalDuration)
@@ -697,13 +725,15 @@ namespace PmtsControlLibrary
 
 
                 }
-            }else{
+            }
+            else
+            {
 
                 if (videoScreenMediaElement.NaturalDuration.HasTimeSpan)
                 {
                     //根据视频算
                     TimeSpan currentPositionTimeSpan = videoScreenMediaElement.Position;
-                   
+
                     string currentPosition = string.Format("{0:00}:{1:00}:{2:00}", (int)currentPositionTimeSpan.TotalHours, currentPositionTimeSpan.Minutes, currentPositionTimeSpan.Seconds);
 
                     TimeSpan totaotp = videoScreenMediaElement.NaturalDuration.TimeSpan;
@@ -724,10 +754,10 @@ namespace PmtsControlLibrary
                             OnStopAllTimerAndHD();
                     }
                 }
-            
+
             }
-           
-            
+
+
         }
 
 
@@ -738,13 +768,14 @@ namespace PmtsControlLibrary
             //注
             //playProgressSlider.Minimum = 0;
             //playProgressSlider.Maximum = videoScreenMediaElement.NaturalDuration.TimeSpan.TotalSeconds;
-            if (isMusicing == false) {
+            if (isMusicing == false)
+            {
                 TimeSpan totaotp = videoScreenMediaElement.NaturalDuration.TimeSpan;
 
                 videoAllTime.Text = "/" + string.Format("{0:00}:{1:00}:{2:00}", (int)totaotp.TotalHours, totaotp.Minutes, totaotp.Seconds);
                 currentPositionTime.Text = "00:00:00";
             }
-            
+
 
 
         }
@@ -791,7 +822,8 @@ namespace PmtsControlLibrary
                 play.IsChecked = false;
                 classImage.Visibility = System.Windows.Visibility.Visible;
             }
-            else {
+            else
+            {
                 //视频结束音乐时长还有，循环播放视频 音乐无视频无都结束
                 if (videoScreenMediaElement.Position == videoScreenMediaElement.NaturalDuration && MusicPlayer.Position != MusicPlayer.NaturalDuration)
                 {
@@ -811,13 +843,13 @@ namespace PmtsControlLibrary
                         OnStopAllTimerAndHD();
                 }
             }
-            
-  //          MessageBox.Show("结束。。。");
-            
+
+            //          MessageBox.Show("结束。。。");
+
         }
 
         private void pause_Click(object sender, RoutedEventArgs e)
-        { 
+        {
             videoScreenMediaElement.Pause();
         }
 
@@ -896,7 +928,7 @@ namespace PmtsControlLibrary
         //自选音乐
         private void musicImage_MouseMove(object sender, MouseEventArgs e)
         {
-            
+
             musicImage.Source = new BitmapImage(new Uri("/PmtsControlLibrary;component/Image/music2.png", UriKind.Relative));
         }
 
@@ -947,34 +979,26 @@ namespace PmtsControlLibrary
                 }
             }
         }
-        private bool firstMediaElement_MouseDown = true;
+
         private void videoScreenMediaElement_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount == 2 || firstMediaElement_MouseDown)
-            {
-                //firstMediaElement_MouseDown = false;
-                //mainWindow.Width = System.Windows.SystemParameters.FullPrimaryScreenWidth;
-                //mainWindow.Height = System.Windows.SystemParameters.FullPrimaryScreenHeight;
-                //videoScreenMediaElement.Width = mainWindow.Width;
-                ////videoScreenMediaElement.Height = System.Windows.SystemParameters.PrimaryScreenHeight / 2;
-                //videoScreenMediaElement.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-                //videoScreenMediaElement.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-                //videoScreenMediaElement.Margin = new Thickness(0, 0, 0, 0);
-
-                //this.WindowStyle = System.Windows.WindowStyle.None;
-                //this.WindowState = System.Windows.WindowState.Maximized; 
-            }
-            else
-            {
-                //firstMediaElement_MouseDown = true;
-                //videoScreenMediaElement.Width = 926;
-
-            }
-            
-
+            myPlayer.Source = videoScreenMediaElement.Source;
+            videoScreenMediaElement.Visibility = Visibility.Hidden;
+            myPlayer.Position = videoScreenMediaElement.Position;
+            videoScreenMediaElement.Pause();
+            myPlayer.Play();
+            myPlayer.Visibility = Visibility.Visible;
         }
 
-       
+        private void videoScreenMediaElement_MouseDown2(object sender, MouseButtonEventArgs e)
+        {
+            videoScreenMediaElement.Position = myPlayer.Position;
+            myPlayer.Pause();
+            videoScreenMediaElement.Play();
+            myPlayer.Visibility = Visibility.Hidden;
+            videoScreenMediaElement.Visibility = Visibility.Visible;
+        }
+
     }
 }
 

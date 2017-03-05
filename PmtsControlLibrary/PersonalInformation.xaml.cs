@@ -78,21 +78,47 @@ namespace PmtsControlLibrary
             }
             radarData = userDb.GetUserRadarData();
             DrawRadar();
-            this.TextName.Text = UserInfoStatic.UserName;
-            this.TextUID.Text = UserInfoStatic.UserID;
-            if (UserInfoStatic.UserSex == "男")
+            //this.TextName.Text = UserInfoStatic.UserName;
+            this.TextName.Text = UserInfoStatic.UserInfo.username;
+
+            //this.TextUID.Text = UserInfoStatic.UserID;
+            this.TextUID.Text = UserInfoStatic.UserInfo.id;
+
+            //if (UserInfoStatic.UserSex == "男")
+            //{
+            //    this.boy.IsChecked = true;
+            //    this.gril.IsChecked = false ;
+            //}
+            //else
+            //{
+            //    this.gril.IsChecked = true;
+            //    this.boy.IsChecked = false;
+            //}
+
+            if (UserInfoStatic.UserInfo.sex == "1")//	0 女 1 男
             {
                 this.boy.IsChecked = true;
+                this.gril.IsChecked = false;
             }
             else
             {
                 this.gril.IsChecked = true;
+                this.boy.IsChecked = false;
             }
-            this.TextAge.Text = UserInfoStatic.UserAge.ToString();
-            this.comboBox1.Text = "未知";
-            this.TextWorkType.Text = UserInfoStatic.UserWorkType;
-            this.TextWorkArea.Text = UserInfoStatic.UserWorkArea;
-            this.TextMR.Text = UserInfoStatic.UserMR;
+
+            //this.TextAge.Text = UserInfoStatic.UserAge.ToString();
+            this.TextAge.Text = UserInfoStatic.UserInfo.birthday;
+
+            this.comboBox1.Text = UserInfoStatic.UserInfo.position;
+            //this.TextWorkType.Text = UserInfoStatic.UserWorkType;
+            this.TextWorkType.Text = UserInfoStatic.UserInfo.organization;
+
+            //this.TextWorkArea.Text = UserInfoStatic.UserWorkArea;
+            this.TextWorkArea.Text = UserInfoStatic.UserInfo.workingplace;
+
+            //this.TextMR.Text = UserInfoStatic.UserMR;
+            this.TextMR.Text = UserInfoStatic.UserInfo.medicalhistory;
+
             this.TextO.Text = "观察力(" + radarData["o"] + ")";
             this.TextW.Text = "意志力(" + radarData["w"] + ")";
             this.TextE.Text = "情绪情感(" + radarData["e"] + ")";
@@ -225,7 +251,7 @@ namespace PmtsControlLibrary
         }
         /// <summary>
         /// 返回雷达图界面
-        /// </summary>
+        /// </summary>/;
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Hyperlink_Click_1(object sender, RoutedEventArgs e)
@@ -244,63 +270,135 @@ namespace PmtsControlLibrary
             {
                 PmtsMessageBox.CustomControl1.Show("两次输入的密码不同", PmtsMessageBox.ServerMessageBoxButtonType.OK);
             }
-            else if (String.IsNullOrEmpty(this.TextName.Text))
+
+            if (String.IsNullOrEmpty(this.TextName.Text))
             {
                 PmtsMessageBox.CustomControl1.Show("请输入姓名", PmtsMessageBox.ServerMessageBoxButtonType.OK);
             }
             else
             {
-                Hashtable userInfo = new Hashtable();
-                userInfo["name"] = this.TextName.Text;
-                if (String.IsNullOrEmpty(this.pwd1.Password) && String.IsNullOrEmpty(this.pwd2.Password))
-                {
-                    userInfo["pwd"] ="NoChange";
-                }
-                else
-                {
-                    userInfo["pwd"] = this.pwd1.Password;
-                }
+                var n_sex = "0";
                 if (this.boy.IsChecked == true)
                 {
-                    userInfo["sex"] = 1;
+                    n_sex = "1";
                 }
-                else
+
+                string n_newPassword = null;
+                if (!string.IsNullOrWhiteSpace(this.pwd1.Password))
                 {
-                    userInfo["sex"] = 2;
+                    n_newPassword = this.pwd1.Password;
                 }
-                userInfo["age"] = this.TextAge.Text;
-                //userInfo["workyear"] = this.comboBox1.Text;
-                userInfo["workarea"] = this.TextWorkArea.Text;
-                userInfo["worktype"] = this.TextWorkType.Text;
-                userInfo["mr"] = this.TextMR.Text;
-                if (userDb.OnUpdateUserInfo(userInfo))
+                try
                 {
-                    UserInfoStatic.UserName = this.TextName.Text;
-                    if (this.boy.IsChecked == true)
+                    var requestData = new HeartWavesSDK.Model.EditMessageRequest()
                     {
-                        UserInfoStatic.UserSex = "男";
+                        id = UserInfoStatic.UserInfo.id,
+                        username = this.TextName.Text,
+                        sex = n_sex,
+                        newPassword = n_newPassword,
+                        birthday = this.TextAge.Text,
+
+                        workingPlace = this.TextWorkArea.Text,
+                        medicalHistory = this.TextMR.Text,
+                        organization = this.TextWorkType.Text,
+                        position = this.comboBox1.Text,
+
+                        email = UserInfoStatic.UserInfo.email,
+                        height = UserInfoStatic.UserInfo.height,
+                        mobile = UserInfoStatic.UserInfo.mobile,
+                        weight = UserInfoStatic.UserInfo.weight,
+                    };
+                    var resp = HeartWavesSDK.API.APIClient._EditMessage(requestData);
+
+                    if (null == resp || null == resp.data)
+                    {
+                        MessageBox.Show("网络异常，请稍后重试");
+                    }
+                    else if (resp.data.success != "1")
+                    {
+                        MessageBox.Show(resp.data.message);
                     }
                     else
                     {
-                        UserInfoStatic.UserSex = "女";
-                    }
-                    UserInfoStatic.UserAge = this.TextAge.Text;
-                    UserInfoStatic.UserWorkType = this.TextWorkType.Text;
-                    PmtsMessageBox.CustomControl1.Show("更改用户信息成功，点击确定关闭窗口并刷新主页面信息。", PmtsMessageBox.ServerMessageBoxButtonType.OK);
-                    main.Children.Remove(this);
-                    for (int i = 0; i < main.Children.Count; i++)
-                    {
-                        UIElement ui = main.Children[i];
-                        if (typeof(Rectangle) == ui.GetType())
+                        UserInfoStatic.UserInfo.username = this.TextName.Text;
+                        UserInfoStatic.UserInfo.sex = n_sex;
+                        UserInfoStatic.UserInfo.birthday = this.TextAge.Text;
+                        UserInfoStatic.UserInfo.workingplace = this.TextWorkArea.Text;
+                        UserInfoStatic.UserInfo.medicalhistory = this.TextMR.Text;
+                        UserInfoStatic.UserInfo.organization = this.TextWorkType.Text;
+
+                        PmtsMessageBox.CustomControl1.Show("更改用户信息成功，点击确定关闭窗口并刷新主页面信息。", PmtsMessageBox.ServerMessageBoxButtonType.OK);
+                        main.Children.Remove(this);
+                        for (int i = 0; i < main.Children.Count; i++)
                         {
-                            if (((Rectangle)ui).Tag.ToString() == "mark")
+                            UIElement ui = main.Children[i];
+                            if (typeof(Rectangle) == ui.GetType())
                             {
-                                main.Children.Remove(ui);
+                                if (((Rectangle)ui).Tag.ToString() == "mark")
+                                {
+                                    main.Children.Remove(ui);
+                                }
                             }
                         }
                     }
-
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                
+
+                //Hashtable userInfo = new Hashtable();
+                //userInfo["name"] = this.TextName.Text;
+                //if (String.IsNullOrEmpty(this.pwd1.Password) && String.IsNullOrEmpty(this.pwd2.Password))
+                //{
+                //    userInfo["pwd"] ="NoChange";
+                //}
+                //else
+                //{
+                //    userInfo["pwd"] = this.pwd1.Password;
+                //}
+                //if (this.boy.IsChecked == true)
+                //{
+                //    userInfo["sex"] = 1;
+                //}
+                //else
+                //{
+                //    userInfo["sex"] = 2;
+                //}
+                //userInfo["age"] = this.TextAge.Text;
+                ////userInfo["workyear"] = this.comboBox1.Text;
+                //userInfo["workarea"] = this.TextWorkArea.Text;
+                //userInfo["worktype"] = this.TextWorkType.Text;
+                //userInfo["mr"] = this.TextMR.Text;
+                //if (userDb.OnUpdateUserInfo(userInfo))
+                //{
+                //    UserInfoStatic.UserName = this.TextName.Text;
+                //    if (this.boy.IsChecked == true)
+                //    {
+                //        UserInfoStatic.UserSex = "男";
+                //    }
+                //    else
+                //    {
+                //        UserInfoStatic.UserSex = "女";
+                //    }
+                //    UserInfoStatic.UserAge = this.TextAge.Text;
+                //    UserInfoStatic.UserWorkType = this.TextWorkType.Text;
+                //    PmtsMessageBox.CustomControl1.Show("更改用户信息成功，点击确定关闭窗口并刷新主页面信息。", PmtsMessageBox.ServerMessageBoxButtonType.OK);
+                //    main.Children.Remove(this);
+                //    for (int i = 0; i < main.Children.Count; i++)
+                //    {
+                //        UIElement ui = main.Children[i];
+                //        if (typeof(Rectangle) == ui.GetType())
+                //        {
+                //            if (((Rectangle)ui).Tag.ToString() == "mark")
+                //            {
+                //                main.Children.Remove(ui);
+                //            }
+                //        }
+                //    }
+
+                //}
             }
         }
         //职务选择
@@ -315,13 +413,14 @@ namespace PmtsControlLibrary
             {
                 this.comboBox1.Text = "职员";
             }
-            else {
+            else
+            {
                 this.comboBox1.Text = "未知";
             }
         }
 
-        
-        
+
+
         ///// <summary>
         ///// 检查输入的年龄
         ///// </summary>

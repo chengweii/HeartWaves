@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections;
 
 namespace HeartWavesSDK.Model
 {
@@ -10,10 +11,10 @@ namespace HeartWavesSDK.Model
     {
         public string type { get; set; }
         public string id { get; set; }
-        public List<string> hrvdata { get; set; }
-        public List<string> epdata { get; set; }
-        public List<string> IBIdata { get; set; }
-        public List<string> pulsedata { get; set; }
+        public ArrayList hrvdata { get; set; }
+        public ArrayList epdata { get; set; }
+        public ArrayList IBIdata { get; set; }
+        public ArrayList pulsedata { get; set; }
         public string rkind { get; set; }
         public string s_time { get; set; }
         public string time_length { get; set; }
@@ -23,7 +24,7 @@ namespace HeartWavesSDK.Model
         public string pressureindex { get; set; }
         public string HRVscore { get; set; }
         public string evaluation { get; set; }
-        public List<string> HRVmark { get; set; }
+        public ArrayList HRVmark { get; set; }
         public string NB { get; set; }
         public string fMean { get; set; }
         public string fStdDev { get; set; }
@@ -52,14 +53,19 @@ namespace HeartWavesSDK.Model
         public string TimeLength { get; set; }
         public string RecordType { get; set; }
         public string Report { get; set; }
+        public string HeartVitalityUpper { get; set; }
+        public string HeartVitalityDowner { get; set; }
+        public string TimeType { get; set; }
+        public string EndTime { get; set; }
+        public string Mood { get; set; }
 
         public StopRecordRequest()
         {
-            hrvdata = new List<string>();
-            epdata = new List<string>();
-            IBIdata = new List<string>();
-            pulsedata = new List<string>();
-            HRVmark = new List<string>();
+            hrvdata = new ArrayList();
+            epdata = new ArrayList();
+            IBIdata = new ArrayList();
+            pulsedata = new ArrayList();
+            HRVmark = new ArrayList();
         }
 
     }

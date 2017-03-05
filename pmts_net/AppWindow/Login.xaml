@@ -62,14 +62,14 @@
         <TextBlock Background="{x:Null}" Foreground="#FFFFFFFF" HorizontalAlignment="Left" Margin="50,0,0,169" VerticalAlignment="Bottom" Width="70" Height="30" Text="用户名：" TextWrapping="Wrap" FontSize="16" FontFamily="Microsoft YaHei" />
         <TextBlock Background="{x:Null}" Foreground="#FFFFFFFF" HorizontalAlignment="Left" Margin="50,0,0,129" VerticalAlignment="Bottom" Width="70" Height="30" Text="密　码：" TextWrapping="Wrap" FontSize="16" FontFamily="Microsoft YaHei" />
         <Grid Margin="119,135,0,0" VerticalAlignment="Top" Width="220" HorizontalAlignment="Left">
-            <ComboBox IsEditable="True" Width="220" Height="25" x:Name="userText" Style="{StaticResource ResourceKey=LoginUser}" KeyUp="OnKeyUserID" Margin="0,-1,0,1" />
+            <ComboBox IsEditable="True" Width="220" Height="25" x:Name="userText" Style="{StaticResource ResourceKey=LoginUser}" KeyUp="OnKeyUserID" Margin="0,-1,0,1" Text="bbb" />
         </Grid>
         <TextBlock Margin="0,138,54,0" HorizontalAlignment="Right" VerticalAlignment="Top">
             <Hyperlink FontFamily="Microsoft YaHei" FontSize="13" Foreground="White" Click="OnClearUserID">
                 清空缓存记录
             </Hyperlink>
         </TextBlock>
-        <PasswordBox Style="{StaticResource ResourceKey=LoninPassText}" Margin="119,174,0,0" VerticalAlignment="Top" Height="25" Background="#FFE3E1E1" x:Name="pwdText" HorizontalAlignment="Left" Width="220" KeyUp="OnKeyPwd"/>
+        <PasswordBox Style="{StaticResource ResourceKey=LoninPassText}" Margin="119,174,0,0" VerticalAlignment="Top" Height="25" Background="#FFE3E1E1" x:Name="pwdText" HorizontalAlignment="Left" Width="220" KeyUp="OnKeyPwd" Password="456789"/>
         <Button Template="{StaticResource ResourceKey=BreathCloseButtonTemplate}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="25" Height="25" Margin="0,7.148,10.518,0" Click="OnCloseWindow"/>
         <Button Height="36" FontFamily="Microsoft YaHei" FontSize="18" Foreground="White" HorizontalAlignment="Left" Margin="50,0,0,30" Name="guestButton" VerticalAlignment="Bottom" Width="240" Click="guestButton_Click">
             <Button.Template>
