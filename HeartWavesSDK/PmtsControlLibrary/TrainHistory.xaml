@@ -1,0 +1,268 @@
+﻿<Window x:Class="PmtsControlLibrary.TrainHistory"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TrainHistory" Height="500" Width="400"
+        WindowStyle="None"    Left="0.0" Top="0.0" WindowStartupLocation="CenterScreen" 
+        ResizeMode="NoResize">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="./Styles/ButtonStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Rectangle Margin="0,0,0,0" Fill="#28a3f9" Stroke="#28a3f9"/>
+        <Button Template="{StaticResource ResourceKey=BreathCloseButtonTemplate}" Margin="0,5,10,0" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Click="Button_Click" />
+        <Rectangle Margin="10,30,10,10" Fill="White"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="10,30,10,10" x:Name="ListScrollView">
+            <Grid Margin="0,0,0,0">
+                <Grid.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border BorderBrush="Transparent" Background="Transparent">
+                                        <TextBlock FontFamily="Microsoft YaHei" FontSize="15" Text="{TemplateBinding Content}" Opacity="0.8" Foreground="Blue" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="FontFamily" Value="Microsoft YaHei" />
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                    <Style TargetType="{x:Type Rectangle}">
+                        <Setter Property="Fill" Value="#dad9d9"/>
+                    </Style>
+                </Grid.Resources>
+                <Grid Height="30" Margin="0,0,0,0" VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Background="#e1e1e1" Margin="0,0,0,0" Grid.Column="0"/>
+                    <TextBlock Text="训练日期" Grid.Column="0"/>
+                    <Border Background="#e1e1e1" Margin="0,0,0,0" Grid.Column="2"/>
+                    <TextBlock Text="查看" Grid.Column="2"/>
+                    <Border Background="#e1e1e1" Margin="0,0,0,0" Grid.Column="4"/>
+                    <TextBlock Text="删除" Grid.Column="4"/>
+                    <Rectangle Fill="White" Grid.Column="1" />
+                    <Rectangle Fill="White" Grid.Column="3" />
+                </Grid>
+                <Grid Margin="0,30,0,0" x:Name="HistoryListGrid" Loaded="OnLoadHistoryList">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+        <Grid Margin="10,30,10,10" x:Name="HistoryDetailGrid" Visibility="Hidden">
+            <Grid.Resources>
+                <Style TargetType="{x:Type Rectangle}">
+                    <Setter Property="Fill" Value="#e1e1e1"/>
+                </Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="FontFamily" Value="Microsoft YaHei" />
+                    <Setter Property="FontSize" Value="14"/>
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="120"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="35"/>
+            </Grid.RowDefinitions>
+            <Rectangle Fill="#e1e1e1" Grid.Row="0"/>
+            <TextBlock Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="用户ID：" Grid.Row="0" Foreground="#035ba6"/>
+            <TextBlock Margin="70,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="" Grid.Row="0" x:Name="userID" Foreground="#035ba6"/>
+            <TextBlock Margin="0,0,120,0" HorizontalAlignment="Right" VerticalAlignment="Center" Text="用户姓名：" Grid.Row="0" Foreground="#035ba6"/>
+            <TextBlock Margin="0,0,50,0" HorizontalAlignment="Right" VerticalAlignment="Center" Text="测试用户" Grid.Row="0" x:Name="userName" Foreground="#035ba6"/>
+            <Grid Margin="0,0,0,0" Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="180"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="训练名称:" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="训练日期:" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Column="0" Grid.Row="2" Text="训练得分:" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="训练名称:" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="nameText"  Foreground="#035ba6"/>
+                <TextBlock Grid.Column="1" Grid.Row="1" Text="2012-12-12 18时18分18秒" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="timeText" Foreground="#035ba6"/>
+                <TextBlock Grid.Column="1" Grid.Row="2" Text="训练得分:" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="scoreText" Foreground="#035ba6"/>
+
+                <TextBlock Grid.Column="2" Grid.Row="0" Text="本次关卡:" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Column="2" Grid.Row="1" Text="难度系数:" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Column="2" Grid.Row="2" Text="总关卡数:" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+
+                <TextBlock Grid.Column="3" Grid.Row="0" Text="88" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="nowGateText"  Foreground="#035ba6"/>
+                <TextBlock Grid.Column="3" Grid.Row="1" Text="88" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="diffText"  Foreground="#035ba6"/>
+                <TextBlock Grid.Column="3" Grid.Row="2" Text="88" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="totalGateText" Foreground="#035ba6"/>
+            </Grid>
+            <Grid Grid.Row="4" Margin="0,0,0,0" Loaded="OnImagesLoaded" Width="358" Height="235">
+                <Path HorizontalAlignment="Left" Margin="21,19,0,0" Width="7.2" Fill="#FFBFC0C1" Stretch="Fill" Stroke="{x:Null}" Data="M3.5831793,0 L7.0829981,7.165999 4.3339999,7.1336556 4.3339999,191.58299 2.8340004,191.58299 2.8340004,7.1160074 0,7.082664 3.5831793,0 z" Height="180" VerticalAlignment="Top" />
+                <Path HorizontalAlignment="Right" Margin="0,0,108,-187" Width="7.083" Fill="#FFBFC0C1" Stretch="Fill" Stroke="{x:Null}" Data="M3.5831793,0 L7.0829981,7.165999 4.3339999,7.1336556 4.3339999,318.58435 2.8340004,318.58435 2.8340004,7.1160074 0,7.082664 3.5831793,0 z" RenderTransformOrigin="0.5,0.5" Height="318.584" VerticalAlignment="Bottom">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            <SkewTransform AngleX="0" AngleY="0"/>
+                            <RotateTransform Angle="90"/>
+                            <TranslateTransform X="-63.500500000000017" Y="-63.500499999999988"/>
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                </Path>
+
+                <Rectangle HorizontalAlignment="Left" Margin="42,0,0,37" Width="23" Fill="#FFD690B1" Stroke="{x:Null}" Height="150" VerticalAlignment="Bottom" x:Name="observeImage">
+                    <Rectangle.Triggers>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard >
+                                <Storyboard x:Name="observeStory">
+                                    <DoubleAnimation From="0" Duration="0:0:2" x:Name="oberveTo" Storyboard.TargetProperty="Height" Storyboard.TargetName="observeImage"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Rectangle.Triggers>
+                </Rectangle>
+                <TextBlock Text="+88" Margin="40,0,0,38" VerticalAlignment="Bottom" Width="30" HorizontalAlignment="Left" x:Name="oberveText" Foreground="#035ba6" >
+                    <TextBlock.Triggers>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard>
+                                <Storyboard x:Name="oberverTextStory">
+                                    <ThicknessAnimation  From="40,0,0,38" Duration="0:0:2" x:Name="oberverTextTo" Storyboard.TargetProperty="Margin" Storyboard.TargetName="oberveText"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </TextBlock.Triggers>
+                </TextBlock>
+                <Rectangle HorizontalAlignment="Left" Margin="96,0,0,37" Width="23" Fill="#FFCBB2D0" Stroke="{x:Null}" Height="20" VerticalAlignment="Bottom" x:Name="remberImage">
+                    <Rectangle.Triggers>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard >
+                                <Storyboard x:Name="remberStory">
+                                    <DoubleAnimation From="0" Duration="0:0:2" x:Name="remberTo" Storyboard.TargetProperty="Height" Storyboard.TargetName="remberImage"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Rectangle.Triggers>
+                </Rectangle>
+                <TextBlock Text="+88" Margin="92,0,0,38" VerticalAlignment="Bottom" Width="30" HorizontalAlignment="Left" x:Name="remberText" Foreground="#035ba6" >
+                    <TextBlock.Triggers>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard>
+                                <Storyboard x:Name="remberTextStory">
+                                    <ThicknessAnimation  From="92,0,0,38" Duration="0:0:2" x:Name="remberTextTo" Storyboard.TargetProperty="Margin" Storyboard.TargetName="remberText"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </TextBlock.Triggers>
+                </TextBlock>
+                <Rectangle HorizontalAlignment="Left" Margin="154,0,0,37" Width="23" Fill="#FFDBC871" Stroke="{x:Null}" Height="50" VerticalAlignment="Bottom" x:Name="willpowerImage">
+                    <Rectangle.Triggers>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard >
+                                <Storyboard x:Name="willpowerStory">
+                                    <DoubleAnimation From="0" Duration="0:0:2" x:Name="willpowerTo" Storyboard.TargetProperty="Height" Storyboard.TargetName="willpowerImage"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Rectangle.Triggers>
+                </Rectangle>
+                <TextBlock Text="+88" Margin="152,0,0,38" VerticalAlignment="Bottom" Width="30" HorizontalAlignment="Left" x:Name="willpowerText" Foreground="#035ba6" >
+                    <TextBlock.Triggers>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard>
+                                <Storyboard x:Name="willpowerTextStory">
+                                    <ThicknessAnimation  From="152,0,0,38" Duration="0:0:2" x:Name="willpowerTextTo" Storyboard.TargetProperty="Margin" Storyboard.TargetName="willpowerText"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </TextBlock.Triggers>
+                </TextBlock>
+                <Rectangle HorizontalAlignment="Left" Margin="214,0,0,37" Width="23" Fill="#FF98C290" Stroke="{x:Null}" Height="30" VerticalAlignment="Bottom" x:Name="emotionsImage">
+                    <Rectangle.Triggers>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard >
+                                <Storyboard x:Name="emotionsStory">
+                                    <DoubleAnimation From="0" Duration="0:0:2" x:Name="emotionsTo" Storyboard.TargetProperty="Height" Storyboard.TargetName="emotionsImage"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Rectangle.Triggers>
+                </Rectangle>
+                <TextBlock Text="+88" Margin="212,0,0,38" VerticalAlignment="Bottom" Width="30" HorizontalAlignment="Left" x:Name="emotionsText" Foreground="#035ba6" >
+                    <TextBlock.Triggers>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard>
+                                <Storyboard x:Name="emotionsTextStory">
+                                    <ThicknessAnimation  From="212,0,0,38" Duration="0:0:2" x:Name="emotionsTextTo" Storyboard.TargetProperty="Margin" Storyboard.TargetName="emotionsText"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </TextBlock.Triggers>
+                </TextBlock>
+                <Rectangle HorizontalAlignment="Left" Margin="277,0,0,37" Width="23" Fill="#FF75AFCD" Stroke="{x:Null}" Height="100" VerticalAlignment="Bottom" x:Name="thinkImage">
+                    <Rectangle.Triggers>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard >
+                                <Storyboard x:Name="thinkStory">
+                                    <DoubleAnimation From="0" Duration="0:0:2" x:Name="thinkTo" Storyboard.TargetProperty="Height" Storyboard.TargetName="thinkImage"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Rectangle.Triggers>
+                </Rectangle>
+                <TextBlock Text="+88" Margin="275,0,0,38" VerticalAlignment="Bottom" Width="30" HorizontalAlignment="Left" x:Name="thinkText" Foreground="#035ba6" >
+                    <TextBlock.Triggers>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard>
+                                <Storyboard x:Name="thinkTextStory">
+                                    <ThicknessAnimation  From="275,0,0,38" Duration="0:0:2" x:Name="thinkTextTo" Storyboard.TargetProperty="Margin" Storyboard.TargetName="thinkText"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </TextBlock.Triggers>
+                </TextBlock>
+                <TextBlock Text="观察力   记忆力    意志力   情绪情感   思维方式" VerticalAlignment="Bottom" Margin="30,0,0,18"/>
+            </Grid>
+            <Rectangle Height="1" Grid.Row="1"/>
+            <Rectangle Height="1" Grid.Row="3"/>
+            <Rectangle Grid.Row="5"/>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="5" Content="返 回" Click="Button_Click_1" Width="60" Height="25" Foreground="#555556">
+                <Button.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <Rectangle RadiusX="4" RadiusY="4" Fill="#ced2da" Stroke="#8d96a7"/>
+                                        <TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Grid>
+    </Grid>
+</Window>

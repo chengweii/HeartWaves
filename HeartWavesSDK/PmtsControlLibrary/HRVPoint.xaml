@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="PmtsControlLibrary.HRVPoint"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Height="640" Width="600" Name="HRV详情">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles\ButtonStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Margin="-0.75,-1.25,0.75,1.25" Fill="#28a3f9" Stroke="#a6e2fb" RadiusY="5.833" RadiusX="5.833" Width="600" Height="640"/>
+        <Rectangle Height="640" Stroke="{x:Null}" RadiusX="5.833" RadiusY="5.833" Margin="-0.333,0.333,2.666,-0.333" d:IsLocked="True">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#29FFFFFF" Offset="0"/>
+                    <GradientStop Color="#00FFFFFF" Offset="0.031"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Height="537" HorizontalAlignment="Left" Margin="10,42,0,0" Name="rectangle1" Stroke="White" VerticalAlignment="Top" Width="577" Fill="White" Panel.ZIndex="0" />
+        <Grid Height="537" HorizontalAlignment="Left" Margin="10,42,0,0" Name="grid1" VerticalAlignment="Top" Width="577" Panel.ZIndex="0" >
+            <DocumentViewer x:Name="preview"></DocumentViewer>
+        </Grid>
+        <Label Margin="13.2,7,0,0" VerticalAlignment="Top" Height="32" Content="打印预览" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFFFFFFF" FontSize="16" HorizontalAlignment="Left" Width="125" FontFamily="Microsoft YaHei" />
+        <Button Margin="262,0,261,17" VerticalAlignment="Bottom" Height="27" Content="退   出" FontFamily="Microsoft YaHei" FontSize="14" Style="{StaticResource ResourceKey=ButtonTemplate}" Click="Button_Click" />
+        
+    </Grid>
+</UserControl>

@@ -1,0 +1,133 @@
+﻿<UserControl x:Class="PmtsControlLibrary.RecordMusicView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="500">
+    <Grid Width="500">
+        <Image  HorizontalAlignment="Left" Name="musicPlaybgd" Stretch="Fill" VerticalAlignment="Top" Source="/PmtsControlLibrary;component/Image/musicbg.png"/>
+        <Button Height="48" Width="138" Foreground="White" Click="UploadmusicButton_Click" Margin="197,210,0,0" HorizontalAlignment="Left" x:Name="UploadmusicButton" >
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid >
+                        <Rectangle Grid.Row="0" x:Name="border">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource=".\Image\Uploadmusic.png" ></ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle Grid.Row="0" Visibility="Hidden" x:Name="glow">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource=".\Image\Uploadmusic.png" ></ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle Grid.Row="0" Visibility="Hidden" x:Name="FalseHidden">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource=".\Image\Uploadmusic2.png" ></ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" TargetName="glow" Value="0"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Visibility" TargetName="glow" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Visibility" TargetName="glow" Value="Hidden"/>
+                            <Setter Property="Visibility" TargetName="border" Value="Hidden"/>
+                            <Setter Property="Visibility" TargetName="FalseHidden" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <TextBlock HorizontalAlignment="Left" Margin="25,100,0,177" Name="musictextBlock" Text=" " Width="296" Height="25" Background="#FF1880EF" TextAlignment="Left" FontSize="14" />
+        <Path RenderTransformOrigin="0.499999995412728,0.51485687169852" HorizontalAlignment="Right" Margin="0,8.96,15.934,0" Width="17.208" Fill="#7FFFFFFF" Stretch="Fill" Stroke="{x:Null}" Data="M11.928707,0 L18.009706,0 18.009706,12.37277 29.937,12.37277 29.937,18.45377 18.009706,18.45377 18.009706,29.937 11.928707,29.937 11.928707,18.45377 0,18.45377 0,12.37277 11.928707,12.37277 11.928707,0 z" VerticalAlignment="Top" Height="17.208" MouseEnter="Path_MouseEnter" MouseLeave="Path_MouseLeave" MouseLeftButtonDown="Path_MouseLeftButtonDown" x:Name="closeButton" >
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    <SkewTransform AngleX="0" AngleY="0"/>
+                    <RotateTransform Angle="135"/>
+                    <TranslateTransform X="0" Y="0"/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
+        <Button  Height="58" Width="54" Click="musicPlayButton_Click" Margin="0,84,108,158" HorizontalAlignment="Right" x:Name="musicPlayButton" >
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid >
+                        <Rectangle Grid.Row="0" x:Name="border">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource=".\Image\musicPlay.png" ></ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle Grid.Row="0" Visibility="Hidden" x:Name="glow">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource=".\Image\musicPlay.png" ></ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle Grid.Row="0" Visibility="Hidden" x:Name="FalseHidden">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource=".\Image\musicPlay.png" ></ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" TargetName="glow" Value="0"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Visibility" TargetName="glow" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Visibility" TargetName="glow" Value="Hidden"/>
+                            <Setter Property="Visibility" TargetName="border" Value="Hidden"/>
+                            <Setter Property="Visibility" TargetName="FalseHidden" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button  Height="46" Width="40" FontFamily="Microsoft YaHei" FontSize="15" Foreground="White" Click="musicPauseButton_Click" Margin="0,91,51,163" HorizontalAlignment="Right" x:Name="musicPauseButton" >
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid >
+                        <Rectangle Grid.Row="0" x:Name="border">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource=".\Image\musicPause.png" ></ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle Grid.Row="0" Visibility="Hidden" x:Name="glow">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource=".\Image\musicPause.png" ></ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle Grid.Row="0" Visibility="Hidden" x:Name="FalseHidden">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource=".\Image\musicPause.png" ></ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" TargetName="glow" Value="0"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Visibility" TargetName="glow" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Visibility" TargetName="glow" Value="Hidden"/>
+                            <Setter Property="Visibility" TargetName="border" Value="Hidden"/>
+                            <Setter Property="Visibility" TargetName="FalseHidden" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="PmtsControlLibrary.ClassPlayerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Height="624" Width="1184" Name="ClassPlayer"
+             Unloaded="OnUnloaded">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="./Styles/ButtonStyle.xaml"/>
+                <ResourceDictionary Source="./Styles/SliderStyle.xaml"/>
+                <ResourceDictionary Source="./Styles/Slider.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.CommandBindings>
+        <CommandBinding Command="MediaCommands.TogglePlayPause" CanExecute="CommandBinding_CanExecute" Executed="PlayPause"/>
+        <CommandBinding Command="MediaCommands.Stop" CanExecute="CommandBinding_CanExecute" Executed="Stop"/>
+        <CommandBinding Command="MediaCommands.Rewind" CanExecute="CommandBinding_CanExecute" Executed="Stop"/>
+    </UserControl.CommandBindings>
+    <DockPanel>
+        <Grid x:Name="LayoutRoot" Height="624" Width="1184" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Image Source="/PmtsControlLibrary;component/Image/classbg.png"></Image>
+            <Grid  Margin="8,20,0,78" HorizontalAlignment="Left"  Width=" 926">
+                <MediaElement x:Name="videoScreenMediaElement" LoadedBehavior="Manual" UnloadedBehavior="Pause" Source="pack://siteoforigin:,,,/Resources/课程学习/一、HRV原理及自主平衡三步法/1、心率变异性概念介绍.mp4" ScrubbingEnabled="True" Volume="{Binding ElementName=volumeSlider, Path=Value}"  MediaOpened="videoScreenMediaElement_MediaOpened" MediaEnded="videoScreenMediaElement_MediaEnded" Stretch="Fill" />
+            </Grid>
+            <Image Height="604" HorizontalAlignment="Left" Margin="8,20,0,78" Name="classImage" Stretch="Fill" VerticalAlignment="Top" Width="926" Source="/PmtsControlLibrary;component/Image/CoureMain.png" />
+            <Grid Margin="8,0,0,20" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="926" Height="60" Background="White">
+                <StackPanel Orientation="Horizontal" Margin="-2,-4,-2,38">
+                    <Slider Name="playProgressSlider" Style="{StaticResource Slider_CustomStyle}"  ValueChanged="playProgressSlider_ValueChanged"  PreviewMouseUp="playProgressSlider_PreviewMouseUp" Height="18" Width="928" Background="#c0d2f5"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="25" Margin="435,26,468,6">
+                    <ToggleButton x:Name="play"  Width="21" Height="26" Margin="0,0,0,0" Command="MediaCommands.TogglePlayPause" Template="{StaticResource PlayButtonTemplate}" />
+                </StackPanel>
+                <Image Margin="19,30,0,10" Source="/PmtsControlLibrary;component/Image/sound.png" HorizontalAlignment="Left" Width="12"></Image>
+                <Slider Name="volumeSlider" Style="{StaticResource ResourceKey=SliderTemplate1}" Maximum="1" Minimum="0" Value="5" VerticalAlignment="Center" Height="24" Margin="0,30,772,6" HorizontalAlignment="Right" Width="115" />
+            </Grid>
+            <Grid  Height="21" Width=" 926" Margin="105,705,105,-85">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="471*" />
+                    <ColumnDefinition Width="519*" />
+                </Grid.ColumnDefinitions>
+                <Grid HorizontalAlignment="Left" Margin="8,0,0,0">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                        <TextBlock Foreground="Black" Name="currentPositionTime" FontSize="10" />
+                        <TextBlock Foreground="Black" FontSize="10" Name="videoAllTime"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+            <Grid Margin="8,6,8,16" Width="232" HorizontalAlignment="Right" Loaded="OnLoadListView" x:Name="CourseListGrid" Visibility="Hidden" Grid.ColumnSpan="2">
+                <StackPanel Margin="0,8,0,0"  x:Name="ClassListTreeView" Height="584"></StackPanel>
+                
+            </Grid>
+        </Grid>
+
+    </DockPanel>
+</UserControl>

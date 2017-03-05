@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="PmtsControlLibrary.HRVMark"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Width="321.917" Height="197.929">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles\ButtonStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot">
+        <Grid>
+            <Rectangle Margin="0,0,0.917,0.929" Fill="#28a3f9" Stroke="#a6e2fb" Width="321" RadiusY="4.661" RadiusX="4.661" d:LayoutOverrides="Width"/>
+            <Rectangle Margin="-0.583,0.929,1.5,0" Stroke="{x:Null}" Width="321" RadiusY="4.661" RadiusX="4.661" d:LayoutOverrides="Width">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#19FFFFFF" Offset="0"/>
+                        <GradientStop Color="#00FFFFFF" Offset="0.071"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+        </Grid>
+        <TextBlock Background="{x:Null}" Foreground="#FFFFFFFF" HorizontalAlignment="Left" Margin="15.001,7.761,0,0" VerticalAlignment="Top" Width="62.667" Height="27.347" Text="标记注释" TextWrapping="Wrap" FontFamily="Microsoft YaHei"/>
+        <Grid Margin="8.168,32.108,10.749,0" VerticalAlignment="Top" Height="2">
+            <Rectangle Fill="#33FFFFFF" Stroke="{x:Null}" RadiusX="0" RadiusY="0" Focusable="False" IsEnabled="False" IsHitTestVisible="False" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="1" Width="303"/>
+            <Rectangle Fill="#66000000" Stroke="{x:Null}" RadiusX="0" RadiusY="0" Focusable="False" IsEnabled="False" IsHitTestVisible="False" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="1"/>
+        </Grid>
+        <!--Rectangle Margin="17.501,61.37,19.416,42.559" Fill="#FFB0B0B0" Stroke="#FF323232" RadiusX="0" RadiusY="0"/-->
+        <TextBox Margin="17.501,61.37,19.416,42.559" Background="#FFB0B0B0" Foreground="Black" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" FontFamily="Microsoft YaHei" FontSize="14" Name="markContent"/>
+        <TextBlock Name="markTime" Background="{x:Null}" Foreground="#FFFFFFFF" Margin="133.501,38.108,126.749,0" VerticalAlignment="Top" Height="19.262" Text="00:34:09" TextWrapping="Wrap" FontFamily="Microsoft YaHei"/>
+        <Button Margin="135.004,0,129.74,12.008" Content="保 存" d:IsStaticText="True" VerticalAlignment="Bottom" Height="22" OpacityMask="{x:Null}" BorderBrush="#FF000000" BorderThickness="1,1,1,1" Foreground="#FFFFFFFF" FontSize="11" FontFamily="Microsoft YaHei" Style="{StaticResource ResourceKey=ButtonTemplate}" Name="saveButton">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FF6E798C" Offset="0"/>
+                    <GradientStop Color="#FF4E586A" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <!--Path RenderTransformOrigin="0.499999995412728,0.51485687169852" HorizontalAlignment="Right" Margin="0,8.96,15.934,0" Width="17.208" Fill="#FFFFFFFF" Stretch="Fill" Stroke="{x:Null}" Data="M11.928707,0 L18.009706,0 18.009706,12.37277 29.937,12.37277 29.937,18.45377 18.009706,18.45377 18.009706,29.937 11.928707,29.937 11.928707,18.45377 0,18.45377 0,12.37277 11.928707,12.37277 11.928707,0 z" VerticalAlignment="Top" Height="17.208">
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    <SkewTransform AngleX="0" AngleY="0"/>
+                    <RotateTransform Angle="135"/>
+                    <TranslateTransform X="0" Y="0"/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path-->
+        <Path RenderTransformOrigin="0.499999995412728,0.51485687169852" HorizontalAlignment="Right" Margin="0,8.96,15.934,0" Width="17.208" Fill="#7FFFFFFF" Stretch="Fill" Stroke="{x:Null}" Data="M11.928707,0 L18.009706,0 18.009706,12.37277 29.937,12.37277 29.937,18.45377 18.009706,18.45377 18.009706,29.937 11.928707,29.937 11.928707,18.45377 0,18.45377 0,12.37277 11.928707,12.37277 11.928707,0 z" VerticalAlignment="Top" Height="17.208" MouseEnter="Path_MouseEnter" MouseLeave="Path_MouseLeave" MouseLeftButtonDown="Path_MouseLeftButtonDown" x:Name="closeButton" >  
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    <SkewTransform AngleX="0" AngleY="0"/>
+                    <RotateTransform Angle="135"/>
+                    <TranslateTransform X="0" Y="0"/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
+        <!--Path RenderTransformOrigin="0.499999995412728,0.51485687169852" HorizontalAlignment="Right" Margin="0,8.96,15.934,0" Width="17.208" Fill="#FF23324A" Stretch="Fill" Stroke="{x:Null}" Data="M11.928707,0 L18.009706,0 18.009706,12.37277 29.937,12.37277 29.937,18.45377 18.009706,18.45377 18.009706,29.937 11.928707,29.937 11.928707,18.45377 0,18.45377 0,12.37277 11.928707,12.37277 11.928707,0 z" VerticalAlignment="Top" Height="17.208">
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    <SkewTransform AngleX="0" AngleY="0"/>
+                    <RotateTransform Angle="135"/>
+                    <TranslateTransform X="0" Y="0"/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path-->
+    </Grid>
+</UserControl>

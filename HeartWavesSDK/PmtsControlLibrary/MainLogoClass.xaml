@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="PmtsControlLibrary.MainLogoClass"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             mc:Ignorable="d"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" Height="393" Width="155" Name="classicon">
+
+    <Grid x:Name="LayoutRoot">
+        <Rectangle Margin="0,0,0.627,194.271" RadiusY="3.5" RadiusX="3.5">
+            <Rectangle.Stroke>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFEBA3F0" Offset="0"/>
+                    <GradientStop Color="#FF733D88" Offset="0.996"/>
+                </LinearGradientBrush>
+            </Rectangle.Stroke>
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF9529BA" Offset="0"/>
+                    <GradientStop Color="#FF49175D" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Path Margin="0,0.666,5.294,0" Stretch="Fill" Data="M189.33333,292 C189.33333,292 186.50033,283.83333 196.16699,284.5 205.83366,285.16667 337.82421,284.5 337.82421,284.5 L188.50048,463.15977 z" Stroke="{x:Null}" VerticalAlignment="Top" Height="179.706">
+            <Path.Fill>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#31FFFFFF" Offset="0"/>
+                    <GradientStop Color="#00FFFFFF" Offset="0.741"/>
+                </LinearGradientBrush>
+            </Path.Fill>
+        </Path>
+        <Image Margin="33,30.158,35.627,0" Source="./Image/121.png" Stretch="Fill" Height="106" d:LayoutOverrides="Height" VerticalAlignment="Top"/>
+        <TextBlock Margin="26,142,28,0" Text="学 习 课 程"  Foreground="#FFFFFFFF" FontSize="18" RenderTransformOrigin="0.425,0.522"  Height="38" VerticalAlignment="Top" FontFamily="Microsoft YaHei" />
+        <Label RenderTransformOrigin="0.425,0.522" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="1,1,1,1" FontSize="12" Foreground="#FFFFFFFF" IsTabStop="True" Cursor="UpArrow" Margin="50,165,50,0" VerticalAlignment="Top" Height="25" d:IsStaticText="True"  FontFamily="Arial" Content="Course">
+        </Label>
+        <Image Margin="9,173.491,12.627,194.78" Source="./Image/56.png" Stretch="Fill"/>
+        <Image RenderTransformOrigin="0.5,0.5" Margin="2.627,0,0,0" VerticalAlignment="Bottom" Height="194" Source="./Image/学习课程-.png" Stretch="Fill">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1" ScaleY="-1"/>
+                    <SkewTransform AngleX="0" AngleY="0"/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform X="0" Y="0"/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+    </Grid>
+</UserControl>

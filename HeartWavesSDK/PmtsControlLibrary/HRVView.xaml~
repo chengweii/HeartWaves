@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="PmtsControlLibrary.HRVView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:hrvChart = "clr-namespace:PmtsHrvChart;assembly=PmtsHrvChart"
+             xmlns:DVC ="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+             mc:Ignorable="d" 
+             Width="860" Height="453.021">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="./Styles/ButtonStyle.xaml"/>
+                <ResourceDictionary Source="./Styles/ChartStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot">
+        <Rectangle Margin="0,-0.006,0,0.027" Fill="#FF464F60" Stroke="#FF1F273A" Width="860" RadiusY="11" RadiusX="11"/>
+        <Rectangle Margin="0,-0.006,0,0.027" Width="860" Stroke="{x:Null}" RadiusX="11" RadiusY="11">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#14FFFFFF" Offset="0"/>
+                    <GradientStop Color="#00FFFFFF" Offset="0.263"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Grid Margin="11,149,0,0" Height="240" VerticalAlignment="Top" HorizontalAlignment="Left" Width="814">
+            
+            <!--Rectangle Width="780" Stroke="#FF6B809C" RadiusX="5" RadiusY="5">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF1B2F45" Offset="1"/>
+                        <GradientStop Color="#FF0E1016" Offset="0.335"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Image Opacity="0.4" Margin="0,0,0,1.07" VerticalAlignment="Bottom" Height="56.521" Source="./Image/232.png" Stretch="Fill" />
+            <Rectangle Fill="#19FFFFFF" Focusable="False" IsEnabled="False" IsHitTestVisible="False" HorizontalAlignment="Stretch" Margin="1.332,80.083,1.168,0" VerticalAlignment="Top" Height="1" Stroke="{x:Null}" RadiusX="0" RadiusY="0"/>
+            <Rectangle Fill="#19FFFFFF" Margin="1.332,107.406,1.168,106.594" Stroke="{x:Null}" RadiusX="0" RadiusY="0" Focusable="False" IsEnabled="False" IsHitTestVisible="False" HorizontalAlignment="Stretch"/>
+            <Rectangle Fill="#19FFFFFF" Margin="1.332,0,1.168,80.101" VerticalAlignment="Bottom" Height="1" Stroke="{x:Null}" RadiusX="0" RadiusY="0" Focusable="False" IsEnabled="False" IsHitTestVisible="False" HorizontalAlignment="Stretch"/>
+            <Rectangle Fill="#19FFFFFF" Margin="1.332,53.426,1.168,0" VerticalAlignment="Top" Height="1" Stroke="{x:Null}" RadiusX="0" RadiusY="0" Focusable="False" IsEnabled="False" IsHitTestVisible="False" HorizontalAlignment="Stretch"/>
+            <Rectangle Fill="#19FFFFFF" Margin="1.332,27.1,1.168,0" VerticalAlignment="Top" Height="1" Stroke="{x:Null}" RadiusX="0" RadiusY="0" Focusable="False" IsEnabled="False" IsHitTestVisible="False" HorizontalAlignment="Stretch"/>
+            <Rectangle Fill="#19FFFFFF" Margin="1.332,0,1.168,53.619" VerticalAlignment="Bottom" Height="1" Stroke="{x:Null}" RadiusX="0" RadiusY="0" Focusable="False" IsEnabled="False" IsHitTestVisible="False" HorizontalAlignment="Stretch"/>
+            <Rectangle Fill="#19FFFFFF" Margin="1.332,0,1.168,27.119" VerticalAlignment="Bottom" Height="1" Stroke="{x:Null}" RadiusX="0" RadiusY="0" Focusable="False" IsEnabled="False" IsHitTestVisible="False" HorizontalAlignment="Stretch"/>
+            <Rectangle Fill="#19FFFFFF" HorizontalAlignment="Left" Margin="98.5,0.5,0,0.57" Width="1" Stroke="{x:Null}" RadiusX="0" RadiusY="0"/>
+            <Rectangle Fill="#19FFFFFF" HorizontalAlignment="Left" Margin="196,0.5,0,0.57" Width="1" Stroke="{x:Null}" RadiusX="0" RadiusY="0"/>
+            <Rectangle Fill="#19FFFFFF" HorizontalAlignment="Left" Margin="292.5,0.5,0,0.57" Width="1" Stroke="{x:Null}" RadiusX="0" RadiusY="0"/>
+            <Rectangle Fill="#19FFFFFF" Margin="389.75,0.5,389.25,0.57" Stroke="{x:Null}" RadiusX="0" RadiusY="0"/>
+            <Rectangle Fill="#19FFFFFF" Margin="0,0.5,291.5,0.57" Stroke="{x:Null}" RadiusX="0" RadiusY="0" HorizontalAlignment="Right" Width="1"/>
+            <Rectangle Fill="#19FFFFFF" Margin="0,0.5,194.25,0.57" Stroke="{x:Null}" RadiusX="0" RadiusY="0" HorizontalAlignment="Right" Width="1"/>
+            <Rectangle Fill="#19FFFFFF" Margin="0,0.5,97.5,0.57" Stroke="{x:Null}" RadiusX="0" RadiusY="0" HorizontalAlignment="Right" Width="1"/-->
+            <!--hrvChart:ChartsHrv ImageSourcePath="./Image/232.png" LeftTickNum="120" BottomTickNum="114"/-->
+            <DVC:Chart Width="814" Height="240">
+                <DVC:LineSeries />
+            </DVC:Chart>
+        </Grid>
+        <Grid Margin="5.165,0,6.34,44.246" VerticalAlignment="Bottom" Height="2">
+            <Rectangle Fill="#33FFFFFF" Stroke="{x:Null}" RadiusX="0" RadiusY="0" Focusable="False" IsEnabled="False" IsHitTestVisible="False" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="1"/>
+            <Rectangle Fill="#66000000" Stroke="{x:Null}" RadiusX="0" RadiusY="0" Focusable="False" IsEnabled="False" IsHitTestVisible="False" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="1"/>
+        </Grid>
+        <Rectangle HorizontalAlignment="Left" Margin="269.672,16.994,0,0" Width="555" Fill="#FF030303" Stroke="#FF839BBB" RadiusX="5.828" RadiusY="5.828" VerticalAlignment="Top" Height="126"/>
+        <Rectangle Fill="#FFD3D3D3" HorizontalAlignment="Left" Margin="415.167,216.008,0,-146.987" Width="11.834" Stroke="{x:Null}" RadiusX="4.917" RadiusY="4.917" RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    <SkewTransform AngleX="0" AngleY="0"/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform X="0" Y="0"/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FFD3D3D3" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Right" Margin="0,161.66,12.34,81.861" Width="11.82" Stroke="{x:Null}" RadiusX="4.917" RadiusY="4.917">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    <SkewTransform AngleX="0" AngleY="0"/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform X="0" Y="0"/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Margin="44.672,42.994,0,0" Fill="#FF030303" Stroke="#FF839BBB" RadiusX="5.828" RadiusY="5.828" Width="215" HorizontalAlignment="Left" VerticalAlignment="Top" Height="100"/>
+        <Image Margin="40.006,-0.685,0,0" VerticalAlignment="Top" Height="36" Source="./Image/25656.png" Stretch="Fill" Width="101" HorizontalAlignment="Left"/>
+        <Button Margin="0,0,116,11.027" Content="事件标记" d:IsStaticText="True" HorizontalAlignment="Right" Width="77" VerticalAlignment="Bottom" Height="26.219" FontFamily="Microsoft YaHei" Template="{StaticResource ResourceKey=ButtonControlTemplate1}" Foreground="#FFFDFDFD"/>
+        <Button HorizontalAlignment="Right" Margin="0,0,21,11.027" Width="77" Content="开 始" Height="26.219" VerticalAlignment="Bottom" FontFamily="Microsoft YaHei" Template="{StaticResource ResourceKey=ButtonControlTemplate1}" Foreground="#FFFDFDFD"/>
+        <Button HorizontalAlignment="Left" Margin="26,0,0,11.027" Width="77" d:IsStaticText="True" Content="基线测试" Height="26.219" VerticalAlignment="Bottom"/>
+    </Grid>
+</UserControl>

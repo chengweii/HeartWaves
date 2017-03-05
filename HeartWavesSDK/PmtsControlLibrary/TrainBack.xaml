@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="PmtsControlLibrary.TrainBack"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:host="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
+             xmlns:forms ="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+             mc:Ignorable="d" 
+             Height="657.114" Width="997.136">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles\ButtonStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Margin="0.191,0.083,-0.055,0.031" Fill="#28a3f9" Stroke="#28a3f9" RadiusY="5.833" RadiusX="5.833" Width="997" Height="657" d:LayoutOverrides="Height"/>
+        <Rectangle Margin="0.941,1.333,-0.805,-1.219" Width="997" Height="657" Stroke="{x:Null}" RadiusX="5.833" RadiusY="5.833" d:LayoutOverrides="Height">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#28a3f9" Offset="0"/>
+                    <GradientStop Color="#28a3f9" Offset="0.031"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Label HorizontalAlignment="Left" Margin="21,14,0,0" VerticalAlignment="Top" Width="239" Height="33" Content="专项训练列表" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFFFFFFF" FontSize="18" d:IsStaticText="False" FontFamily="Microsoft YaHei"  />
+        <!--Button Template="{StaticResource ResourceKey=BreathCloseButtonTemplate}" Margin="0,15.329,24.771,0" Width="26" Height="26" HorizontalAlignment="Right" VerticalAlignment="Top" Click="Button_Click" /-->
+        <Rectangle Margin="9,55,8,0" VerticalAlignment="Top" Height="1" Fill="#FF23324A" Stroke="{x:Null}" RadiusX="5.833" RadiusY="5.833"/>
+        <Rectangle Margin="9,54,8,0" VerticalAlignment="Top" Height="1" Fill="#26FFFFFF" Stroke="{x:Null}" RadiusX="5.833" RadiusY="5.833"/>
+        <WrapPanel Margin="45,107,45,80" Loaded="WrapPanel_Loaded" x:Name="TrainButtonGrid" IsVisibleChanged="TrainButtonGrid_IsVisibleChanged">
+            
+        </WrapPanel>
+    </Grid>
+</UserControl>

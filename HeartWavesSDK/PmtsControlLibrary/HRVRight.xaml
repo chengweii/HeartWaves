@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="PmtsControlLibrary.HRVRight"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Width="213" Height="410">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles\ButtonStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot">
+        <Image Height="52" HorizontalAlignment="Left" Name="HeartBack" Stretch="Fill" VerticalAlignment="Top" Width="213" Source="/PmtsControlLibrary;component/Image/heartbg.png" />
+        <Image Height="262" HorizontalAlignment="Left" Name="AnsBack" Stretch="Fill" VerticalAlignment="Top" Width="213" Margin="0,62,0,0" Source="/PmtsControlLibrary;component/Image/ansbg.png" />
+        <Grid Height="262" HorizontalAlignment="Left" VerticalAlignment="Top" Width="209" Margin="2,63,0,0" Background="#FF28A9ED"/>
+        <Grid HorizontalAlignment="Left" Margin="70,80,0,0" Width="110" VerticalAlignment="Top" Height="80" x:Name="StatusGrid" Loaded="OnLoadedStatus">
+        </Grid>
+        <TextBlock Margin="65.836,0,65.163,105" Text="神经兴奋性" TextWrapping="Wrap" Background="{x:Null}" Foreground="#FFFFFFFF" FontSize="14" VerticalAlignment="Bottom" Height="27.347" FontFamily="Microsoft YaHei"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,5,22,0" Width="68" Text="" TextWrapping="Wrap" Background="{x:Null}" FontSize="30" VerticalAlignment="Top" Height="43.82" x:Name="HeartRateText">
+            <TextBlock.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF00A1D0" Offset="1"/>
+                    <GradientStop Color="#FFA0FBFF" Offset="0"/>
+                </LinearGradientBrush>
+            </TextBlock.Foreground>
+        </TextBlock>
+        <Grid Margin="18,10,96,0" VerticalAlignment="Top" Height="30">
+           
+            <TextBlock Margin="10,3,3,2" Text="即时心率" TextWrapping="Wrap" Background="{x:Null}" Foreground="#FFFFFFFF" FontSize="16" FontFamily="Microsoft YaHei" />
+        </Grid>
+        <Image Margin="20,170,20,136" Source="./Image/45345.png" Stretch="Fill" />
+        <Path Margin="101.167,0,102.664,155" RenderTransformOrigin="0.5,1" Stretch="Fill" Stroke="#f82e2e" Data="M163.33333,264.16686 L158.00033,315.83368 166.16683,316.00068 z" Height="52.841" VerticalAlignment="Bottom">
+            <Path.Fill>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#f82e2e" Offset="0.116"/>
+                    <GradientStop Color="#f82e2e" Offset="1"/>
+                </LinearGradientBrush>
+            </Path.Fill> 
+            <Path.RenderTransform>
+                <TransformGroup >
+                    <RotateTransform Angle="0" x:Name="myAngle"/>
+                </TransformGroup>
+            </Path.RenderTransform>
+            <Path.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <Storyboard x:Name="myStory">
+                            <DoubleAnimation Storyboard.TargetName="myAngle" Storyboard.TargetProperty="Angle" Duration="0:0:1" To="0" x:Name="myDoubleAnime"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Path.Triggers>
+        </Path>
+        <Image Margin="95.182,0,96.001,145" VerticalAlignment="Bottom" Height="12.331" Source="./Image/12123.png" Stretch="Fill"/>
+        
+        <Button Height="23" HorizontalAlignment="Center" Margin="66,0,66,85" Name="breathingButton" VerticalAlignment="Bottom" Width="82" BorderThickness="0" FocusVisualStyle="{x:Null}" IsDefault="True" Click="breathingbutton_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid >
+                        <Rectangle Grid.Row="0" x:Name="border" IsHitTestVisible="True">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource=".\Image\breaing.png" ></ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle Grid.Row="0" Visibility="Hidden" x:Name="glow">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource=".\Image\breaing.png" ></ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle Grid.Row="0" Visibility="Hidden" x:Name="FalseHidden">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource=".\Image\breaing2.png" ></ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" TargetName="glow" Value="0"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Visibility" TargetName="glow" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Visibility" TargetName="glow" Value="Hidden"/>
+                            <Setter Property="Visibility" TargetName="border" Value="Hidden"/>
+                            <Setter Property="Visibility" TargetName="FalseHidden" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+</UserControl>

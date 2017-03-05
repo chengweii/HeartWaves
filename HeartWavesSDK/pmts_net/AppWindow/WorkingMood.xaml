@@ -1,0 +1,92 @@
+﻿<Window x:Class="PmtsControlLibrary.WorkingMood"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:myCalendar="clr-namespace:FsControls;assembly=FsCalendar"
+        Title="WorkingMood"  Width="680" Height="330"
+        WindowStyle="None" 
+        WindowStartupLocation="CenterScreen"
+        Left="0.5" Top="0.5"
+        BorderThickness="0" BorderBrush="#FF1F273A"
+        Background="{x:Null}"  AllowsTransparency="True"
+        Closed="Window_Closed">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/ButtonStyle.xaml"/>
+                <ResourceDictionary Source="../Styles/SliderMoodStyle.xaml"/>
+                <ResourceDictionary Source="../Styles/MoodImageAnime.xaml"/>
+                <ResourceDictionary Source="../Styles/CalendarStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Rectangle Fill="#117bea" Stroke="#117bea" RadiusY="6.496" RadiusX="6.496"/>
+        <Grid x:Name="InputPage" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="680">
+            <Rectangle Margin="0.75,1.25,1.417,0" Stroke="{x:Null}" RadiusY="6.496" RadiusX="6.496" VerticalAlignment="Top" Height="37">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#0CFFFFFF" Offset="0.054"/>
+                        <GradientStop Color="#00373C4A" Offset="0.071"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <WrapPanel Margin="212,76,-35,155" Height="80">
+                <Button Template="{StaticResource ResourceKey=MoodButton1}" Tag="../Image/Mood/8.png" Margin="20,20,0,0" Click="OnSetMoodTo0"/>
+                <Button Template="{StaticResource ResourceKey=MoodButton1}" Tag="../Image/Mood/9.png" Margin="35,20,0,0" Click="OnSetMoodTo20"/>
+                <Button Template="{StaticResource ResourceKey=MoodButton1}" Tag="../Image/Mood/10.png" Margin="35,15,0,0" Click="OnSetMoodTo40"/>
+                <Button Template="{StaticResource ResourceKey=MoodButton1}" Tag="../Image/Mood/11.png" Margin="37,15,0,0" Click="OnSetMoodTo50"/>
+                <Button Template="{StaticResource ResourceKey=MoodButton1}" Tag="../Image/Mood/12.png" Margin="40,15,0,0" Click="OnSetMoodTo60"/>
+                <Button Template="{StaticResource ResourceKey=MoodButton1}" Tag="../Image/Mood/13.png" Margin="35,15,0,0" Click="OnSetMoodTo80"/>
+                <Button Template="{StaticResource ResourceKey=MoodButton1}" Tag="../Image/Mood/14.png" Margin="30,15,0,0" Click="OnSetMoodTo100"/>
+            </WrapPanel>
+            <Label FontSize="10" Foreground="#FFFFFFFF" HorizontalAlignment="Left" Margin="214,0,0,139" VerticalAlignment="Bottom" Width="444" Height="23" Content="0           10          20           30          40          50          60          70          80          90          100"/>
+            <Slider Maximum="100" Minimum="0" TickFrequency="5" Width="433" Height="30" Margin="203,166,23,95" TickPlacement="TopLeft" x:Name="MoodValueSlider" Value="50"/>
+            <Label HorizontalAlignment="Left" Margin="7,1,0,0" VerticalAlignment="Top" Width="82.329" Height="30" Content="工作心理" Foreground="#FFFFFFFF" FontSize="14" FontFamily="Microsoft YaHei"/>
+            <Label FontSize="14" Foreground="#FFFFFFFF" HorizontalAlignment="Left" Margin="365,39,0,0" VerticalAlignment="Top" Width="128.252" Height="30" Content="选择您的心情状态" FontFamily="Microsoft YaHei"/>
+            <TextBox Width="371" Height="100" Margin="221,0,0,12" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="#FFE7E7E7" FontFamily="Microsoft YaHei" FontSize="13" TextWrapping="Wrap" x:Name="MoodText"/>
+            <Button Margin="0,10,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="20" Height="20" Template="{StaticResource ResourceKey=BreathCloseButtonTemplate}" Click="Button_Click"/>
+            <Button Margin="0,0,10,48" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="50" Height="25" Content="清空" Style="{StaticResource ResourceKey=ButtonTemplate}" Click="Button_Click_1" />
+            <Button Margin="0,0,10,13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="50" Height="25" Content="提交" Style="{StaticResource ResourceKey=ButtonTemplate}" Click="Button_Click_2" />
+            <Grid HorizontalAlignment="Left" Margin="1,78,0,0" VerticalAlignment="Top" Height="223">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="114*" />
+                    <ColumnDefinition Width="93*" />
+                </Grid.ColumnDefinitions>
+                <myCalendar:FsCalendar Height="252" Name="fsCalendar1"  Width="207" ShowDateHighlighting="True" ShowHighlightedDateText="False" Loaded="fsCalendar1_Loaded" SelectedDatesChanged="fsCalendar1_SelectedDatesChanged" Margin="0,0,0,0" />
+                <Grid Width="96" Height="20" Margin="58,6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent"/>
+                <Grid Width="15" Height="15" Margin="13,8,0,0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Button Width="15" Height="15" Margin="0,0,0,0" Click="OnPrevMonthButtonClick">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Path Data="M288.75,232.25 L288.75,240.625 L283,236.625 z" Height="15" Stretch="Fill" Width="15" Fill="White"/>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+                <Grid Width="15" Height="15" Margin="0,8,13,0" Background="Transparent" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Button Width="15" Height="15" Margin="0,0,0,0" Click="OnNextMonthButtonClick">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Path  Data="M282.875,231.875 L282.875,240.375 L288.625,236 z" Height="15" Stretch="Fill" Width="15" Fill="White"/>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid x:Name="DetailePage" Margin="0,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden" Width="670">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="270"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <DataGrid Width="630" HorizontalAlignment="Center" Grid.Row="0" x:Name="ShowMoodDetaile" ItemsSource="{Binding}" AutoGenerateColumns="False" CanUserAddRows="False" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="记录时间" FontFamily="Microsoft YaHei" FontSize="15" Binding="{Binding Date}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="心情分数" FontFamily="Microsoft YaHei" FontSize="15" Binding="{Binding MoodValue}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="备注" FontFamily="Microsoft YaHei" FontSize="15" Binding="{Binding MoodText}" IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button Content="返 回" Height="30" Width="50" Grid.Row="1" Margin="0,0,0,10" HorizontalAlignment="Center" FontFamily="Microsoft YaHei" FontSize="15" Style="{StaticResource ResourceKey=ButtonTemplate}" Click="Button_Click_3"/>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="PmtsControlLibrary.Breathing"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             VirtualizingStackPanel.VirtualizationMode="Recycling"
+             Height="223" Width="136">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="./Styles/SliderStyle.xaml"/>
+                <ResourceDictionary Source="./Styles/ButtonStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot" Height="223" Width="136">
+        <Grid Margin="-0.335,0,0.5,0">
+            <Rectangle Fill="#28a3f9" Stroke="#28a3f9" RadiusX="5.5" RadiusY="5.5" Panel.ZIndex="0"/>
+            <Rectangle Margin="1,1,0.626,1.061" Fill="{x:Null}" Stroke="#FF586377" RadiusX="4.52" RadiusY="4.52" Panel.ZIndex="0"/>
+            <Slider Margin="0,41,32,14" HorizontalAlignment="Right" Maximum="7" Minimum="3" Orientation="Vertical" TickPlacement="BottomRight" TickFrequency="1" ValueChanged="Slider_ValueChanged" Value="5" Style="{StaticResource ResourceKey=SliderTemplate1}" Width="30" Foreground="White" Panel.ZIndex="1"/>
+            <Grid Margin="0,40,8,0" HorizontalAlignment="Right" VerticalAlignment="Top" Height="170" Width="25">
+                <TextBlock Margin="0,0,0,0" Text="7" FontSize="12" FontFamily="Microsoft YaHei" Foreground="#FFFFFFFF"/>
+                <TextBlock Margin="0,37,0,0"  Text="6" FontSize="12" FontFamily="Microsoft YaHei" Foreground="#FFFFFFFF"/>
+                <TextBlock Margin="0,75,0,0" Text="5" FontSize="12" FontFamily="Microsoft YaHei" Foreground="#FFFFFFFF"/>
+                <TextBlock Margin="0,112,0,0" Text="4" FontSize="12" FontFamily="Microsoft YaHei" Foreground="#FFFFFFFF"/>
+                <TextBlock Margin="0,150,0,0" Text="3" FontSize="12" FontFamily="Microsoft YaHei" Foreground="#FFFFFFFF"/>
+            </Grid>
+        </Grid>
+       
+        <Grid Margin="28.94,35,0,9.294" HorizontalAlignment="Left" Height="174" Width="28">
+            <Rectangle  Stroke="#FF1E242E" RadiusX="13" RadiusY="13" Height="174" Width="28">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF0467A0" Offset="0"/>
+                        <GradientStop Color="#FF0467A0" Offset="1"/>
+                        <GradientStop Color="#FF03AF6C" Offset="0.531"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle Margin="0.5,0.5,0,0" Stroke="{x:Null}" RadiusX="13" RadiusY="13" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="27" Height="173">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#B2FFFFFF" Offset="0"/>
+                        <GradientStop Color="#0003AF6C" Offset="0.531"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+                <Rectangle.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                        <SkewTransform AngleX="0" AngleY="0"/>
+                        <RotateTransform Angle="0"/>
+                        <TranslateTransform X="0" Y="0"/>
+                    </TransformGroup>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Grid VerticalAlignment="Bottom" Width="25.252" Height="170" x:Name="animeBall" Loaded="Anime_Loaded" Margin="0,0,0,0">
+                <Grid.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard x:Name="myStory">
+                                <DoubleAnimation Storyboard.TargetName="animeBall" Storyboard.TargetProperty="Height" x:Name="myDoubleAnime"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Grid.Triggers>
+                <Ellipse Margin="0.75,0,0,0" Stroke="#FFE5730C" VerticalAlignment="Top" Height="23.299" HorizontalAlignment="Left" Width="23.298" >
+                    <Ellipse.Fill>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFFA4104" Offset="0"/>
+                            <GradientStop Color="#FFE79611" Offset="0.723"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+            </Grid>
+        </Grid>
+        
+        <Grid Margin="0,8.244,9.202,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="15.28" Height="15.293">
+            <Button Template="{StaticResource ResourceKey=BreathCloseButtonTemplate}" Click="breathingButton_Click" />
+        </Grid>
+        <TextBlock Background="{x:Null}" Foreground="#FFFFFFFF" Margin="5.331,4.834,0,0" Text="呼吸助手" TextWrapping="Wrap" VerticalAlignment="Top" Height="21.333" HorizontalAlignment="Left" Width="59.333" FontFamily="Microsoft YaHei"/>
+    </Grid>
+</UserControl>

@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="PmtsControlLibrary.RecordRight"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="302" d:DesignWidth="200">
+    <Grid Width="197">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="197*" />
+            <ColumnDefinition Width="0*" />
+            <ColumnDefinition Width="0*" />
+        </Grid.ColumnDefinitions>
+        <Button Height="60" HorizontalAlignment="Left" Margin="50,40,0,0" Name="instructions" VerticalAlignment="Top" Width="107" Click="instructions_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/PmtsControlLibrary;component/Image/instructions.png"></ImageBrush>
+            </Button.Background>
+        </Button>
+
+
+        <Button Height="60" HorizontalAlignment="Left" Margin="50,120,0,0" Name="export" VerticalAlignment="Top" Width="107" Click="export_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/PmtsControlLibrary;component/Image/export.png"></ImageBrush>
+            </Button.Background>
+        </Button>
+        
+        <Button  Grid.ColumnSpan="3" Height="60" HorizontalAlignment="Left" Margin="51,200,0,0" Name="screening" VerticalAlignment="Top" Width="107" Click="screening_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/PmtsControlLibrary;component/Image/screening.png"></ImageBrush>
+            </Button.Background>
+        </Button>
+    </Grid>
+</UserControl>

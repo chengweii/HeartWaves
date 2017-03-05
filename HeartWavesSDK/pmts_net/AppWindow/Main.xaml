@@ -1,0 +1,233 @@
+﻿<Window x:Class="pmts_net.AppWindow.Main"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        Title="Main" 
+        xmlns:PCLib="clr-namespace:PmtsControlLibrary;assembly=PmtsControlLibrary" 
+        mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        WindowState="Maximized"
+        WindowStyle="None"    Left="0.0" Top="0.0" WindowStartupLocation="CenterScreen" 
+        ResizeMode="NoResize"
+        Closed="OnExitWindows" d:DesignHeight="415" SizeToContent="WidthAndHeight">
+    <Window.Background>
+        <ImageBrush ImageSource="../Image/back.jpg" x:Name="MainImage" Stretch="UniformToFill"/>
+    </Window.Background>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/ButtonStype.xaml"/>
+                <ResourceDictionary Source="../Styles/MoodImageAnime.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Margin="0,0,0,0" x:Name="LayoutRoot" Loaded="MainLogos_Loaded">
+        <Image Source="../Image/light.png" Stretch="Fill" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="69" />
+        <Image Source="../Image/Title.png" HorizontalAlignment="Left" VerticalAlignment="Top" Width="354" Height="36" Margin="24,12,0,0"/>
+        <Button Margin="0,20,24,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="25" Height="25" Click="Button_Click_1">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Image Width="25" Height="25" Source="../Image/MainButton/Close4.png" x:Name="mouseNone"/>
+                        <Image Width="25" Height="25" Source="../Image/MainButton/Close5.png" x:Name="mouseOver" Opacity="0"/>
+                        <Image Width="25" Height="25" Source="../Image/MainButton/Close5.png" x:Name="mouseClick" Visibility="Hidden"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Visibility" TargetName="mouseClick" Value="Visible"/>
+                            <Setter Property="Opacity" TargetName="mouseNone" Value="0"/>
+                            <Setter Property="Visibility" TargetName="mouseOver" Value="Hidden"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Visibility" TargetName="mouseNone" Value="Hidden"/>
+                            <Setter Property="Opacity" TargetName="mouseOver" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button HorizontalAlignment="Right" Margin="0,20,66,0" VerticalAlignment="Top" Width="25" Height="25" Click="OnSmallWindow">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Image Width="25" Height="25" Source="../Image/MainButton/Small4.png" x:Name="mouseNone"/>
+                        <Image Width="25" Height="25" Source="../Image/MainButton/Small5.png" x:Name="mouseOver" Opacity="0"/>
+                        <Image Width="25" Height="25" Source="../Image/MainButton/Small5.png" x:Name="mouseClick" Visibility="Hidden"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Visibility" TargetName="mouseClick" Value="Visible"/>
+                            <Setter Property="Opacity" TargetName="mouseNone" Value="0"/>
+                            <Setter Property="Visibility" TargetName="mouseOver" Value="Hidden"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Visibility" TargetName="mouseNone" Value="Hidden"/>
+                            <Setter Property="Opacity" TargetName="mouseOver" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button Margin="0,20,108,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="25" Height="25" x:Name="MainHelpBut" Tag="0" Click="OnOpenHelp">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Image Width="25" Height="25" Source="../Image/MainButton/Help4.png" x:Name="mouseNone"/>
+                        <Image Width="25" Height="25" Source="../Image/MainButton/Help5.png" x:Name="mouseOver" Opacity="0"/>
+                        <Image Width="25" Height="25" Source="../Image/MainButton/Help5.png" x:Name="mouseClick" Visibility="Hidden"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Visibility" TargetName="mouseClick" Value="Visible"/>
+                            <Setter Property="Opacity" TargetName="mouseNone" Value="0"/>
+                            <Setter Property="Visibility" TargetName="mouseOver" Value="Hidden"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Visibility" TargetName="mouseNone" Value="Hidden"/>
+                            <Setter Property="Opacity" TargetName="mouseOver" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button x:Name="RetrunButton" Margin="0,20,150,0" HorizontalAlignment="Right" VerticalAlignment="Top" Height="25" Width="25" Click="RetrunButton_Click" >
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Rectangle Grid.Row="0" Width="25" x:Name="border">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource="..\Image\MainButton\Top4.png" ></ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle Grid.Row="0" Width="25" Visibility="Hidden" x:Name="glow">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource="..\Image\MainButton\Top5.png" ></ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle Grid.Row="0" Width="25" Visibility="Hidden" x:Name="FalseHidden">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource="..\Image\MainButton\Top4.png" ></ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" TargetName="glow" Value="0"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Visibility" TargetName="glow" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Visibility" TargetName="glow" Value="Hidden"/>
+                            <Setter Property="Visibility" TargetName="border" Value="Hidden"/>
+                            <Setter Property="Visibility" TargetName="FalseHidden" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        
+        <!--<Button x:Name="BreathButton" Margin="0,4,190,0" HorizontalAlignment="Right" VerticalAlignment="Top" Height="55" Width="50" Click="Button_Click" >
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Rectangle Grid.Row="0" Width="35" x:Name="border">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource="..\Image\MainButton\Breathing1.png" ></ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle Grid.Row="0" Width="35" Visibility="Hidden" x:Name="glow">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource="..\Image\MainButton\Breathing2.png" ></ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle Grid.Row="0" Width="35" Visibility="Hidden" x:Name="FalseHidden">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource="..\Image\MainButton\Breathing3.png" ></ImageBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <TextBlock FontFamily="Microsoft YaHei" Text="呼吸助手" FontSize="12" Foreground="White" Grid.Row="1" HorizontalAlignment="Center"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" TargetName="glow" Value="0"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Visibility" TargetName="glow" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Visibility" TargetName="glow" Value="Hidden"/>
+                            <Setter Property="Visibility" TargetName="border" Value="Hidden"/>
+                            <Setter Property="Visibility" TargetName="FalseHidden" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+
+            </Button.Template>
+        </Button>-->
+        
+        <!--
+        <Grid Margin="0,80,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" x:Name="RightMessage">
+            <PCLib:MainRight Loaded="MainRight_Loaded" x:Name="MainRight"/>
+        </Grid>
+        -->
+        <Grid x:Name="MainWindowParent" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+
+            <WrapPanel Height="423" VerticalAlignment="top" HorizontalAlignment="Left" Width="976" Name="mainLogos" >
+                <!--<PCLib:MainLogoClass MouseDown="MainLogoClass_MouseDown" Height="393" Width="155">
+                    <PCLib:MainLogoClass.Style>
+                        <Style TargetType="PCLib:MainLogoClass">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true" >
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width" To="160" Duration="0:0:0:0.5"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation  Storyboard.TargetProperty="Height" To="400" Duration="0:0:0:0.5"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.EnterActions>
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation  Storyboard.TargetProperty="Width" To="155" Duration="0:0:0:0.5"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation  Storyboard.TargetProperty="Height" To="393" Duration="0:0:0:0.5"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.ExitActions>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </PCLib:MainLogoClass.Style>
+                </PCLib:MainLogoClass>-->
+                <Button Template="{StaticResource ResourceKey=MainLogoClass}" Tag="../Image/MainLogo/Class.png" Margin="0,0,0,0" Click="MainLogoClass_MouseDown" MouseEnter="MainLogoClass_MouseEnter" />
+                <Button Template="{StaticResource ResourceKey=MainLogoHRV}" Tag="../Image/MainLogo/HRV.png" Margin="30,0,0,80" Click="MainLogoHRV_MouseDown" MouseEnter="MainLogoClass_MouseEnter"/>
+                <Button Template="{StaticResource ResourceKey=MainLogoTrain}" Tag="../Image/MainLogo/Train.png" Margin="30,0,0,120" Click="MainLogoTrain_MouseDown" MouseEnter="MainLogoClass_MouseEnter"/>
+                <Button Template="{StaticResource ResourceKey=MainLogoRelax}" Tag="../Image/MainLogo/Relax.png" Margin="30,0,0,80" Click="MainLogoScale_MouseDown" MouseEnter="MainLogoClass_MouseEnter"/>
+                <Button Template="{StaticResource ResourceKey=MainLogoRecord}" Tag="../Image/MainLogo/Record.png" Margin="30,0,0,0" Click="MainLogoRecord_MouseDown" MouseEnter="MainLogoClass_MouseEnter"/>
+                <!--<PCLib:MainLogoTrain Margin="30,0,0,0" MouseDown="MainLogoTrain_MouseDown"/>
+
+                <PCLib:MainLogoHRV Margin="30,0,0,0" MouseDown="MainLogoHRV_MouseDown" />
+                
+                <PCLib:MainLogoScale Margin="30,0,0,0" MouseDown="MainLogoScale_MouseDown" />-->
+            </WrapPanel>
+            <Grid Name="MainWindow"  Margin="0,69,0,0" VerticalAlignment="Top"/>
+        </Grid>
+    </Grid>
+</Window>

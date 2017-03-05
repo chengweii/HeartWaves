@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="PmtsControlLibrary.MainSmall"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" Height="26" Width="26">
+    <Grid  MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave" MouseDown="Grid_MouseDown" MouseUp="Grid_MouseUp">
+        <Image Source="/PmtsControlLibrary;component/Image/最小化-1.png" VerticalAlignment="Center" HorizontalAlignment="Center" Name="MouseNotOver"/>
+        <Image Source="/PmtsControlLibrary;component/Image/最小化-2.png" VerticalAlignment="Center" HorizontalAlignment="Center" Name="MouseOnOver" Visibility="Hidden"/>
+        <Image Source="/PmtsControlLibrary;component/Image/最小化-3.png" VerticalAlignment="Center" HorizontalAlignment="Center" Name="MouseClick" Visibility="Hidden"/>
+    </Grid>
+</UserControl>

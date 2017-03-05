@@ -1,0 +1,135 @@
+﻿<UserControl x:Class="PmtsControlLibrary.HRVDetaile"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+              Height="640" Width="600" Name="HRV详情">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles\ButtonStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Margin="-0.75,-1.25,0.75,1.25" Fill="#28a3f9" Stroke="#a6e2fb" RadiusY="5.833" RadiusX="5.833" Width="600" Height="640"/>
+        <Rectangle Height="640" Stroke="{x:Null}" RadiusX="5.833" RadiusY="5.833" Margin="-0.333,0.333,2.666,-0.333" d:IsLocked="True">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#29FFFFFF" Offset="0"/>
+                    <GradientStop Color="#00FFFFFF" Offset="0.031"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Grid>
+            <Button Template="{StaticResource ResourceKey=BreathCloseButtonTemplate}" HorizontalAlignment="Right" Margin="0,9.972,18.486,0" VerticalAlignment="Top" Width="21.45" Height="21.45" x:Name="closeButton"/>
+            <!--Path RenderTransformOrigin="0.499999995412728,0.51485687169852" HorizontalAlignment="Right" Margin="0,9.972,18.486,0" VerticalAlignment="Top" Width="21.45" Height="21.45" Fill="#7FFFFFFF" Stretch="Fill" Stroke="{x:Null}" Data="M11.928707,0 L18.009706,0 18.009706,12.37277 29.937,12.37277 29.937,18.45377 18.009706,18.45377 18.009706,29.937 11.928707,29.937 11.928707,18.45377 0,18.45377 0,12.37277 11.928707,12.37277 11.928707,0 z" MouseEnter="CloseButton_MouseEnter" MouseLeave="CloseButton_MouseLeave" MouseLeftButtonDown="CloseButton_MouseLeftButtonDown" x:Name="closePath">
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                        <SkewTransform AngleX="0" AngleY="0"/>
+                        <RotateTransform Angle="135"/>
+                        <TranslateTransform X="0" Y="0"/>
+                    </TransformGroup>
+                </Path.RenderTransform>
+            </Path-->
+        </Grid>
+        <Label Margin="13.2,7,0,0" VerticalAlignment="Top" Height="32" Content="HRV记录详情" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFFFFFFF" FontSize="16" HorizontalAlignment="Left" Width="125" FontFamily="Microsoft YaHei" />
+        <Grid Margin="11,40,10,0" VerticalAlignment="Top" Height="2">
+            <Rectangle VerticalAlignment="Bottom" Height="1" Fill="#FF23324A" Stroke="{x:Null}" RadiusX="5.833" RadiusY="5.833"/>
+            <Rectangle VerticalAlignment="Top" Height="1" Fill="#26FFFFFF" Stroke="{x:Null}" RadiusX="5.833" RadiusY="5.833"/>
+        </Grid>
+        <Grid Height="541" HorizontalAlignment="Left" Margin="21,41,0,0" Name="PointGrid" VerticalAlignment="Top" Width="566" >
+            <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="#FFFFFFFF" HorizontalAlignment="Left" Margin="17,16,0,0" VerticalAlignment="Top" Width="58" Height="33" Content="用户ID" FontFamily="Microsoft YaHei" />
+            <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="#FFFFFFFF" HorizontalAlignment="Left" Margin="177,16,0,0" VerticalAlignment="Top" Width="71" Height="33" Content="用户姓名" FontFamily="Microsoft YaHei"/>
+            <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="#FFFFFFFF" HorizontalAlignment="Right" Margin="0,16,135,0" VerticalAlignment="Top" Width="72" Height="33" Content="训练时间" FontFamily="Microsoft YaHei"/>
+            
+            <Rectangle Margin="66,18,0,0" VerticalAlignment="Top" Height="25" Fill="#FFE3E1E1" Stroke="#FF2F384C" RadiusX="5.5" RadiusY="5.5" HorizontalAlignment="Left" Width="107" Tag="del"/>
+            <Label x:Name="UseID" Margin="69,15,0,0" VerticalAlignment="Top" Height="30" HorizontalAlignment="Left" Foreground="Black" FontFamily="Microsoft YaHei" FontSize="14" Width="99" />
+            <Rectangle Margin="242,18,0,0" VerticalAlignment="Top" Height="25" Fill="#FFE3E1E1" Stroke="#FF2F384C" RadiusX="5.5" RadiusY="5.5" HorizontalAlignment="Left" Width="107"  Tag="del"/>
+            <Label x:Name="UseName" Margin="245,15,0,0" VerticalAlignment="Top" Height="30" Foreground="Black" FontFamily="Microsoft YaHei" FontSize="14" HorizontalAlignment="Left" Width="101" />
+            <Rectangle Margin="0,18,33,0" VerticalAlignment="Top" Height="25" Fill="#FFE3E1E1" Stroke="#FF2F384C" RadiusX="5.5" RadiusY="5.5" Width="107.99" HorizontalAlignment="Right" Tag="del"/>
+            <Label x:Name="HRVTime" Margin="0,16,37,0" VerticalAlignment="Top" Height="31" HorizontalAlignment="Right" Foreground="Black" FontFamily="Microsoft YaHei" FontSize="14" Width="99" />
+            <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="#FFFFFFFF" HorizontalAlignment="Left" Margin="28,58,0,0" VerticalAlignment="Top" Width="96" Height="27" Content="HRV记录曲线" RenderTransformOrigin="0.483,2.84" FontFamily="Microsoft YaHei" />
+            <Rectangle Margin="26,271,0,0" Fill="#28a3f9" Stroke="#a6e2fb" RadiusX="6.3" RadiusY="6.3" Height="140" VerticalAlignment="Top" HorizontalAlignment="Left" Width="490" Tag="ColorChange"/>
+            <Path RenderTransformOrigin="0.499999982704833,1.28170163600171" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="14,284,0,0" Width="138.99" Stretch="Fill" Stroke="{x:Null}" Data="M6.7999999,0.5 L132.19,0.5 C135.66939,0.50000051 138.49001,3.3206065 138.49001,6.8000002 L138.49001,54.505002 0.5,54.505002 0.5,6.8000002 C0.50000069,3.3206065 3.3206067,0.50000051 6.7999999,0.5 z" Height="44.505"  Fill="#99213C61" Tag="ColorChange">
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                        <SkewTransform AngleX="0" AngleY="0"/>
+                        <RotateTransform Angle="-90"/>
+                        <TranslateTransform X="0" Y="0"/>
+                    </TransformGroup>
+                </Path.RenderTransform>
+            </Path>
+            <TextBlock Background="{x:Null}" FontSize="14" Foreground="#FFFFFFFF" Margin="13,0,16,0" Text="数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告数据报告" RenderTransformOrigin="0.483,2.84" VerticalAlignment="Bottom" Height="118" TextWrapping="Wrap" FontFamily="Microsoft YaHei" x:Name="ReportText"/>
+
+           
+            <Label HorizontalAlignment="Right" Margin="0,0,83,128" Width="61.334" Content="神经兴奋性" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFFFFFFF" FontSize="10" VerticalAlignment="Bottom" Height="22" FontFamily="Microsoft YaHei" />
+           
+            <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="11" Foreground="#FFFFFFFF" Margin="23,82,0,0" Content="160" HorizontalAlignment="Left" Width="33" Height="22" VerticalAlignment="Top" FontFamily="Microsoft YaHei"/>
+            <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="11" Foreground="#FFFFFFFF" Margin="23,103,0,0" Content="140" HorizontalAlignment="Left" Width="33" Height="22" VerticalAlignment="Top" FontFamily="Microsoft YaHei"/>
+            <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="11" Foreground="#FFFFFFFF" Margin="23,129,0,0" Content="120" HorizontalAlignment="Left" Width="33" Height="22" VerticalAlignment="Top" FontFamily="Microsoft YaHei"/>
+            <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="11" Foreground="#FFFFFFFF" Margin="23,153,0,0" Content="100" HorizontalAlignment="Left" Width="33" Height="22" VerticalAlignment="Top" FontFamily="Microsoft YaHei"/>
+            <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="11" Foreground="#FFFFFFFF" Margin="29,178,0,0" Content="80" HorizontalAlignment="Left" Width="33" Height="22" VerticalAlignment="Top" FontFamily="Microsoft YaHei"/>
+            <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="11" Foreground="#FFFFFFFF" Margin="29,202,0,0" Content="60" HorizontalAlignment="Left" Width="33" Height="22" VerticalAlignment="Top" FontFamily="Microsoft YaHei"/>
+            <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="#FFFFFFFF" Height="30" HorizontalAlignment="Left" Margin="102,358,0,0" Content="压力指数："  VerticalAlignment="Top" Width="76" FontFamily="Microsoft YaHei"/>
+
+            <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="#FFFFFFFF" Margin="102,0,0,226" Content="调节指数："  HorizontalAlignment="Left" Width="76" VerticalAlignment="Bottom" Height="29" FontFamily="Microsoft YaHei"/>
+            <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="#FFFFFFFF" Margin="237,0,235,226" Content="HRV得分："  VerticalAlignment="Bottom" Height="29" FontFamily="Microsoft YaHei"/>
+            <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="#FFFFFFFF" Margin="102,0,0,189" Content="稳定指数："  HorizontalAlignment="Left" Width="76" VerticalAlignment="Bottom" Height="31" FontFamily="Microsoft YaHei"/>
+            <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="#FFFFFFFF" Margin="237,0,235,191" Content="综合得分："  VerticalAlignment="Bottom" Height="29" FontFamily="Microsoft YaHei"/>
+            <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="#FFFFFFFF" Height="30" HorizontalAlignment="Left" Margin="238,0,0,153" Content="平均心率："  VerticalAlignment="Bottom" Width="76" FontFamily="Microsoft YaHei"/>
+            <!---->
+        
+        <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="#FFFFFFFF" Height="30" HorizontalAlignment="Left" Margin="176,358,0,0" Content="160"  VerticalAlignment="Top" Width="35" FontFamily="Microsoft YaHei" x:Name="Pressure"/>
+        <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="#FFFFFFFF" Height="30" HorizontalAlignment="Left" Margin="176,0,0,225" Content="160"  VerticalAlignment="Bottom" Width="35" FontFamily="Microsoft YaHei" x:Name="Adjust"/>
+        <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="#FFFFFFFF" Height="30" HorizontalAlignment="Left" Margin="176,321,0,0" Content="160"  VerticalAlignment="Top" Width="35" FontFamily="Microsoft YaHei" x:Name="Stable"/>
+        <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="#FFFFFFFF" Height="30" HorizontalAlignment="Left" Margin="314,286,0,0" Content="160"  VerticalAlignment="Top" Width="80" FontFamily="Microsoft YaHei" x:Name="HRVScore"/>
+        <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="#FFFFFFFF" Height="30" HorizontalAlignment="Left" Margin="314,321,0,0" Content="160"  VerticalAlignment="Top" Width="35" FontFamily="Microsoft YaHei" x:Name="TotalScore" />
+        <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="#FFFFFFFF" Height="30" HorizontalAlignment="Left" Margin="314,0,0,153" Content="160"  VerticalAlignment="Bottom" Width="35" FontFamily="Microsoft YaHei" x:Name="HeartRate"/>
+        <!---->
+            
+            <Label Background="{x:Null}" BorderBrush="{x:Null}" FontSize="14" Foreground="#FFFFFFFF" Margin="35,0,0,161" Content="数&#xd;&#xa;据&#xd;&#xa;报&#xd;&#xa;告" RenderTransformOrigin="0.552,0.533" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="27" Height="80.947" FontFamily="Microsoft YaHei"/>
+            <Grid Margin="51,91,0,0" VerticalAlignment="Top" Height="127" HorizontalAlignment="Left" Width="463" Name="HrvChartGrid">
+                <Rectangle Stroke="#FF6B809C" RadiusX="5" RadiusY="5" Tag="HrvBlack">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FF133B67" Offset="0.9"/>
+                            <GradientStop Color="#FF111624" Offset="0"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Path VerticalAlignment="Top" HorizontalAlignment="Left" Stroke="#7fe9fd" Width="463" Height="127" x:Name="HrvChart" Tag="HrvChart"/>
+                <Path Margin="0,25,0,0" VerticalAlignment="Top" Height="1.5" Fill="{x:Null}" Stretch="Fill" Stroke="#26F1F4FA" Data="M80.5,184.5 L255,185" Tag="HrvLine"/>
+                <Path Margin="0,50,0,0" VerticalAlignment="Top" Height="1.5" Fill="{x:Null}" Stretch="Fill" Stroke="#26F1F4FA" Data="M80.5,184.5 L255,185" Tag="HrvLine"/>
+                <Path Margin="0,75,0,0" Fill="{x:Null}" Stretch="Fill" Stroke="#26F1F4FA" Data="M80.5,184.5 L255,185" VerticalAlignment="Top" Height="1.5" Tag="HrvLine"/>
+                <Path Margin="0,100,0,0" Fill="{x:Null}" Stretch="Fill" Stroke="#26F1F4FA" Data="M80.5,184.5 L255,185" VerticalAlignment="Top" Height="1.5" Tag="HrvLine"/>
+            </Grid>
+            <Grid Margin="403,342,0,0" Width="98" HorizontalAlignment="Left" Height="54.948" VerticalAlignment="Top">
+                <Image Source="./Image/45345-1.png" Stretch="Fill" />
+                <Path Fill="#FFC90606" RenderTransformOrigin="0.5,1"  d:LayoutOverrides="HorizontalAlignment, GridBox" Margin="46.875,25.931,45.958,8.183" Stretch="Fill" Stroke="{x:Null}" Data="M496,404 L493.33333,426.66667 500.66607,426.66667 z">
+                    <Path.RenderTransform>
+                        <TransformGroup >
+                            <RotateTransform Angle="-90" x:Name="myAngle"/>
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                </Path>
+                <Path d:LayoutOverrides="HorizontalAlignment, GridBox" Margin="44.108,0,0,6.174" VerticalAlignment="Bottom" Height="4.831" Fill="#FF716D6D" Stretch="Fill" Stroke="#FF464646" Data="M5.3007771,0 C7.5456077,5.2154064E-08 9.4716608,1.36472 10.294386,3.3096808 L10.601554,4.8309999 0,4.8309999 0.30716848,3.3096808 C1.1298932,1.36472 3.0559468,5.2154064E-08 5.3007771,0 z" StrokeThickness="0.5" HorizontalAlignment="Left" Width="11" />
+            </Grid>
+        </Grid>
+        <Grid Margin="8,0,13,57" VerticalAlignment="Bottom" Height="2">
+            <Rectangle VerticalAlignment="Bottom" Height="1" Fill="#FF23324A" Stroke="{x:Null}" RadiusX="5.833" RadiusY="5.833"/>
+            <Rectangle VerticalAlignment="Top" Height="1" Fill="#26FFFFFF" Stroke="{x:Null}" RadiusX="5.833" RadiusY="5.833"/>
+        </Grid>
+        <Button Margin="122,0,0,17" VerticalAlignment="Bottom" Height="27" Width="77" HorizontalAlignment="Left" Content="事件标记" FontFamily="Microsoft YaHei" FontSize="14" Style="{StaticResource ResourceKey=ButtonTemplate}" Click="OnShowMark"/>
+        
+        <!--Button Margin="249,0,0,17" VerticalAlignment="Bottom" Height="27" Width="77" HorizontalAlignment="Left" Content="备 注" FontFamily="Microsoft YaHei" FontSize="14" Style="{StaticResource ResourceKey=ButtonTemplate}"/-->
+        
+        <Button Margin="0,0,149,17" VerticalAlignment="Bottom" Height="27" Width="77" HorizontalAlignment="Right" Content="打 印" FontFamily="Microsoft YaHei" FontSize="14" Style="{StaticResource ResourceKey=ButtonTemplate}" Click="Button_Click" />
+        </Grid>
+</UserControl>
