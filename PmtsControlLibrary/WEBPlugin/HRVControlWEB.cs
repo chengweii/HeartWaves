@@ -133,16 +133,6 @@ namespace PmtsControlLibrary.WEBPlugin
         }
 
         /// <summary>
-        /// 常量列表和历史记录列表查询
-        /// </summary>
-        /// <param name="where">常量列表的条件</param>
-        public ArrayList GetConstAndHistoryListData(int timeType = 0, int mood = 0)
-        {
-            ArrayList retArr = new ArrayList();
-            return retArr;
-        }
-
-        /// <summary>
         /// 根据历史记录ID取得详细信息
         /// </summary>
         /// <returns></returns>
