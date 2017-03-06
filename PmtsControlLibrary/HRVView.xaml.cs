@@ -50,7 +50,6 @@ namespace PmtsControlLibrary
         private HRVRight hRight = null;//HRV监测时，右侧信息栏 指针
         private HRVConstant hrvc = null;//常量列表窗口
         private HRVHistory hrvh = null;//历史记录窗口
-        private HRVControlDB hrvdb = null;
         private Hashtable systemMeg = new Hashtable();
         private DateTime startTime;
         private DispatcherTimer HRVScaleTimer;//5分，10分，基线测试用timer
@@ -71,7 +70,7 @@ namespace PmtsControlLibrary
 
         private Breathing breath = null;//呼吸助手
 
-        private HRVControlWEB hrvweb = null;
+        private HRVControlWEB hrvdb = null;
 
         /// <summary>
         /// 构造函数
@@ -89,8 +88,7 @@ namespace PmtsControlLibrary
             MusicPlayer = new MediaPlayer(); ;
             //lich
             if (UserInfoStatic.ipAdd != null)
-                //hrvdb = new HRVControlDB(systemMeg);
-                hrvweb = new HRVControlWEB(systemMeg);
+            	hrvdb = new HRVControlWEB(systemMeg);
             if (ppgChart != null)
             {
                 ppgChart.Visibility = System.Windows.Visibility.Hidden;
@@ -560,8 +558,9 @@ namespace PmtsControlLibrary
                         mainWindow.Children.Add(hrvd);
                         //开始数据库操作
                         //lich
-
-                        if (UserInfoStatic.ipAdd == null){
+                        if (UserInfoStatic.ipAdd != null)
+                        	hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc, PPGData,"1");
+                        else{
                             UserHrvRecord hrvRecord = new UserHrvRecord();
                             hrvRecord.HRVData = HRVData;
                             hrvRecord.EPData = EPData;
@@ -599,10 +598,6 @@ namespace PmtsControlLibrary
 
                         MusicPlayer.Stop();
                     }
-
-                    if (UserInfoStatic.ipAdd != null)
-                       //hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc);
-                       hrvweb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc, PPGData,"1");
 
                     //startTime = new DateTime();
                 }

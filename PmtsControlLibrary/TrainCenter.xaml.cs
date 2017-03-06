@@ -45,6 +45,8 @@ namespace PmtsControlLibrary
 
   //      public TrainHandleList tl = null;
         public int oldGameType = 70;
+        
+        private HRVControlWEB hrvdb = null;
 
         public TrainCenter(Grid Main)
         {
@@ -552,8 +554,7 @@ namespace PmtsControlLibrary
                 //开始数据库操作
                 //lich
                 if (UserInfoStatic.ipAdd != null)
-                    //                    hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc);
-                    ;
+                	hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc, PPGData,"2");
                 else
                 {
                     UserHrvRecord hrvRecord = new UserHrvRecord();

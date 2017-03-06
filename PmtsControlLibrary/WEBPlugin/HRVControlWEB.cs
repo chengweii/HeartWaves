@@ -292,6 +292,13 @@ namespace PmtsControlLibrary.WEBPlugin
 
             return retArr;
         }
+        
+        /// <summary>
+        /// 更新EP完成状态
+        /// </summary>
+        public void UpEpLevel()
+        {
+        }
 
     }
 }

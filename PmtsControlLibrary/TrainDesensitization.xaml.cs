@@ -44,6 +44,8 @@ namespace PmtsControlLibrary
         private ArrayList IBIData = new ArrayList();//IBI柱状图数组
         private ArrayList PPGData = new ArrayList();//PPG折线图
         private ArrayList EPData = new ArrayList();//EP值数组
+        
+        private HRVControlWEB hrvdb = null;
 
         public TrainDesensitization()
         {
@@ -577,8 +579,7 @@ namespace PmtsControlLibrary
                     //开始数据库操作
                     //lich
                     if (UserInfoStatic.ipAdd != null)
-                        //                    hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc);
-                        ;
+                    	hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc, PPGData,"2");
                     else
                     {
                         UserHrvRecord hrvRecord = new UserHrvRecord();

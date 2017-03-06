@@ -38,6 +38,8 @@ namespace PmtsControlLibrary
         private ArrayList EPData = new ArrayList();//EP值数组
         private DateTime startTime;
 
+        private HRVControlWEB hrvdb = null;
+        
         public FlashWindow(Hashtable t)
         {
             InitializeComponent();
@@ -244,8 +246,7 @@ namespace PmtsControlLibrary
                     //开始数据库操作
                     //lich
                     if (UserInfoStatic.ipAdd != null)
-                        //                    hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc);
-                        ;
+                    	hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc, PPGData,"2");
                     else
                     {
                         UserHrvRecord hrvRecord = new UserHrvRecord();
@@ -404,8 +405,7 @@ namespace PmtsControlLibrary
                 //开始数据库操作
                 //lich
                 if (UserInfoStatic.ipAdd != null)
-                    //                    hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc);
-                    ;
+                	hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc, PPGData,"2");
                 else
                 {
                     UserHrvRecord hrvRecord = new UserHrvRecord();

@@ -48,6 +48,8 @@ namespace PmtsControlLibrary
         private bool hrvPromptFlg = false;//HRV耳夹脱落提示框是否弹出，false没有弹出，true弹出
         private HRVPrompt hrvp = null;//HRV耳夹脱落提示框
 
+        private HRVControlWEB hrvdb = null;
+        
         public TrainPlayerView()
         {
             InitializeComponent();
@@ -266,8 +268,7 @@ namespace PmtsControlLibrary
                         //开始数据库操作
                         //lich
                         if (UserInfoStatic.ipAdd != null)
-                            //                    hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc);
-                            ;
+                        	hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc, PPGData,"2");
                         else
                         {
                             UserHrvRecord hrvRecord = new UserHrvRecord();
