@@ -14,6 +14,7 @@ using System.Xml;
 using pmts_net.HMRead;
 using System.Windows.Threading;
 using System.Collections;
+using PmtsControlLibrary.WEBPlugin;
 
 
 namespace PmtsControlLibrary

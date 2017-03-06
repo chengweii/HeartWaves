@@ -16,6 +16,7 @@ using PmtsControlLibrary.DBPlugin;
 using System.IO;
 using pmts_net.HMRead;
 using System.Windows.Threading;
+using PmtsControlLibrary.WEBPlugin;
 
 namespace PmtsControlLibrary
 {

@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using Microsoft.Win32;
 using Microsoft.Office.Interop.Excel;
 using pmts_net.HMRead;
+using PmtsControlLibrary.WEBPlugin;
 
 
 namespace PmtsControlLibrary
