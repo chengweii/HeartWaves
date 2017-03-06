@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
+using PmtsControlLibrary.Common;
 
 namespace PmtsControlLibrary.WEBPlugin
 {
@@ -40,19 +41,6 @@ namespace PmtsControlLibrary.WEBPlugin
             return retHas;
         }
 
-        private string getAgeFromBirthday(string birthday)
-        {
-            TimeSpan nowTick = new TimeSpan(DateTime.Now.Ticks);
-            TimeSpan birTick = new TimeSpan(Convert.ToDateTime(birthday).Ticks);
-            TimeSpan diffTick = nowTick.Subtract(birTick).Duration();
-            return Math.Floor((diffTick.TotalDays / 365)).ToString();
-        }
-
-        private string getSexNameByValue(string sex)
-        {
-            return "1" == sex ? "男" : "女";
-        }
-
         /// <summary>
         /// 取得用户基本信息
         /// </summary>
@@ -60,21 +48,47 @@ namespace PmtsControlLibrary.WEBPlugin
         public Hashtable GetUserInfoByUID()
         {
             Hashtable info = new Hashtable();
-            info["realname"] = UserInfoStatic.UserInfo.realname;
-            info["name"] = UserInfoStatic.UserInfo.username;
-            info["sex"] = getSexNameByValue(UserInfoStatic.UserInfo.sex);
-            info["age"] = getAgeFromBirthday(UserInfoStatic.UserInfo.birthday);
-            info["area"] = UserInfoStatic.UserInfo.workingplace;
-            info["pType"] = UserInfoStatic.UserInfo.position;
-            info["wYear"] = UserInfoStatic.UserInfo.workingplace;
-            info["wArea"] = "";
-            info["O"] = UserInfoStatic.UserInfo.observe;
-            info["R"] = UserInfoStatic.UserInfo.rember;
-            info["T"] = UserInfoStatic.UserInfo.thinking;
-            info["E"] = UserInfoStatic.UserInfo.emotion;
-            info["W"] = UserInfoStatic.UserInfo.willpower;
-            info["HRVS"] = UserInfoStatic.UserInfo.hrvscore;
-            info["mr"] = UserInfoStatic.UserInfo.medicalhistory;
+            if (UserInfoStatic.ipAdd != null) // 非游客
+            {
+                info["realname"] = UserInfoStatic.UserInfo.realname;
+                info["name"] = UserInfoStatic.UserInfo.username;
+                info["sex"] = CommonUtils.GetSexNameByValue(UserInfoStatic.UserInfo.sex);
+                info["age"] = CommonUtils.GetAgeFromBirthday(UserInfoStatic.UserInfo.birthday);
+                info["area"] = UserInfoStatic.UserInfo.workingplace;
+                info["pType"] = UserInfoStatic.UserInfo.position;
+                info["wYear"] = UserInfoStatic.UserInfo.workingplace;
+                info["wArea"] = "";
+                info["O"] = UserInfoStatic.UserInfo.observe;
+                info["R"] = UserInfoStatic.UserInfo.rember;
+                info["T"] = UserInfoStatic.UserInfo.thinking;
+                info["E"] = UserInfoStatic.UserInfo.emotion;
+                info["W"] = UserInfoStatic.UserInfo.willpower;
+                info["HRVS"] = UserInfoStatic.UserInfo.hrvscore;
+                info["mr"] = UserInfoStatic.UserInfo.medicalhistory;
+            }
+            else //游客
+            {
+            	info["name"] = "游客";
+            	info["sex"] = "1";
+            	info["age"] = "";
+            	info["area"] = "未知";
+            	info["pType"] = "未知";
+            	info["wYear"] = "0";
+            	info["wArea"] = "未知";
+            	info["O"] = 0;
+            	info["R"] = 0;
+            	info["T"] = 0;
+            	info["E"] = 0;
+            	info["W"] = 0;
+            	info["HRVS"] = 0;
+            	info["mr"] = "";
+                /*
+                medal["ALLC"] = 0;
+                medal["ALLT"] = 0;
+                medal["ALLE"] = 0;
+                */
+            }
+            
             return info;
         }
         /// <summary>

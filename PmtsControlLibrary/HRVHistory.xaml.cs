@@ -65,7 +65,7 @@ namespace PmtsControlLibrary
         /// </summary>
         private void GetHrvHistoryData()
         {
-            historyArr = hrvd.GetConstAndHistoryListData();
+            historyArr = hrvd.GetConstAndHistoryListData(0,0);
             _totalPage = Math.Ceiling(Convert.ToDouble(historyArr.Count / Convert.ToDouble(_num)));
             if (historyArr.Count / Convert.ToDouble(_num) > 1)
             {

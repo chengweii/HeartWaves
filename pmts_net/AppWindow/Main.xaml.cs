@@ -115,8 +115,6 @@ namespace pmts_net.AppWindow
             mainButtonAuthCheck();
         }
 
-        private static Hashtable mainButtonNameList = null;
-
         private void mainButtonAuthCheck()
         {
             if (!UserInfoStatic.hasAuth("教学资源"))
@@ -535,7 +533,7 @@ namespace pmts_net.AppWindow
                 info.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
                 info.VerticalAlignment = System.Windows.VerticalAlignment.Top;
                 info.Margin = new Thickness(0, 200, 280, 0);
-                info.UpDate(SystemMeg);
+                info.UpDate();
                 System.Windows.Controls.Panel.SetZIndex(info, 100);
                 this.MainWindow.Children.Add(info);
                 info.Unloaded += OnClosePersonalInfo;

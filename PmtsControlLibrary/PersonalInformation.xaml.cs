@@ -74,7 +74,7 @@ namespace PmtsControlLibrary
         /// <summary>
         /// 读取数据库并刷新数据
         /// </summary>
-        public void UpDate(Hashtable Meg)
+        public void UpDate()
         {
             radarData = userWEB.GetUserRadarData();
             DrawRadar();

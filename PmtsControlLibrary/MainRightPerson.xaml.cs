@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using PmtsControlLibrary.DBPlugin;
 using System.Windows.Threading;
 using PmtsControlLibrary.WEBPlugin;
+using PmtsControlLibrary.Common;
 
 
 namespace PmtsControlLibrary
@@ -43,32 +44,6 @@ namespace PmtsControlLibrary
         {
             //lich
             InitializeComponent();
-            if (UserInfoStatic.ipAdd != null) // 非游客
-            {
-                uInfo = udbWEB.GetUserInfoByUID();
-            }
-            else //游客
-            {
-                uInfo["name"] = "游客";
-                uInfo["sex"] = "1";
-                uInfo["age"] = "";
-                uInfo["area"] = "未知";
-                uInfo["pType"] = "未知";
-                uInfo["wYear"] = "0";
-                uInfo["wArea"] = "未知";
-                uInfo["O"] = 0;
-                uInfo["R"] = 0;
-                uInfo["T"] = 0;
-                uInfo["E"] = 0;
-                uInfo["W"] = 0;
-                uInfo["HRVS"] = 0;
-                uInfo["mr"] = "";
-                /*
-                medal["ALLC"] = 0;
-                medal["ALLT"] = 0;
-                medal["ALLE"] = 0;
-                */
-            }
             if (UserInfoStatic.ipAdd == null)
             {
                 UserInfoStatic.UserSex = "－";
@@ -87,23 +62,7 @@ namespace PmtsControlLibrary
         public void OnRefreshInfo()
         {
             medal = udbWEB.GetUserMedal();
-            if (uInfo != null)
-            {
-                this.UserNameText.Text = WELCOME_MSG + uInfo["name"].ToString();
-                // this.PoliceTypeText.Text = uInfo["pType"].ToString();
-                if (!String.IsNullOrEmpty(uInfo["age"].ToString()))
-                {
-                    this.AgeText.Text = uInfo["age"].ToString();
-                }
-                this.SexText.Text = uInfo["sex"].ToString();
-                //this.AreaText.Text = uInfo["area"].ToString();
-                UserInfoStatic.O = Convert.ToDouble(uInfo["O"]);
-                UserInfoStatic.R = Convert.ToDouble(uInfo["R"]);
-                UserInfoStatic.T = Convert.ToDouble(uInfo["T"]);
-                UserInfoStatic.E = Convert.ToDouble(uInfo["E"]);
-                UserInfoStatic.W = Convert.ToDouble(uInfo["W"]);
-                UserInfoStatic.HRVS = Convert.ToDouble(uInfo["HRVS"]);
-            }
+            updateUserInfo();
 
             /*
             if (medal != null)
@@ -160,6 +119,19 @@ namespace PmtsControlLibrary
         {
             get { return this.WorkMoodButton; }
         }
+
+        public void updateUserInfo() {
+            uInfo = udbWEB.GetUserInfoByUID();
+            this.UserNameText.Text = WELCOME_MSG + uInfo["name"].ToString();
+            this.SexText.Text = uInfo["sex"].ToString();
+            this.AgeText.Text = uInfo["age"].ToString();
+            UserInfoStatic.O = Convert.ToDouble(uInfo["O"]);
+            UserInfoStatic.R = Convert.ToDouble(uInfo["R"]);
+            UserInfoStatic.T = Convert.ToDouble(uInfo["T"]);
+            UserInfoStatic.E = Convert.ToDouble(uInfo["E"]);
+            UserInfoStatic.W = Convert.ToDouble(uInfo["W"]);
+            UserInfoStatic.HRVS = Convert.ToDouble(uInfo["HRVS"]);
+        }
         /// <summary>
         /// 空间被载入后发生事件
         /// </summary>
@@ -167,21 +139,7 @@ namespace PmtsControlLibrary
         /// <param name="e"></param>
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            //lich
-            if (uInfo != null)
-            {
-                this.UserNameText.Text = WELCOME_MSG + uInfo["name"].ToString();
-                this.SexText.Text = uInfo["sex"].ToString();
-                this.AgeText.Text = uInfo["age"].ToString();
-                //this.usermood.Source=
-                //this.AreaText.Text = uInfo["area"].ToString();
-                UserInfoStatic.O = Convert.ToDouble(uInfo["O"]);
-                UserInfoStatic.R = Convert.ToDouble(uInfo["R"]);
-                UserInfoStatic.T = Convert.ToDouble(uInfo["T"]);
-                UserInfoStatic.E = Convert.ToDouble(uInfo["E"]);
-                UserInfoStatic.W = Convert.ToDouble(uInfo["W"]);
-                UserInfoStatic.HRVS = Convert.ToDouble(uInfo["HRVS"]);
-            }
+        	updateUserInfo();
             /*
             if (medal != null)
             {
