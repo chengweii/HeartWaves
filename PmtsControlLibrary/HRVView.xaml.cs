@@ -70,7 +70,7 @@ namespace PmtsControlLibrary
 
         private Breathing breath = null;//呼吸助手
 
-        private HRVControlWEB hrvdb = null;
+        private static HRVControlWEB hrvdb = new HRVControlWEB();
 
         /// <summary>
         /// 构造函数
@@ -87,8 +87,6 @@ namespace PmtsControlLibrary
             systemMeg = Meg;
             MusicPlayer = new MediaPlayer(); ;
             //lich
-            if (UserInfoStatic.ipAdd != null)
-            	hrvdb = new HRVControlWEB(systemMeg);
             if (ppgChart != null)
             {
                 ppgChart.Visibility = System.Windows.Visibility.Hidden;

@@ -47,7 +47,7 @@ namespace PmtsControlLibrary
   //      public TrainHandleList tl = null;
         public int oldGameType = 70;
         
-        private HRVControlWEB hrvdb = null;
+        private static HRVControlWEB hrvdb = new HRVControlWEB();
 
         public TrainCenter(Grid Main)
         {

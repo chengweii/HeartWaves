@@ -13,15 +13,11 @@ namespace PmtsControlLibrary.WEBPlugin
 {
     public class HRVControlWEB
     {
-        private String user = "";
-        private Hashtable meg = new Hashtable();
         /// <summary>
         /// 构造函数
         /// </summary>
-        public HRVControlWEB(Hashtable SystemMeg)
+        public HRVControlWEB()
         {
-            meg = SystemMeg;
-            user = SystemMeg["UserID"].ToString();
         }
 
         /// <summary>
@@ -111,7 +107,7 @@ namespace PmtsControlLibrary.WEBPlugin
             {
                 var request = new DeleteRecordRequest()
                 {
-                    user_id = user,
+                    user_id = UserInfoStatic.UserInfo.id,
                     r_id = string.Join(",", ids.ToArray())
 
                 };
@@ -144,7 +140,7 @@ namespace PmtsControlLibrary.WEBPlugin
             {
                 var request = new RecordDetailRequest()
                 {
-                    user_id = user,
+                    user_id = UserInfoStatic.UserInfo.id,
                     r_id = Convert.ToString(SID)
                 };
                 var resp = HeartWavesSDK.API.APIClient._GetRecordDetail(request);
@@ -198,7 +194,7 @@ namespace PmtsControlLibrary.WEBPlugin
             {
                 var request = new RecordDetailRequest()
                 {
-                    user_id = user,
+                    user_id = UserInfoStatic.UserInfo.id,
                     r_id = Convert.ToString(SID)
                 };
                 var resp = HeartWavesSDK.API.APIClient._GetRecordDetail(request);
@@ -247,7 +243,7 @@ namespace PmtsControlLibrary.WEBPlugin
             {
                 var request = new GetRecordRequest()
                 {
-                    user_id = user,
+                    user_id = UserInfoStatic.UserInfo.id,
                     type = type,
                     pageNum = pageNum
                 };

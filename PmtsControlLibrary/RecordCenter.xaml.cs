@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections;
+using PmtsControlLibrary.WEBPlugin;
 
 namespace PmtsControlLibrary
 {
@@ -34,6 +35,9 @@ namespace PmtsControlLibrary
         private double _totalPage = 0;//总页数
 
         private int _showType = 1;//显示模式
+        
+        private static HRVControlWEB hrvdb = new HRVControlWEB();
+        
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -88,6 +92,8 @@ namespace PmtsControlLibrary
                             HrvHistoryArr.Add(MainRightPerson.TmpHrvRecord[i]);
                     }
                 }
+            }else{
+            	HrvHistoryArr=hrvdb.GetConstAndHistoryListData(1,1,"1","0");
             }
   /*          _totalPage = Math.Ceiling(Convert.ToDouble(HrvHistoryArr.Count / Convert.ToDouble(_num)));
             if (HrvHistoryArr.Count / Convert.ToDouble(_num) > 1)
@@ -123,6 +129,8 @@ namespace PmtsControlLibrary
                             TrainHistoryArr.Add(MainRightPerson.TmpHrvRecord[i]);
                     }
                 }
+            }else{
+            	TrainHistoryArr=hrvdb.GetConstAndHistoryListData(1,1,"2","0");
             }
         }
 
@@ -141,6 +149,8 @@ namespace PmtsControlLibrary
                             RelaxHistoryArr.Add(MainRightPerson.TmpHrvRecord[i]);
                     }
                 }
+            }else{
+            	RelaxHistoryArr=hrvdb.GetConstAndHistoryListData(1,1,"3","0");
             }
         }
 

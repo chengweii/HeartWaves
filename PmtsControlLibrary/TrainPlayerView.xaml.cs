@@ -48,7 +48,7 @@ namespace PmtsControlLibrary
         private bool hrvPromptFlg = false;//HRV耳夹脱落提示框是否弹出，false没有弹出，true弹出
         private HRVPrompt hrvp = null;//HRV耳夹脱落提示框
 
-        private HRVControlWEB hrvdb = null;
+        private static HRVControlWEB hrvdb = new HRVControlWEB();
         
         public TrainPlayerView()
         {

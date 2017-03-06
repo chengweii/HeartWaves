@@ -54,7 +54,7 @@ namespace PmtsControlLibrary
         private ArrayList EPData = new ArrayList();//EP值数组
         private double EPScore = 0;//EP得分
         
-        private HRVControlWEB hrvdb = null;
+        private static HRVControlWEB hrvdb = new HRVControlWEB();
         
         public RecordPlayerView()
         {

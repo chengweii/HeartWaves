@@ -23,7 +23,7 @@ namespace PmtsControlLibrary
     public partial class HRVHistory : UserControl
     {
         private ArrayList historyArr = new ArrayList();
-        private HRVControlWEB hrvd = null;
+        private static HRVControlWEB hrvdb = new HRVControlWEB();
         private int _nowPage = 1;//当前页号
         private int _num = 15;//一页默认数据量
         private double _totalPage = 0;//总页数
@@ -35,10 +35,6 @@ namespace PmtsControlLibrary
         {
             InitializeComponent();
             historyArr   = new ArrayList();
-            if (hrvd == null)
-            {
-                hrvd = new HRVControlWEB(SystemMeg);
-            }
             GetHrvHistoryData();
             //button声音
             Grid uiButton = this.Content as Grid;
@@ -65,7 +61,7 @@ namespace PmtsControlLibrary
         /// </summary>
         private void GetHrvHistoryData()
         {
-            historyArr = hrvd.GetConstAndHistoryListData(0,0,"1","0");
+            historyArr = hrvdb.GetConstAndHistoryListData(0, 0, "1", "0");
             _totalPage = Math.Ceiling(Convert.ToDouble(historyArr.Count / Convert.ToDouble(_num)));
             if (historyArr.Count / Convert.ToDouble(_num) > 1)
             {
@@ -91,8 +87,8 @@ namespace PmtsControlLibrary
         {
             Button tmp = (Button)sender;
             int sid = Convert.ToInt32(tmp.Tag);
-            Hashtable hInfo = hrvd.GetHistoryByID(sid);
-            ArrayList markList = hrvd.GetMarkByID(sid);
+            Hashtable hInfo = hrvdb.GetHistoryByID(sid);
+            ArrayList markList = hrvdb.GetMarkByID(sid);
             if (hInfo.Count > 0)
             {
                 hInfo["HRVMark"] = markList;
@@ -131,7 +127,7 @@ namespace PmtsControlLibrary
                 Button tmp = (Button)sender;
                 ArrayList para = new ArrayList();
                 para.Add(tmp.Tag);
-                hrvd.DeleteHrvData(para);
+                hrvdb.DeleteHrvData(para);
                 for (int i = 0; i < historyArr.Count; i++)
                 {
                     String scaleIndex = ConvertFromHashToString((Hashtable)historyArr[i], "id");
@@ -321,7 +317,7 @@ namespace PmtsControlLibrary
                     }
                 }
                 OnDataOrPageChanged(_nowPage, _num);
-                hrvd.DeleteHrvData(delArr);
+                hrvdb.DeleteHrvData(delArr);
             }
         }
         /// <summary>

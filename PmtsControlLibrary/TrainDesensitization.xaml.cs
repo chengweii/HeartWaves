@@ -45,7 +45,7 @@ namespace PmtsControlLibrary
         private ArrayList PPGData = new ArrayList();//PPG折线图
         private ArrayList EPData = new ArrayList();//EP值数组
         
-        private HRVControlWEB hrvdb = null;
+        private static HRVControlWEB hrvdb = new HRVControlWEB();
 
         public TrainDesensitization()
         {
