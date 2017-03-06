@@ -112,8 +112,35 @@ namespace pmts_net.AppWindow
             //byte[] send = Encoding.ASCII.GetBytes("1," + UserInfoStatic.UserID);
             //mySocket.AsyncSend(send);
 
-             
+            mainButtonAuthCheck();
         }
+
+        private static Hashtable mainButtonNameList = null;
+
+        private void mainButtonAuthCheck()
+        {
+            if (!UserInfoStatic.hasAuth("教学资源"))
+            {
+                ClassBtn.Click -= MainLogoClass_MouseDown;
+            }
+            if (!UserInfoStatic.hasAuth("监测中心"))
+            {
+                HRVBtn.Click -= MainLogoHRV_MouseDown;
+            }
+            if (!UserInfoStatic.hasAuth("训练中心"))
+            {
+                TrainBtn.Click -= MainLogoTrain_MouseDown;
+            }
+            if (!UserInfoStatic.hasAuth("放松中心"))
+            {
+                ScaleBtn.Click -= MainLogoScale_MouseDown;
+            }
+            if (!UserInfoStatic.hasAuth("记录中心"))
+            {
+                RecordBtn.Click -= MainLogoRecord_MouseDown;
+            }
+        }
+
         //鼠标在button上
         void ui_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
@@ -214,14 +241,14 @@ namespace pmts_net.AppWindow
                     }
                     break;
                 case WM_GAMESTART:
- //                       PmtsMessageBox.CustomControl1.Show("收到开始信息。", PmtsMessageBox.ServerMessageBoxButtonType.OK);
- //                   tc.tl.startGame();
+                    //                       PmtsMessageBox.CustomControl1.Show("收到开始信息。", PmtsMessageBox.ServerMessageBoxButtonType.OK);
+                    //                   tc.tl.startGame();
                     tc.startGame();
                     break;
                 case WM_GAMESTOP:
-                     //                  ControlTrain.OnGameStop(m.WParam, m.LParam);
-    //                                    PmtsMessageBox.CustomControl1.Show("收到停止信息。", PmtsMessageBox.ServerMessageBoxButtonType.OK);
-    //                tc.tl.stopGame();
+                    //                  ControlTrain.OnGameStop(m.WParam, m.LParam);
+                    //                                    PmtsMessageBox.CustomControl1.Show("收到停止信息。", PmtsMessageBox.ServerMessageBoxButtonType.OK);
+                    //                tc.tl.stopGame();
                     tc.stopGame();
                     break;
                 case WM_GAMEONLINE:
@@ -234,8 +261,8 @@ namespace pmts_net.AppWindow
                     break;
                 case WM_GAMEEXIT:
                     //                   ControlTrain.OnGameExit(m.WParam, m.LParam);
- //                   PmtsMessageBox.CustomControl1.Show("收到退出信息。", PmtsMessageBox.ServerMessageBoxButtonType.OK);
- //                   tc.tl.exitGame();
+                    //                   PmtsMessageBox.CustomControl1.Show("收到退出信息。", PmtsMessageBox.ServerMessageBoxButtonType.OK);
+                    //                   tc.tl.exitGame();
                     tc.exitGame();
                     break;
                 default:
@@ -259,7 +286,7 @@ namespace pmts_net.AppWindow
             //notifyIcon.MouseDoubleClick += OnNotifyIconDoubleClick;
             //lich
             //this.notifyIcon.ShowBalloonTip(500);
-             
+
         }
         /// <summary>
         /// 关闭窗口
@@ -351,8 +378,8 @@ namespace pmts_net.AppWindow
             hv = new HRVView(this.MainWindow, SystemMeg, this.MainHelpBut);
             hv.VerticalAlignment = System.Windows.VerticalAlignment.Center;
             hv.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-//lich
-//            hv.Margin = new Thickness(80, 0, 0, 0);
+            //lich
+            //            hv.Margin = new Thickness(80, 0, 0, 0);
             hv.Margin = new Thickness(50, 0, 0, 0);
             //hv.StartButton.Click += OnStartOrStopHrv;//暂时测试用按钮。
             this.MainWindow.Children.Add(hv);
@@ -373,7 +400,7 @@ namespace pmts_net.AppWindow
         /// <param name="e"></param>
         private void MainLogoScale_MouseDown(object sender, RoutedEventArgs e)
         {
-          
+
             this.MainHelpBut.Tag = 4;
             sp = new RecordPlayerView(this.MainWindow);
             sp.Margin = new Thickness(80, 55, 80, 12);
@@ -400,7 +427,7 @@ namespace pmts_net.AppWindow
             this.mainLogos.Visibility = System.Windows.Visibility.Hidden;
             this.mr.Visibility = System.Windows.Visibility.Hidden;
         }
-        
+
         /// <summary>
         /// 关闭HRV详情窗口
         /// </summary>
@@ -412,7 +439,7 @@ namespace pmts_net.AppWindow
             //hrvd = null;
             //this.MainWindow.Children.Add(hv);
         }
-        
+
         ///// <summary>
         ///// 呼吸助手的点击事件
         ///// </summary>
@@ -428,7 +455,7 @@ namespace pmts_net.AppWindow
         //    this.LayoutRoot.Children.Add(breath);
         //    this.BreathButton.IsEnabled = false;
         //}
-        
+
         /// <summary>
         /// 返回主界面，清空MainWindow中的控件
         /// </summary>
@@ -441,7 +468,7 @@ namespace pmts_net.AppWindow
             //tc = null;//训练窗口
             //cpv = null;//课程窗口
             //hv = null;//HRV曲线窗口
-//0904
+            //0904
             MainImage.ImageSource = new BitmapImage(new Uri("./UI/back.jpg", UriKind.Relative));
             this.mainLogos.Visibility = System.Windows.Visibility.Visible;
             this.mr.Visibility = System.Windows.Visibility.Visible;
@@ -451,7 +478,7 @@ namespace pmts_net.AppWindow
             main.Margin = new Thickness(0, -20, 0, 0);
             main.VerticalAlignment = System.Windows.VerticalAlignment.Center;
             main.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            
+
         }
 
         private void OnDispose(object source, EventArgs e)
@@ -478,7 +505,7 @@ namespace pmts_net.AppWindow
         /// <param name="e"></param>
         private void OnMoodWindow(object sender, RoutedEventArgs e)
         {
-            if (hostIP==null)
+            if (hostIP == null)
             {
                 hostIP = "127.0.0.1";
             }
@@ -620,7 +647,7 @@ namespace pmts_net.AppWindow
 
         private void MainLogoClass_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-             MediaPlayer p = new MediaPlayer();
+            MediaPlayer p = new MediaPlayer();
             p.Open(new Uri(@"Train/game/Button.mp3", UriKind.Relative));
             p.Play();
         }
