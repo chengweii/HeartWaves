@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
+using PmtsControlLibrary.Common;
 
 namespace PmtsControlLibrary.WEBPlugin
 {
@@ -21,7 +22,7 @@ namespace PmtsControlLibrary.WEBPlugin
         }
         public GetUserInfoWEB()
         {
-            user = UserInfoStatic.UserID;
+            user = UserInfoStatic.UserInfo.id;
         }
 
         /// <summary>
@@ -40,19 +41,6 @@ namespace PmtsControlLibrary.WEBPlugin
             return retHas;
         }
 
-        private string getAgeFromBirthday(string birthday)
-        {
-            TimeSpan nowTick = new TimeSpan(DateTime.Now.Ticks);
-            TimeSpan birTick = new TimeSpan(Convert.ToDateTime(birthday).Ticks);
-            TimeSpan diffTick = nowTick.Subtract(birTick).Duration();
-            return Math.Floor((diffTick.TotalDays / 365)).ToString();
-        }
-
-        private string getSexNameByValue(string sex)
-        {
-            return "1" == sex ? "男" : "女";
-        }
-
         /// <summary>
         /// 取得用户基本信息
         /// </summary>
@@ -62,8 +50,8 @@ namespace PmtsControlLibrary.WEBPlugin
             Hashtable info = new Hashtable();
             info["realname"] = UserInfoStatic.UserInfo.realname;
             info["name"] = UserInfoStatic.UserInfo.username;
-            info["sex"] = getSexNameByValue(UserInfoStatic.UserInfo.sex);
-            info["age"] = getAgeFromBirthday(UserInfoStatic.UserInfo.birthday);
+            info["sex"] = CommonUtils.GetSexNameByValue(UserInfoStatic.UserInfo.sex);
+            info["age"] = CommonUtils.GetAgeFromBirthday(UserInfoStatic.UserInfo.birthday);
             info["area"] = UserInfoStatic.UserInfo.workingplace;
             info["pType"] = UserInfoStatic.UserInfo.position;
             info["wYear"] = UserInfoStatic.UserInfo.workingplace;
@@ -75,6 +63,7 @@ namespace PmtsControlLibrary.WEBPlugin
             info["W"] = UserInfoStatic.UserInfo.willpower;
             info["HRVS"] = UserInfoStatic.UserInfo.hrvscore;
             info["mr"] = UserInfoStatic.UserInfo.medicalhistory;
+
             return info;
         }
         /// <summary>

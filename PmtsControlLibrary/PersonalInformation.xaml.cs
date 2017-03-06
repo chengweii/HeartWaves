@@ -74,7 +74,7 @@ namespace PmtsControlLibrary
         /// <summary>
         /// 读取数据库并刷新数据
         /// </summary>
-        public void UpDate(Hashtable Meg)
+        public void UpDate()
         {
             radarData = userWEB.GetUserRadarData();
             DrawRadar();
@@ -270,8 +270,7 @@ namespace PmtsControlLibrary
             {
                 PmtsMessageBox.CustomControl1.Show("两次输入的密码不同", PmtsMessageBox.ServerMessageBoxButtonType.OK);
             }
-
-            if (String.IsNullOrEmpty(this.TextName.Text))
+            else if (String.IsNullOrEmpty(this.TextName.Text))
             {
                 PmtsMessageBox.CustomControl1.Show("请输入姓名", PmtsMessageBox.ServerMessageBoxButtonType.OK);
             }

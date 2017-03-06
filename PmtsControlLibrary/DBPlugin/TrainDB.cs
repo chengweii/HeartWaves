@@ -168,7 +168,7 @@ namespace PmtsControlLibrary.DBPlugin
                 {
                     DBCon.Open();
                 }
-                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserID;
+                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserInfo.id;
                 MySqlDataReader myRead = cmd.ExecuteReader();
                 while (myRead.Read())
                 {
@@ -241,7 +241,7 @@ namespace PmtsControlLibrary.DBPlugin
                 }
  //               cmd.Parameters.Add("?trid", MySqlDbType.Int32).Value = trInfo["trid"];
                 cmd.Parameters.Add("?tid", MySqlDbType.Int32).Value = trInfo["tid"];
-                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserID;
+                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserInfo.id;
                 cmd.Parameters.Add("?gate", MySqlDbType.Int32).Value = trInfo["gate"];
                 cmd.Parameters.Add("?score", MySqlDbType.Double).Value = trInfo["score"];
                 cmd.Parameters.Add("?diff", MySqlDbType.Double).Value = trInfo["diff"];
@@ -311,7 +311,7 @@ namespace PmtsControlLibrary.DBPlugin
                 {
                     DBCon.Open();
                 }
-                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserID;
+                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserInfo.id;
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException ex)
@@ -340,7 +340,7 @@ namespace PmtsControlLibrary.DBPlugin
                 {
                     DBCon.Open();
                 }
-                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserID;
+                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserInfo.id;
                 cmd.Parameters.Add("?tid", MySqlDbType.Int32).Value = tid;
                 MySqlDataReader myRead = cmd.ExecuteReader();
                 while (myRead.Read())
@@ -404,7 +404,7 @@ namespace PmtsControlLibrary.DBPlugin
                 }
                 cmd.Parameters.Add("?trid", MySqlDbType.Int32).Value = trid;
                 cmd.Parameters.Add("?tid", MySqlDbType.Int32).Value = tid;
-                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserID;
+                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserInfo.id;
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException ex)

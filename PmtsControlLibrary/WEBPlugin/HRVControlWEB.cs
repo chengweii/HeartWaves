@@ -13,15 +13,11 @@ namespace PmtsControlLibrary.WEBPlugin
 {
     public class HRVControlWEB
     {
-        private String user = "";
-        private Hashtable meg = new Hashtable();
         /// <summary>
         /// 构造函数
         /// </summary>
-        public HRVControlWEB(Hashtable SystemMeg)
+        public HRVControlWEB()
         {
-            meg = SystemMeg;
-            user = SystemMeg["UserID"].ToString();
         }
 
         /// <summary>
@@ -111,7 +107,7 @@ namespace PmtsControlLibrary.WEBPlugin
             {
                 var request = new DeleteRecordRequest()
                 {
-                    user_id = user,
+                    user_id = UserInfoStatic.UserInfo.id,
                     r_id = string.Join(",", ids.ToArray())
 
                 };
@@ -133,16 +129,6 @@ namespace PmtsControlLibrary.WEBPlugin
         }
 
         /// <summary>
-        /// 常量列表和历史记录列表查询
-        /// </summary>
-        /// <param name="where">常量列表的条件</param>
-        public ArrayList GetConstAndHistoryListData(int timeType = 0, int mood = 0)
-        {
-            ArrayList retArr = new ArrayList();
-            return retArr;
-        }
-
-        /// <summary>
         /// 根据历史记录ID取得详细信息
         /// </summary>
         /// <returns></returns>
@@ -154,7 +140,7 @@ namespace PmtsControlLibrary.WEBPlugin
             {
                 var request = new RecordDetailRequest()
                 {
-                    user_id = user,
+                    user_id = UserInfoStatic.UserInfo.id,
                     r_id = Convert.ToString(SID)
                 };
                 var resp = HeartWavesSDK.API.APIClient._GetRecordDetail(request);
@@ -180,11 +166,9 @@ namespace PmtsControlLibrary.WEBPlugin
                         hInfo["report"] = resp.data.datas.report;
                         hInfo["NB"] = resp.data.datas.nb;
                         hInfo["StartTime"] = resp.data.datas.s_time;
-
-                        ArrayList hrvData = MyJSONHelper.JsonToObject<ArrayList>(resp.data.datas.hrvdata);
-
-                        hInfo["Time"] = hrvData.Count / 2.0;
-                        hInfo["hrvData"] = hrvData;
+                        var hrvdata = CommonUtils.getArrayListFromJson(resp.data.datas.hrvdata);
+                        hInfo["Time"] = hrvdata.Count / 2.0;
+                        hInfo["hrvData"] = resp.data.datas.hrvdata;
                     }
                 }
             }
@@ -208,7 +192,7 @@ namespace PmtsControlLibrary.WEBPlugin
             {
                 var request = new RecordDetailRequest()
                 {
-                    user_id = user,
+                    user_id = UserInfoStatic.UserInfo.id,
                     r_id = Convert.ToString(SID)
                 };
                 var resp = HeartWavesSDK.API.APIClient._GetRecordDetail(request);
@@ -225,9 +209,7 @@ namespace PmtsControlLibrary.WEBPlugin
                 {
                     if (resp.data.datas != null)
                     {
-                        ArrayList hrvmark = MyJSONHelper.JsonToObject<ArrayList>(resp.data.datas.hrvmark);
-
-                        foreach (var entity in hrvmark)
+                        foreach (var entity in resp.data.datas.hrvdata)
                         {
                             Hashtable markInfo = new Hashtable();
                             markInfo["Time"] = resp.data.datas.s_time;
@@ -257,7 +239,7 @@ namespace PmtsControlLibrary.WEBPlugin
             {
                 var request = new GetRecordRequest()
                 {
-                    user_id = user,
+                    user_id = UserInfoStatic.UserInfo.id,
                     type = type,
                     pageNum = pageNum
                 };
@@ -275,22 +257,41 @@ namespace PmtsControlLibrary.WEBPlugin
                 {
                     if (resp.data.data != null)
                     {
-                        int i = 0;
                         foreach (var entity in resp.data.data)
                         {
-                            i++;
-                            Hashtable tmp = new Hashtable();
-                            tmp["arrayIndex"] = i;
-                            tmp["mhrt"] = entity.fmean;
-                            tmp["hrvScore"] = entity.hrvscore;
-                            tmp["totalScore"] = entity.synthesisscore;
-                            tmp["pressure"] = entity.pressureindex;
-                            tmp["adjust"] = entity.deflatingindex;
-                            tmp["stable"] = entity.stabilityindex;
-                            tmp["id"] = entity.id;
-                            tmp["startTime"] = entity.s_time;
-                            tmp["totalTime"] = entity.time_length;
-                            retArr.Add(tmp);
+                            UserHrvRecord hrvRecord = new UserHrvRecord();
+                            hrvRecord.HRVData = CommonUtils.getArrayListFromJson(entity.hrvdata);
+                            hrvRecord.EPData = CommonUtils.getArrayListFromJson(entity.epdata);
+                            hrvRecord.MarkData = CommonUtils.getArrayListFromJson(entity.hrvmark);
+                            hrvRecord.PWRData = CommonUtils.getArrayListFromJson(entity.ibidata);
+                            hrvRecord.TimeData.Add(entity.fmean);
+                            hrvRecord.TimeData.Add(entity.fstddev);
+                            hrvRecord.TimeData.Add(entity.fsdnn);
+                            hrvRecord.TimeData.Add(entity.frmssd);
+                            hrvRecord.TimeData.Add(entity.fsd);
+                            hrvRecord.TimeData.Add(entity.fsdsd);
+                            hrvRecord.TimeData.Add(entity.fpnn);
+                            hrvRecord.FreData.Add(entity.tp);
+                            hrvRecord.FreData.Add(entity.vlf);
+                            hrvRecord.FreData.Add(entity.lf);
+                            hrvRecord.FreData.Add(entity.hf);
+                            hrvRecord.FreData.Add(entity.lhr);
+                            hrvRecord.FreData.Add(entity.lfnorm);
+                            hrvRecord.FreData.Add(entity.hfnorm);
+                            hrvRecord.AnsBalance = Convert.ToDouble(entity.nb);
+                            hrvRecord.Pressure = Convert.ToDouble(entity.pressureindex);
+                            hrvRecord.Adjust = Convert.ToDouble(entity.deflatingindex);
+                            hrvRecord.Stable = Convert.ToDouble(entity.stabilityindex);
+                            hrvRecord.Score = Convert.ToDouble(entity.synthesisscore);
+                            hrvRecord.HrvScore = Convert.ToDouble(entity.hrvscore);
+                            var hrvdata = CommonUtils.getArrayListFromJson(entity.hrvdata);
+                            hrvRecord.TimeLength = Convert.ToDouble(hrvdata.Count / 2.0);
+                            hrvRecord.StartTime = CommonUtils.getDateTime(entity.s_time);
+                            hrvRecord.EndTime = CommonUtils.getDateTime(entity.endtime);
+                            hrvRecord.RecordType = Convert.ToInt32(entity.recordtype);
+                            hrvRecord.Mood = string.IsNullOrWhiteSpace(entity.mood) ? 0 : Convert.ToInt32(entity.mood);
+                            hrvRecord.Report = Convert.ToString(entity.report);
+                            retArr.Add(hrvRecord);
                         }
                     }
                 }
@@ -301,6 +302,13 @@ namespace PmtsControlLibrary.WEBPlugin
             }
 
             return retArr;
+        }
+
+        /// <summary>
+        /// 更新EP完成状态
+        /// </summary>
+        public void UpEpLevel()
+        {
         }
 
     }

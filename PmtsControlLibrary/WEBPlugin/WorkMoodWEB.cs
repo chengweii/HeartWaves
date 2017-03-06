@@ -27,7 +27,7 @@ namespace PmtsControlLibrary.WEBPlugin
             {
                 var request = new MoodRequest()
                 {
-                    user_id = user,
+                    user_id = UserInfoStatic.UserInfo.id,
                     moodsocre = Convert.ToString(moodValue),
                     moodremark = moodInfo
                 };
@@ -71,7 +71,8 @@ namespace PmtsControlLibrary.WEBPlugin
             {
                 var request = new MoodlistRequest()
                 {
-                    user_id = UserInfoStatic.UserInfo.id
+                    user_id = UserInfoStatic.UserInfo.id,
+                    time = selectDate != null ? selectDate.ToString("yyyy-MM-dd") : null
                 };
                 var resp = HeartWavesSDK.API.APIClient._GetMoodlist(request);
 

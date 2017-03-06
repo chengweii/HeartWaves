@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using Microsoft.Win32;
 using Microsoft.Office.Interop.Excel;
 using pmts_net.HMRead;
+using PmtsControlLibrary.WEBPlugin;
 
 
 namespace PmtsControlLibrary
@@ -52,6 +53,9 @@ namespace PmtsControlLibrary
         private ArrayList PPGData = new ArrayList();//PPG折线图
         private ArrayList EPData = new ArrayList();//EP值数组
         private double EPScore = 0;//EP得分
+        
+        private static HRVControlWEB hrvdb = new HRVControlWEB();
+        
         public RecordPlayerView()
         {
             InitializeComponent();
@@ -243,8 +247,7 @@ namespace PmtsControlLibrary
                     //开始数据库操作
                     //lich
                     if (UserInfoStatic.ipAdd != null)
-                        //                    hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc);
-                        ;
+                    	hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc, PPGData,"3");
                     else
                     {
                         UserHrvRecord hrvRecord = new UserHrvRecord();

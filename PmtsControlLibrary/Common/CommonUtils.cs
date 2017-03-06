@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HeartWavesSDK.Common;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,5 +52,39 @@ namespace PmtsControlLibrary.Common
             }
             return value.ToString();
         }
+
+        public static string GetAgeFromBirthday(string birthday)
+        {
+            string result = "-";
+            if (!string.IsNullOrWhiteSpace(birthday))
+            {
+                TimeSpan nowTick = new TimeSpan(DateTime.Now.Ticks);
+                TimeSpan birTick = new TimeSpan(Convert.ToDateTime(birthday).Ticks);
+                TimeSpan diffTick = nowTick.Subtract(birTick).Duration();
+                result = Math.Floor((diffTick.TotalDays / 365)).ToString();
+            }
+            return result;
+        }
+
+        public static string GetSexNameByValue(string sex)
+        {
+            return "1" == sex ? "男" : "女";
+        }
+
+        public static ArrayList getArrayListFromJson(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json))
+                json = "[]";
+            return MyJSONHelper.JsonToObject<ArrayList>(json);
+        }
+
+        public static DateTime getDateTime(string datetime)
+        {
+            if (string.IsNullOrWhiteSpace(datetime))
+                return DateTime.MinValue;
+            else
+                return Convert.ToDateTime(datetime);
+        }
+
     }
 }

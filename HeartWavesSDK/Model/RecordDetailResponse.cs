@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,7 +32,8 @@ namespace HeartWavesSDK.Model
 
     public class RecordDetailDatum
     {
-        public string nickname { get; set; }
+        public string id { get; set; }
+        public string user_id { get; set; }
         public string rkind { get; set; }
         public string s_time { get; set; }
         public string time_length { get; set; }
@@ -46,6 +48,8 @@ namespace HeartWavesSDK.Model
         public string hrvdata { get; set; }
         public string ibidata { get; set; }
         public string pulsedata { get; set; }
+        public string rtime { get; set; }
+        public string type { get; set; }
         public string nb { get; set; }
         public string fmean { get; set; }
         public string fstddev { get; set; }
@@ -71,7 +75,12 @@ namespace HeartWavesSDK.Model
         public string fredata { get; set; }
         public string level { get; set; }
         public string timelength { get; set; }
+        public string recordtype { get; set; }
         public string report { get; set; }
-        public string recordtype { get; set; } 
+        public string heartvitalityupper { get; set; }
+        public string heartvitalitydowner { get; set; }
+        public string timetype { get; set; }
+        public string endtime { get; set; }
+        public string mood { get; set; }
     }
 }

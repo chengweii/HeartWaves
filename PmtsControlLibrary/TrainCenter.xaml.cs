@@ -16,6 +16,7 @@ using PmtsControlLibrary.DBPlugin;
 using System.IO;
 using pmts_net.HMRead;
 using System.Windows.Threading;
+using PmtsControlLibrary.WEBPlugin;
 
 namespace PmtsControlLibrary
 {
@@ -45,6 +46,8 @@ namespace PmtsControlLibrary
 
   //      public TrainHandleList tl = null;
         public int oldGameType = 70;
+        
+        private static HRVControlWEB hrvdb = new HRVControlWEB();
 
         public TrainCenter(Grid Main)
         {
@@ -552,8 +555,7 @@ namespace PmtsControlLibrary
                 //开始数据库操作
                 //lich
                 if (UserInfoStatic.ipAdd != null)
-                    //                    hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc);
-                    ;
+                	hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc, PPGData,"2");
                 else
                 {
                     UserHrvRecord hrvRecord = new UserHrvRecord();

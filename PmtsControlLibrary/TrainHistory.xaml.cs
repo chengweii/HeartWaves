@@ -140,8 +140,8 @@ namespace PmtsControlLibrary
             Hashtable info = (Hashtable)tmp.Tag;
             this.ListScrollView.Visibility = System.Windows.Visibility.Hidden;
             this.HistoryDetailGrid.Visibility = System.Windows.Visibility.Visible;
-            this.userID.Text = UserInfoStatic.UserID;
-            this.userName.Text = UserInfoStatic.UserName;
+            this.userID.Text = UserInfoStatic.UserInfo.id;
+            this.userName.Text = UserInfoStatic.UserInfo.username;
             this.nameText.Text = info["tname"].ToString();
             this.timeText.Text = info["time"].ToString();
             this.scoreText.Text = info["s"].ToString();

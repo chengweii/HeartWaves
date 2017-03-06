@@ -45,8 +45,8 @@ namespace PmtsControlLibrary
             this.TotalScore.Content = Math.Floor(Convert.ToDouble(HrvCalc["score"]));//综合得分///
             this.HRVScore.Content = HrvCalc["HRVScore"];//HRV得分///
             this.HeartRate.Content = Math.Floor(Convert.ToDouble(HrvCalc["fMean"]));//平均心率///
-            this.UseID.Content = UserInfoStatic.UserID;//用户ID
-            this.UseName.Content = UserInfoStatic.UserName;//用户姓名
+            this.UseID.Content = UserInfoStatic.UserInfo.id;//用户ID
+            this.UseName.Content = UserInfoStatic.UserInfo.username;//用户姓名
             MathAngle(Convert.ToDouble(HrvCalc["NB"]));//偏转神经兴奋性的指针///
             MathTime(Convert.ToInt32(Math.Floor(Convert.ToDouble(HrvCalc["Time"]))));//计算测量时间
             markArr = HrvCalc["HRVMark"] as ArrayList;//时间标记列表

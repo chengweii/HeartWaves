@@ -21,6 +21,8 @@ namespace HeartWavesSDK.API
             var requestData = requestModel == null ? "" : getUrlParams(requestModel);
             var uri = m_APIUrl + url;
             var json = SDKHttpRequest._POST(uri, requestData);
+            if (string.IsNullOrWhiteSpace(json))
+                json = "{}";
             return MyJSONHelper.JsonToObject<T>(json);
         }
         public static T Get<T>(string url, Object requestModel)
@@ -28,6 +30,8 @@ namespace HeartWavesSDK.API
             var requestData = requestModel == null ? "" : getUrlParams(requestModel);
             var uri = m_APIUrl + url + requestData;
             var json = SDKHttpRequest._GET(uri);
+            if (string.IsNullOrWhiteSpace(json))
+                json = "{}";
             return MyJSONHelper.JsonToObject<T>(json);
         }
 

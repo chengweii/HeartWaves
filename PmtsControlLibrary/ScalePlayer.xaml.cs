@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 using PmtsControlLibrary.DBPlugin;
+using PmtsControlLibrary.Common;
 
 namespace PmtsControlLibrary
 {
@@ -208,9 +209,9 @@ namespace PmtsControlLibrary
             xmlStr = ((xmlStr.Replace("&lt;", "<")).Replace("&gt;", ">")).Replace("&quot;", "\"");
             Hashtable node = this.NodeXml(xmlStr);
             this.TextScaleTime.Text = scaleInfo["time"].ToString();
-            this.TextName.Text = UserInfoStatic.UserName;
-            this.TextAge.Text = UserInfoStatic.UserAge.ToString();
-            this.TextSex.Text = UserInfoStatic.UserSex;
+            this.TextName.Text = UserInfoStatic.UserInfo.id;
+            this.TextAge.Text = CommonUtils.GetAgeFromBirthday(UserInfoStatic.UserInfo.birthday);
+            this.TextSex.Text = CommonUtils.GetSexNameByValue(UserInfoStatic.UserInfo.sex);
             this.TextWorkYear.Text = UserInfoStatic.UserWorkYear.ToString();
             this.TextWorkType.Text = UserInfoStatic.UserWorkType;
             this.TextScaleName.Text = node["scaleName"].ToString();

@@ -14,6 +14,7 @@ using System.Xml;
 using pmts_net.HMRead;
 using System.Windows.Threading;
 using System.Collections;
+using PmtsControlLibrary.WEBPlugin;
 
 
 namespace PmtsControlLibrary
@@ -38,6 +39,8 @@ namespace PmtsControlLibrary
         private ArrayList EPData = new ArrayList();//EP值数组
         private DateTime startTime;
 
+        private static HRVControlWEB hrvdb = new HRVControlWEB();
+        
         public FlashWindow(Hashtable t)
         {
             InitializeComponent();
@@ -244,8 +247,7 @@ namespace PmtsControlLibrary
                     //开始数据库操作
                     //lich
                     if (UserInfoStatic.ipAdd != null)
-                        //                    hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc);
-                        ;
+                    	hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc, PPGData,"2");
                     else
                     {
                         UserHrvRecord hrvRecord = new UserHrvRecord();
@@ -404,8 +406,7 @@ namespace PmtsControlLibrary
                 //开始数据库操作
                 //lich
                 if (UserInfoStatic.ipAdd != null)
-                    //                    hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc);
-                    ;
+                	hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc, PPGData,"2");
                 else
                 {
                     UserHrvRecord hrvRecord = new UserHrvRecord();

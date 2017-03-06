@@ -216,11 +216,11 @@
                         </Style>
                     </PCLib:MainLogoClass.Style>
                 </PCLib:MainLogoClass>-->
-                <Button Template="{StaticResource ResourceKey=MainLogoClass}" Tag="../Image/MainLogo/Class.png" Margin="0,0,0,0" Click="MainLogoClass_MouseDown" MouseEnter="MainLogoClass_MouseEnter" />
-                <Button Template="{StaticResource ResourceKey=MainLogoHRV}" Tag="../Image/MainLogo/HRV.png" Margin="30,0,0,80" Click="MainLogoHRV_MouseDown" MouseEnter="MainLogoClass_MouseEnter"/>
-                <Button Template="{StaticResource ResourceKey=MainLogoTrain}" Tag="../Image/MainLogo/Train.png" Margin="30,0,0,120" Click="MainLogoTrain_MouseDown" MouseEnter="MainLogoClass_MouseEnter"/>
-                <Button Template="{StaticResource ResourceKey=MainLogoRelax}" Tag="../Image/MainLogo/Relax.png" Margin="30,0,0,80" Click="MainLogoScale_MouseDown" MouseEnter="MainLogoClass_MouseEnter"/>
-                <Button Template="{StaticResource ResourceKey=MainLogoRecord}" Tag="../Image/MainLogo/Record.png" Margin="30,0,0,0" Click="MainLogoRecord_MouseDown" MouseEnter="MainLogoClass_MouseEnter"/>
+                <Button Template="{StaticResource ResourceKey=MainLogoClass}" Tag="../Image/MainLogo/Class.png" Margin="0,0,0,0" Name="ClassBtn" Click="MainLogoClass_MouseDown" MouseEnter="MainLogoClass_MouseEnter" />
+                <Button Template="{StaticResource ResourceKey=MainLogoHRV}" Tag="../Image/MainLogo/HRV.png" Margin="30,0,0,80" Name="HRVBtn" Click="MainLogoHRV_MouseDown" MouseEnter="MainLogoClass_MouseEnter"/>
+                <Button Template="{StaticResource ResourceKey=MainLogoTrain}" Tag="../Image/MainLogo/Train.png" Margin="30,0,0,120" Name="TrainBtn" Click="MainLogoTrain_MouseDown" MouseEnter="MainLogoClass_MouseEnter"/>
+                <Button Template="{StaticResource ResourceKey=MainLogoRelax}" Tag="../Image/MainLogo/Relax.png" Margin="30,0,0,80" Name="ScaleBtn" Click="MainLogoScale_MouseDown" MouseEnter="MainLogoClass_MouseEnter"/>
+                <Button Template="{StaticResource ResourceKey=MainLogoRecord}" Tag="../Image/MainLogo/Record.png" Margin="30,0,0,0" Name="RecordBtn" Click="MainLogoRecord_MouseDown" MouseEnter="MainLogoClass_MouseEnter"/>
                 <!--<PCLib:MainLogoTrain Margin="30,0,0,0" MouseDown="MainLogoTrain_MouseDown"/>
 
                 <PCLib:MainLogoHRV Margin="30,0,0,0" MouseDown="MainLogoHRV_MouseDown" />

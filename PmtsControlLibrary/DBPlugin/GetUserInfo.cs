@@ -21,7 +21,7 @@ namespace PmtsControlLibrary.DBPlugin
         }
         public GetUserInfo()
         {
-            user = UserInfoStatic.UserID;
+            user = UserInfoStatic.UserInfo.id;
             DBConnection();
         }
         /// <summary>
@@ -157,7 +157,7 @@ namespace PmtsControlLibrary.DBPlugin
                 {
                     DBCon.Open();
                 }
-                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserID;
+                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserInfo.id;
                 MySqlDataReader myRead = cmd.ExecuteReader();
                 if (myRead.Read())
                 {
@@ -202,7 +202,7 @@ namespace PmtsControlLibrary.DBPlugin
                 {
                     DBCon.Open();
                 }
-                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserID;
+                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserInfo.id;
                 cmd.Parameters.Add("?name", MySqlDbType.VarChar).Value = userInfo["name"];
                 if (userInfo["pwd"].ToString() != "NoChange")
                 {
