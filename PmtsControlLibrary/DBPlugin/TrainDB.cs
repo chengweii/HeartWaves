@@ -43,7 +43,6 @@ namespace PmtsControlLibrary.DBPlugin
                 "神笔马良",
                 "冒险岛",
                 "射箭",
-               
             };
 
 
@@ -53,6 +52,7 @@ namespace PmtsControlLibrary.DBPlugin
                 table.Add("tid", (30 + i).ToString());
                 table.Add("tname", nameList[i].ToString());
                 table.Add("open", "1");
+                table.Add("lockPic", "../Image/Train/Lock3.png");
                 table.Add("gateOpen", "20");
                 table.Add("gateNum", "15");
                 tArr.Add(table);
@@ -84,6 +84,7 @@ namespace PmtsControlLibrary.DBPlugin
                 table.Add("tid", (20+i).ToString());
                 table.Add("tname", nameList[i].ToString());
                 table.Add("open", "1");
+                table.Add("lockPic", "../Image/Train/Lock4.png");
                 table.Add("gateOpen", "20");
                 table.Add("gateNum", "15");
                 tArr.Add(table);
@@ -113,44 +114,12 @@ namespace PmtsControlLibrary.DBPlugin
                 table.Add("tid",(i + 1).ToString());
                 table.Add("tname", nameList[i].ToString());
                 table.Add("open","1");
+                table.Add("lockPic", "../Image/Train/Lock5.png");
                 table.Add("gateOpen","20");
                 table.Add("gateNum","15");
                 tArr.Add(table);
             }
 
-            return tArr;
-
-            String sqlStr = "SELECT * FROM users_trainrecord WHERE User_ID=?uid";
-            MySqlCommand cmd = new MySqlCommand(sqlStr, DBCon);
-            try
-            {
-                if (DBCon.State == System.Data.ConnectionState.Closed)
-                {
-                    DBCon.Open();
-                }
-                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserID;
-                MySqlDataReader myRead = cmd.ExecuteReader();
-                while (myRead.Read())
-                {
-                    Hashtable tmp = new Hashtable();
-                    tmp["tid"] = myRead["User_TrainID"];
-                    tmp["tname"] = myRead["User_TrainName"];
-                    tmp["open"] = myRead["User_TrainIsOpen"];
-                    tmp["gateOpen"] = myRead["User_TrainGateInfo"];
-                    tmp["gateNum"] = myRead["User_TrainGateNum"];
-                    tArr.Add(tmp);
-                }
-            }
-            catch (MySqlException ex)
-            {
-                System.Diagnostics.Debug.Write("读取用户训练是否开始时出错：" + ex.Message + "\n");
-            }
-            finally
-            {
-                cmd.Dispose();
-                DBCon.Close();
-                DBCon.Dispose();
-            }
             return tArr;
         }
         /// <summary>

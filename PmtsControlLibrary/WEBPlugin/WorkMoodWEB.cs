@@ -35,17 +35,17 @@ namespace PmtsControlLibrary.WEBPlugin
 
                 if (null == resp || null == resp.data)
                 {
-                    MessageBox.Show("网络异常，请稍后重试");
+                    PmtsMessageBox.CustomControl1.Show("网络异常，请稍后重试");
                 }
                 else if (resp.data.success == "1")
                 {
-                    //MessageBox.Show(resp.data.message);
+                    //PmtsMessageBox.CustomControl1.Show(resp.data.message);
                     return true;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                PmtsMessageBox.CustomControl1.Show(ex.Message);
             }
             return false;
         }
@@ -78,7 +78,7 @@ namespace PmtsControlLibrary.WEBPlugin
 
                 if (null == resp || null == resp.data)
                 {
-                    MessageBox.Show("网络异常，请稍后重试");
+                    PmtsMessageBox.CustomControl1.Show("网络异常，请稍后重试");
                 }
                 else if (resp.data.success == "1")
                 {
@@ -94,7 +94,7 @@ namespace PmtsControlLibrary.WEBPlugin
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                PmtsMessageBox.CustomControl1.Show(ex.Message);
             }
             return moodList;
         }

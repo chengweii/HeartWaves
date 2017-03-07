@@ -44,9 +44,9 @@ namespace PmtsControlLibrary
         private ArrayList EPData = new ArrayList();//EP值数组
         private DateTime startTime;
 
-  //      public TrainHandleList tl = null;
+        //      public TrainHandleList tl = null;
         public int oldGameType = 70;
-        
+
         private static HRVControlWEB hrvdb = new HRVControlWEB();
 
         public TrainCenter(Grid Main)
@@ -79,7 +79,7 @@ namespace PmtsControlLibrary
             this.TrainButtonGrid.VerticalAlignment = System.Windows.VerticalAlignment.Top;
 
             gamePanel_Loaded();
-            
+
             //button声音
             Grid uiButton = this.Content as Grid;
             UIElementCollection Childrens = uiButton.Children;
@@ -108,18 +108,16 @@ namespace PmtsControlLibrary
             mainWindow.Children.Remove(this);
         }
 
-        private void gamePanel_Loaded() {
-            this.GameButton1.Tag = "../Image/Train/game2.png";//荷韵
-            this.GameButton2.Tag = "../Image/Train/game2.png";//梅花
-            this.GameButton3.Tag = "../Image/Train/game2.png";//丝绸之路
-            this.GameButton4.Tag = "../Image/Train/game2.png";//菩提树
-            this.GameButton5.Tag = "../Image/Train/game2.png";//生命之泉
-            this.GameButton6.Tag = "../Image/Train/game2.png";//星空
-
+        private void gamePanel_Loaded()
+        {
             if (UserInfoStatic.hasAuth("荷韵"))
             {
                 this.GameButton1.Tag = "../Image/Train/game4.png";
                 this.GameButton1.Click += OnOpenTrain1;
+            }
+            else {
+                this.GameButton1.IsEnabled = false;
+                this.GameButton1.Tag = "../Image/Train/Lock2.png";
             }
 
             if (UserInfoStatic.hasAuth("梅花"))
@@ -127,11 +125,21 @@ namespace PmtsControlLibrary
                 this.GameButton2.Tag = "../Image/Train/game3.png";
                 this.GameButton2.Click += OnOpenTrain2;
             }
+            else
+            {
+                this.GameButton2.IsEnabled = false;
+                this.GameButton2.Tag = "../Image/Train/Lock2.png";
+            }
 
             if (UserInfoStatic.hasAuth("丝路"))
             {
                 this.GameButton3.Tag = "../Image/Train/game5.png";
                 this.GameButton3.Click += OnOpenTrain3;
+            }
+            else
+            {
+                this.GameButton3.IsEnabled = false;
+                this.GameButton3.Tag = "../Image/Train/Lock2.png";
             }
 
             if (UserInfoStatic.hasAuth("菩提树"))
@@ -139,11 +147,21 @@ namespace PmtsControlLibrary
                 this.GameButton4.Tag = "../Image/Train/game6.png";
                 this.GameButton4.Click += OnOpenTrain4;
             }
+            else
+            {
+                this.GameButton4.IsEnabled = false;
+                this.GameButton4.Tag = "../Image/Train/Lock2.png";
+            }
 
             if (UserInfoStatic.hasAuth("生命之泉"))
             {
                 this.GameButton5.Tag = "../Image/Train/game8.png";
                 this.GameButton5.Click += OnOpenTrain5;
+            }
+            else
+            {
+                this.GameButton5.IsEnabled = false;
+                this.GameButton5.Tag = "../Image/Train/Lock2.png";
             }
 
             if (UserInfoStatic.hasAuth("星空"))
@@ -151,7 +169,12 @@ namespace PmtsControlLibrary
                 this.GameButton6.Tag = "../Image/Train/game7.png";
                 this.GameButton6.Click += OnOpenTrain6;
             }
-            
+            else
+            {
+                this.GameButton6.IsEnabled = false;
+                this.GameButton6.Tag = "../Image/Train/Lock2.png";
+            }
+
         }
 
         /// <summary>
@@ -172,20 +195,17 @@ namespace PmtsControlLibrary
                 {
                     Hashtable tmp = (Hashtable)tList[i];
                     TrainList tl = new TrainList(mainWindow, tmp, this);
-                    if (UserInfoStatic.hasAuth(tmp["tname"].ToString()))
+                    tl.Margin = new Thickness(30, 30, 0, 0);
+                    if (tmp["tid"].ToString() == tNumTmp["tid"].ToString())
                     {
-                        tl.Margin = new Thickness(30, 30, 0, 0);
-                        if (tmp["tid"].ToString() == tNumTmp["tid"].ToString())
+                        tNumIndex += 1;
+                        tmp["historyNum"] = tNumTmp["num"];
+                        if (tNumIndex < tNumList.Count)
                         {
-                            tNumIndex += 1;
-                            tmp["historyNum"] = tNumTmp["num"];
-                            if (tNumIndex < tNumList.Count)
-                            {
-                                tNumTmp = (Hashtable)tNumList[tNumIndex];
-                            }
+                            tNumTmp = (Hashtable)tNumList[tNumIndex];
                         }
-                        this.TrainButtonGrid.Children.Add(tl);
                     }
+                    this.TrainButtonGrid.Children.Add(tl);
                 }
             }
             else
@@ -193,12 +213,9 @@ namespace PmtsControlLibrary
                 for (int i = 0; i < tList.Count; i++)
                 {
                     Hashtable tmp = (Hashtable)tList[i];
-                    if (UserInfoStatic.hasAuth(tmp["tname"].ToString()))
-                    {
-                        TrainList tl = new TrainList(mainWindow, tmp, this);
-                        tl.Margin = new Thickness(30, 30, 0, 0);
-                        this.TrainButtonGrid.Children.Add(tl);
-                    }
+                    TrainList tl = new TrainList(mainWindow, tmp, this);
+                    tl.Margin = new Thickness(30, 30, 0, 0);
+                    this.TrainButtonGrid.Children.Add(tl);
                 }
             }
 
@@ -215,12 +232,9 @@ namespace PmtsControlLibrary
             for (int i = 0; i < tList.Count; i++)
             {
                 Hashtable tmp = (Hashtable)tList[i];
-                if (UserInfoStatic.hasAuth(tmp["tname"].ToString()))
-                {
-                    TrainList tl = new TrainList(mainWindow, tmp, this);
-                    tl.Margin = new Thickness(30, 30, 0, 0);
-                    this.simulatioTrainButtonGrid.Children.Add(tl);
-                }
+                TrainList tl = new TrainList(mainWindow, tmp, this);
+                tl.Margin = new Thickness(30, 30, 0, 0);
+                this.simulatioTrainButtonGrid.Children.Add(tl);
             }
         }
 
@@ -241,22 +255,19 @@ namespace PmtsControlLibrary
                 for (int i = 0; i < tList.Count; i++)
                 {
                     Hashtable tmp = (Hashtable)tList[i];
-                    if (UserInfoStatic.hasAuth(tmp["tname"].ToString()))
+                    TrainHandleList tl = new TrainHandleList(mainWindow, tmp, this);
+                    //                   tl = new TrainHandleList(mainWindow, tmp, this);
+                    tl.Margin = new Thickness(30, 50, 0, 0);
+                    if (tmp["tid"].ToString() == tNumTmp["tid"].ToString())
                     {
-                        TrainHandleList tl = new TrainHandleList(mainWindow, tmp, this);
-                        //                   tl = new TrainHandleList(mainWindow, tmp, this);
-                        tl.Margin = new Thickness(30, 50, 0, 0);
-                        if (tmp["tid"].ToString() == tNumTmp["tid"].ToString())
+                        tNumIndex += 1;
+                        tmp["historyNum"] = tNumTmp["num"];
+                        if (tNumIndex < tNumList.Count)
                         {
-                            tNumIndex += 1;
-                            tmp["historyNum"] = tNumTmp["num"];
-                            if (tNumIndex < tNumList.Count)
-                            {
-                                tNumTmp = (Hashtable)tNumList[tNumIndex];
-                            }
+                            tNumTmp = (Hashtable)tNumList[tNumIndex];
                         }
-                        this.handleTrainButtonGrid.Children.Add(tl);
                     }
+                    this.handleTrainButtonGrid.Children.Add(tl);
                 }
             }
             else
@@ -264,13 +275,10 @@ namespace PmtsControlLibrary
                 for (int i = 0; i < tList.Count; i++)
                 {
                     Hashtable tmp = (Hashtable)tList[i];
-                    if (UserInfoStatic.hasAuth(tmp["tname"].ToString()))
-                    {
-                        TrainHandleList tl = new TrainHandleList(mainWindow, tmp, this);
-                        //                   tl = new TrainHandleList(mainWindow, tmp, this);
-                        tl.Margin = new Thickness(30, 50, 0, 0);
-                        this.handleTrainButtonGrid.Children.Add(tl);
-                    }
+                    TrainHandleList tl = new TrainHandleList(mainWindow, tmp, this);
+                    //                   tl = new TrainHandleList(mainWindow, tmp, this);
+                    tl.Margin = new Thickness(30, 50, 0, 0);
+                    this.handleTrainButtonGrid.Children.Add(tl);
                 }
             }
         }
@@ -547,7 +555,7 @@ namespace PmtsControlLibrary
                 //                 HRVDataCalc["TimeType"] = Convert.ToInt32(tInfo["tid"]);//HRV检测时间类型
                 //HRVDataCalc["TimeType"] = Convert.ToInt16(tInfo["tid"]) + 40;
                 HRVDataCalc["TimeType"] = oldGameType;
-//                PmtsMessageBox.CustomControl1.Show(Convert.ToString(tInfo["tid"]), PmtsMessageBox.ServerMessageBoxButtonType.OK);
+                //                PmtsMessageBox.CustomControl1.Show(Convert.ToString(tInfo["tid"]), PmtsMessageBox.ServerMessageBoxButtonType.OK);
                 //                HRVDataCalc["Mood"] = this.systemMeg["Mood"];//测量时心情状态
                 HRVDataCalc["Mood"] = 101;
                 HRVDataCalc["HRVMark"] = hrvMarkArr;//事件标记
@@ -555,7 +563,7 @@ namespace PmtsControlLibrary
                 //开始数据库操作
                 //lich
                 if (UserInfoStatic.ipAdd != null)
-                	hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc, PPGData,"2");
+                    hrvdb.OnInsertHRVDataAndEpData(HRVData, EPData, hrvMarkArr, HRVDataCalc, PPGData, "2");
                 else
                 {
                     UserHrvRecord hrvRecord = new UserHrvRecord();

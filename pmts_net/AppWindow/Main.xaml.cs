@@ -81,7 +81,7 @@ namespace pmts_net.AppWindow
             }
             hostIP = HostIp;
             this.LayoutRoot.Width = System.Windows.SystemParameters.PrimaryScreenWidth;
-            this.LayoutRoot.Height = System.Windows.SystemParameters.PrimaryScreenHeight;
+            this.LayoutRoot.Height = System.Windows.SystemParameters.PrimaryScreenHeight-30;
             double panelTop = Math.Floor(System.Windows.SystemParameters.PrimaryScreenHeight / 2 - 100);
             this.mainLogos.Margin = new Thickness(100, panelTop, 0, 0);
             //this.MainWindow.Width = System.Windows.SystemParameters.PrimaryScreenWidth;
@@ -104,7 +104,7 @@ namespace pmts_net.AppWindow
             int width = Screen.PrimaryScreen.Bounds.Width;
             int height = Screen.PrimaryScreen.Bounds.Height;
             if (width < 1280 || height < 768)
-                System.Windows.MessageBox.Show("此软件运行时的屏幕分辨率最低为1280x768，当前分辨率不满足要求，可能会影响您的使用。请修改屏幕分辨率。");
+                PmtsMessageBox.CustomControl1.Show("此软件运行时的屏幕分辨率最低为1280x768，当前分辨率不满足要求，可能会影响您的使用。请修改屏幕分辨率。");
             //PmtsNetServer mySocket = new PmtsNetServer(HostIp, 5900);
             //mySocket.AsyncOpen();
             //mySocket.AsyncSocketAcceptEvent += OnStartSocket;
@@ -120,22 +120,32 @@ namespace pmts_net.AppWindow
             if (!UserInfoStatic.hasAuth("教学资源"))
             {
                 ClassBtn.Click -= MainLogoClass_MouseDown;
+                ClassBtn.Tag = "../Image/MainLogo/ClassLock.png";
+                ClassBtn.IsEnabled = false;
             }
             if (!UserInfoStatic.hasAuth("监测中心"))
             {
                 HRVBtn.Click -= MainLogoHRV_MouseDown;
+                HRVBtn.Tag = "../Image/MainLogo/HRVLock.png";
+                HRVBtn.IsEnabled = false;
             }
             if (!UserInfoStatic.hasAuth("训练中心"))
             {
                 TrainBtn.Click -= MainLogoTrain_MouseDown;
+                TrainBtn.Tag = "../Image/MainLogo/TrainLock.png";
+                TrainBtn.IsEnabled = false;
             }
             if (!UserInfoStatic.hasAuth("放松中心"))
             {
                 ScaleBtn.Click -= MainLogoScale_MouseDown;
+                ScaleBtn.Tag = "../Image/MainLogo/RelaxLock.png";
+                ScaleBtn.IsEnabled = false;
             }
             if (!UserInfoStatic.hasAuth("记录中心"))
             {
                 RecordBtn.Click -= MainLogoRecord_MouseDown;
+                RecordBtn.Tag = "../Image/MainLogo/RecordLock.png";
+                RecordBtn.IsEnabled = false;
             }
         }
 

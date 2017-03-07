@@ -434,7 +434,7 @@ namespace PmtsControlLibrary
                 {
                     if (hd.StartDriver())
                     {
-                        //                       MessageBox.Show("开始成功");
+                        //                       PmtsMessageBox.CustomControl1.Show("开始成功");
                         //hRight.constantButton.IsEnabled = false;
                         //hRight.historyButton.IsEnabled = false;
                         hRight.HRText.Text = "";
@@ -1180,7 +1180,7 @@ namespace PmtsControlLibrary
         void dataPoint_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             //DataPoint dp = sender as DataPoint;
-            //MessageBox.Show(dp.YValue.ToString());
+            //PmtsMessageBox.CustomControl1.Show(dp.YValue.ToString());
         }
         #endregion
 

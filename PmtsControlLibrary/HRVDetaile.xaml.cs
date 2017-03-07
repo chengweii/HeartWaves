@@ -78,7 +78,7 @@ namespace PmtsControlLibrary
             PathGeometry pg = new PathGeometry();//path几何图形的集合
             PathFigure pf = new PathFigure();//具体图形
             double frist = 0;//计算第一个点Y轴的位置
-            if (Convert.ToDouble(data[0]) <= 60)
+            if (data.Count==0 || Convert.ToDouble(data[0]) <= 60)
             {
                 frist = this.HrvChart.Height - oneHeight;
             }

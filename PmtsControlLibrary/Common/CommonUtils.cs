@@ -73,17 +73,31 @@ namespace PmtsControlLibrary.Common
 
         public static ArrayList getArrayListFromJson(string json)
         {
-            if (string.IsNullOrWhiteSpace(json))
-                json = "[]";
-            return MyJSONHelper.JsonToObject<ArrayList>(json);
+            ArrayList result = null;
+            try
+            {
+                result = MyJSONHelper.JsonToObject<ArrayList>(json);
+            }
+            catch (Exception ex)
+            {
+                result = new ArrayList();
+            }
+
+            return result;
         }
 
         public static DateTime getDateTime(string datetime)
         {
-            if (string.IsNullOrWhiteSpace(datetime))
-                return DateTime.MinValue;
-            else
-                return Convert.ToDateTime(datetime);
+            DateTime result;
+            try
+            {
+                result = Convert.ToDateTime(datetime);
+            }
+            catch (Exception ex)
+            {
+                result = new DateTime();
+            }
+            return result;
         }
 
     }
