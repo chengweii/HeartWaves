@@ -265,18 +265,9 @@ namespace PmtsControlLibrary.WEBPlugin
                         foreach (var entity in resp.data.data)
                         {
                             i++;
-                            Hashtable tmp = new Hashtable();
-                            tmp["arrayIndex"] = i;
-                            tmp["mhrt"] = entity.fmean;
-                            tmp["hrvScore"] = entity.hrvscore;
-                            tmp["totalScore"] = entity.synthesisscore;
-                            tmp["pressure"] = entity.pressureindex;
-                            tmp["adjust"] = entity.deflatingindex;
-                            tmp["stable"] = entity.stabilityindex;
-                            tmp["id"] = entity.id;
-                            tmp["startTime"] = entity.s_time;
-                            tmp["totalTime"] = entity.time_length;
-                            retArr.Add(tmp);
+                            UserHrvRecord hrvRecord = new UserHrvRecord();
+                            hrvRecord.Id = entity.id;
+                            retArr.Add(hrvRecord);
                         }
                     }
                 }

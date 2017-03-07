@@ -43,7 +43,7 @@ namespace PmtsControlLibrary.DBPlugin
                 {
                     DBCon.Open();
                 }
-                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserID;
+                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserInfo.id;
                 MySqlDataReader myRead = cmd.ExecuteReader();
                 while (myRead.Read())
                 {
@@ -82,7 +82,7 @@ namespace PmtsControlLibrary.DBPlugin
                 {
                     DBCon.Open();
                 }
-                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserID;
+                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserInfo.id;
                 cmd.Parameters.Add("?strid", MySqlDbType.Int32).Value = resultID;
                 cmd.Parameters.Add("?stid", MySqlDbType.Int32).Value = ScaleTableID;
                 cmd.Parameters.Add("?isShow", MySqlDbType.Int32).Value = isShow;
@@ -115,7 +115,7 @@ namespace PmtsControlLibrary.DBPlugin
                 {
                     DBCon.Open();
                 }
-                cmd.Parameters.Add("uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserID;
+                cmd.Parameters.Add("uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserInfo.id;
                 id = Convert.ToInt32(cmd.ExecuteScalar());
             }
             catch (MySqlException ex)
@@ -147,7 +147,7 @@ namespace PmtsControlLibrary.DBPlugin
                     DBCon.Open();
                 }
                 cmd.Parameters.Add("?stid", MySqlDbType.Int32).Value = scaleTableID;
-                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserID;
+                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserInfo.id;
                 MySqlDataReader myRead = cmd.ExecuteReader();
                 while (myRead.Read())
                 {

@@ -54,10 +54,15 @@ namespace PmtsControlLibrary.Common
 
         public static string GetAgeFromBirthday(string birthday)
         {
-            TimeSpan nowTick = new TimeSpan(DateTime.Now.Ticks);
-            TimeSpan birTick = new TimeSpan(Convert.ToDateTime(birthday).Ticks);
-            TimeSpan diffTick = nowTick.Subtract(birTick).Duration();
-            return Math.Floor((diffTick.TotalDays / 365)).ToString();
+            string result = "-";
+            if (!string.IsNullOrWhiteSpace(birthday))
+            {
+                TimeSpan nowTick = new TimeSpan(DateTime.Now.Ticks);
+                TimeSpan birTick = new TimeSpan(Convert.ToDateTime(birthday).Ticks);
+                TimeSpan diffTick = nowTick.Subtract(birTick).Duration();
+                result = Math.Floor((diffTick.TotalDays / 365)).ToString();
+            }
+            return result;
         }
 
         public static string GetSexNameByValue(string sex)

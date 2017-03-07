@@ -33,6 +33,7 @@ namespace PmtsControlLibrary
         public int RecordType;
         public int Mood;
         public string Report;
+        public string Id;
     }
 
 }

@@ -233,6 +233,7 @@ namespace PmtsControlLibrary
                             strType = "10分钟测试";
                         dataGridSource.Add(new HRVRecordData()
                         {
+                            Id = tmp.Id,
                             Checked = false,
                             Index = ((page - 1) * num + i + 1).ToString(),
                            // Type = tmp.RecordType.ToString(),
@@ -351,6 +352,7 @@ namespace PmtsControlLibrary
                             strType = tmp.RecordType.ToString();
                         dataGridSource.Add(new HRVRecordData()
                         {
+                            Id = tmp.Id,
                             Checked = false,
                             Index = ((page - 1) * num + i + 1).ToString(),
                             //Type = tmp.RecordType.ToString(),
@@ -433,6 +435,7 @@ namespace PmtsControlLibrary
                     {
                         dataGridSource.Add(new HRVRecordData()
                         {
+                            Id = tmp.Id,
                             Checked = false,
                             Index = ((page - 1) * num + i + 1).ToString(),
                            // Type = tmp.RecordType.ToString(),
@@ -820,9 +823,9 @@ namespace PmtsControlLibrary
             if (PmtsMessageBox.CustomControl1.Show("确定要删除选择？") == PmtsMessageBox.ServerMessageBoxResult.OK)
             {
                 Button tmp = (Button)sender;
-//                ArrayList para = new ArrayList();
-//                para.Add(tmp.Tag);
-//                hrvd.DeleteHrvData(para);
+                ArrayList para = new ArrayList();
+                para.Add(tmp.Tag);
+                hrvdb.DeleteHrvData(para);
                 
                 for (int i = 0; i < HrvHistoryArr.Count; i++)
                 {
@@ -836,6 +839,68 @@ namespace PmtsControlLibrary
                 OnDataOrPageChanged(_nowPage, _num);
             }
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            ArrayList dd = new ArrayList();
+            for (int i = 0; i < this.HrvDataGrid.Items.Count; i++)
+            {
+                var cntr = HrvDataGrid.ItemContainerGenerator.ContainerFromIndex(i);
+                DataGridRow ObjROw = (DataGridRow)cntr;
+                if (ObjROw != null)
+                {
+                    FrameworkElement objElement = HrvDataGrid.Columns[0].GetCellContent(ObjROw);
+                    if (objElement != null)
+                    {
+                        //if (objElement.GetType().ToString().EndsWith("cRUID"))
+                        //{
+                        System.Windows.Controls.CheckBox objChk = (System.Windows.Controls.CheckBox)objElement;
+                        if (objChk.IsChecked == true)
+                        {
+                            dd.Add(ObjROw.Item);
+                        }
+                        //}
+                    }
+                }
+            }
+
+            if (HrvDataGrid.SelectedItems.Count > 0)
+            {
+                int i = HrvDataGrid.SelectedIndex;
+
+                foreach (var item in HrvDataGrid.SelectedItems)
+                {
+                    MessageBox.Show("1");
+                }
+            }
+            else
+            {
+                PmtsMessageBox.CustomControl1.Show("请先选中一条数据!");
+            }
+        }
+
+        private void CheckBox_Click_1(object sender, RoutedEventArgs e)
+        {
+            CheckBox objChk = (CheckBox)sender;
+            selectAll(HrvDataGrid, objChk.IsChecked);
+        }
+
+        private void selectAll(DataGrid grid,bool? isCheck) {
+            for (int i = 0; i < grid.Items.Count; i++)
+            {
+                var cntr = grid.ItemContainerGenerator.ContainerFromIndex(i);
+                DataGridRow ObjROw = (DataGridRow)cntr;
+                if (ObjROw != null)
+                {
+                    FrameworkElement objElement = grid.Columns[0].GetCellContent(ObjROw);
+                    if (objElement != null)
+                    {
+                        CheckBox objChk = (CheckBox)objElement;
+                        objChk.IsChecked = isCheck;
+                    }
+                }
+            }
+        } 
     }
 
     /// <summary>
@@ -843,6 +908,7 @@ namespace PmtsControlLibrary
     /// </summary>
     public class HRVRecordData
     {
+        public String Id { set; get; }
         public Boolean Checked { set; get; }
         public String Index { set; get; }
         public String Type { set; get; }

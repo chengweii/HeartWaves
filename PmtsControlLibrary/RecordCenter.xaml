@@ -298,7 +298,7 @@
         <DataGrid AutoGenerateColumns="False" Background="White" CanUserAddRows="False" ItemsSource="{Binding}" Margin="46,173,309,216" Name="RelaxDataGrid">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{Binding Checked}" Header="" Width="30" />
-                <DataGridTextColumn Binding="{Binding Index}" FontFamily="Microsoft YaHei" Header="序号" Width="40" HeaderStyle="{StaticResource DataHeaderText}" ElementStyle="{StaticResource contentCenterStyle}" IsReadOnly="True" />
+                <DataGridTextColumn Binding="{Binding Id}" FontFamily="Microsoft YaHei" Header="序号" Width="40" HeaderStyle="{StaticResource DataHeaderText}" ElementStyle="{StaticResource contentCenterStyle}" IsReadOnly="True" />
                 <DataGridTextColumn Binding="{Binding Type}" FontFamily="Microsoft YaHei" Header="训练类型" Width="60" HeaderStyle="{StaticResource DataHeaderText}" ElementStyle="{StaticResource contentCenterStyle}" IsReadOnly="True" />
                 <DataGridTextColumn Binding="{Binding StartTime}" FontFamily="Microsoft YaHei" Header="开始时间" Width="150" HeaderStyle="{StaticResource DataHeaderText}" ElementStyle="{StaticResource contentCenterStyle}" IsReadOnly="True" />
                 <DataGridTextColumn Binding="{Binding TotalTime}" FontFamily="Microsoft YaHei" Header="监测时间" Width="80" HeaderStyle="{StaticResource DataHeaderText}" ElementStyle="{StaticResource contentCenterStyle}" IsReadOnly="True" />
@@ -310,21 +310,21 @@
                 <DataGridTemplateColumn Header="" HeaderStyle="{StaticResource DataHeaderText}" Width="80">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="OnOpenHistoryDetail" Content="记录详情" FontFamily="Microsoft YaHei" Style="{StaticResource ButtonStype1}" Tag="{Binding Index}" />
+                            <Button Click="OnOpenHistoryDetail" Content="记录详情" FontFamily="Microsoft YaHei" Style="{StaticResource ButtonStype1}" Tag="{Binding Id}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="" HeaderStyle="{StaticResource DataHeaderText}" Width="80">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="Button_Click_1" Content="删除记录" FontFamily="Microsoft YaHei" Style="{StaticResource ButtonStype1}" Tag="{Binding Index}" />
+                            <Button Click="Button_Click_1" Content="删除记录" FontFamily="Microsoft YaHei" Style="{StaticResource ButtonStype1}" Tag="{Binding Id}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <CheckBox Content="选择全部记录" FontFamily="Microsoft YaHei" Foreground="#FFFFFFFF" HorizontalAlignment="Left" Margin="49,0,0,142" VerticalAlignment="Bottom" />
-        <Button Content="批量删除" Height="25" HorizontalAlignment="Left" Margin="146,0,0,137" Style="{StaticResource ButtonTemplate}" VerticalAlignment="Bottom" Width="70" />
+        <CheckBox Content="选择全部记录" FontFamily="Microsoft YaHei" Foreground="#FFFFFFFF" HorizontalAlignment="Left" Margin="49,0,0,142" VerticalAlignment="Bottom" Click="CheckBox_Click_1" />
+        <Button Content="批量删除" Height="25" HorizontalAlignment="Left" Margin="146,0,0,137" Style="{StaticResource ButtonTemplate}" VerticalAlignment="Bottom" Width="70" Click="Button_Click_2"/>
         <Rectangle Height="42.443" Margin="46,0,309,175" RadiusX="0" RadiusY="0" Stroke="#FFC1C1C1" VerticalAlignment="Bottom">
             <Rectangle.Fill>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

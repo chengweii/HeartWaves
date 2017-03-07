@@ -388,7 +388,7 @@ namespace PmtsControlLibrary.DBPlugin
                 {
                     DBCon.Open();
                 }
-                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserID;
+                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserInfo.id;
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException ex)
