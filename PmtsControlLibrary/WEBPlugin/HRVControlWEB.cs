@@ -291,6 +291,7 @@ namespace PmtsControlLibrary.WEBPlugin
                             hrvRecord.RecordType = Convert.ToInt32(entity.recordtype);
                             hrvRecord.Mood = string.IsNullOrWhiteSpace(entity.mood) ? 0 : Convert.ToInt32(entity.mood);
                             hrvRecord.Report = Convert.ToString(entity.report);
+                            hrvRecord.Id = entity.id;
                             retArr.Add(hrvRecord);
                         }
                     }
@@ -302,6 +303,13 @@ namespace PmtsControlLibrary.WEBPlugin
             }
 
             return retArr;
+        }
+        
+        /// <summary>
+        /// 更新EP完成状态
+        /// </summary>
+        public void UpEpLevel()
+        {
         }
 
         /// <summary>
