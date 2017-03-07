@@ -38,18 +38,22 @@ namespace PmtsControlLibrary
 
         public static bool hasAuth(string categoryName)
         {
-            if (indexAuthoDatumList == null)
+            if (UserInfoStatic.ipAdd != null)
             {
-                var request = new IndexAuthoRequest()
+                if (indexAuthoDatumList == null)
                 {
-                    id = "1"
-                };
-                var response = APIClient._IndexAutho(request);
-                indexAuthoDatumList = response.data.data;
-            }
+                    var request = new IndexAuthoRequest()
+                    {
+                        id = UserInfoStatic.UserInfo.id
+                    };
+                    var response = APIClient._IndexAutho(request);
+                    indexAuthoDatumList = response.data.data;
+                }
 
-            var category = findCategory(categoryName, indexAuthoDatumList);
-            return indexAuthoDatumList != null && category != null;
+                var category = findCategory(categoryName, indexAuthoDatumList);
+                return indexAuthoDatumList != null && category != null;
+            }
+            return true;
         }
 
         private static IndexAuthoDatum findCategory(string categoryName, List<IndexAuthoDatum> categoryList)

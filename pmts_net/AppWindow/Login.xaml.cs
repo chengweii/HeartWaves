@@ -311,10 +311,8 @@ namespace pmts_net.AppWindow
                 }
                 else
                 {
-                    Main main = new Main("127.0.0.1", this.userText.Text);
-
                     UserInfoStatic.UserInfo = resp.data.userInfo;
-
+                    Main main = new Main("127.0.0.1", this.userText.Text);
                     main.Show();
                     this.Close();
                 }
@@ -424,6 +422,22 @@ namespace pmts_net.AppWindow
                         WinExec(@"Guest\HD-service.exe", 1);
              */
             //lich
+            UserInfoStatic.UserInfo = new UserInfo();
+            UserInfoStatic.UserInfo.id = "";
+            UserInfoStatic.UserInfo.realname = "游客";
+            UserInfoStatic.UserInfo.username = "游客";
+            UserInfoStatic.UserInfo.sex = "1";
+            UserInfoStatic.UserInfo.birthday = "";
+            UserInfoStatic.UserInfo.workingplace = "未知";
+            UserInfoStatic.UserInfo.position = "未知";
+            UserInfoStatic.UserInfo.observe = "0";
+            UserInfoStatic.UserInfo.rember = "0";
+            UserInfoStatic.UserInfo.thinking = "0";
+            UserInfoStatic.UserInfo.emotion = "0";
+            UserInfoStatic.UserInfo.willpower = "0";
+            UserInfoStatic.UserInfo.hrvscore = "0";
+            UserInfoStatic.UserInfo.medicalhistory = "";
+
             String ipStr = null;
             Main mainWindow = new Main(ipStr, this.userText.Text);
             mainWindow.Show();

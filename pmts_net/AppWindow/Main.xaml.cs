@@ -640,7 +640,7 @@ namespace pmts_net.AppWindow
         private void OnExitWindows(object sender, EventArgs e)
         {
             DB_Login dl = new DB_Login(UserInfoStatic.ipAdd);
-            dl.OnUserLogout(UserInfoStatic.UserID);
+            dl.OnUserLogout(UserInfoStatic.UserInfo.id);
         }
 
         private void MainLogoClass_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
