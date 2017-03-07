@@ -105,21 +105,39 @@ namespace PmtsControlLibrary.WEBPlugin
         {
             try
             {
-                var request = new DeleteRecordRequest()
+                if (UserInfoStatic.ipAdd == null)
                 {
-                    user_id = UserInfoStatic.UserInfo.id,
-                    r_id = string.Join(",", ids.ToArray())
-
-                };
-                var resp = HeartWavesSDK.API.APIClient._DeleteRecord(request);
-
-                if (null == resp || null == resp.data)
-                {
-                    PmtsMessageBox.CustomControl1.Show("网络异常，请稍后重试");
+                    ArrayList removeList = new ArrayList();
+                    foreach (var item in MainRightPerson.TmpHrvRecord)
+                    {
+                        if (ids.Count > 0 && ids.Contains((item as UserHrvRecord).Id))
+                        {
+                            removeList.Add(item);
+                        }
+                    }
+                    foreach (var item in removeList)
+                    {
+                        MainRightPerson.TmpHrvRecord.Remove(item);
+                    }
                 }
-                else if (resp.data.success == "1")
+                else
                 {
-                    PmtsMessageBox.CustomControl1.Show(resp.data.message);
+                    var request = new DeleteRecordRequest()
+                    {
+                        user_id = UserInfoStatic.UserInfo.id,
+                        r_id = string.Join(",", ids.ToArray())
+
+                    };
+                    var resp = HeartWavesSDK.API.APIClient._DeleteRecord(request);
+
+                    if (null == resp || null == resp.data)
+                    {
+                        PmtsMessageBox.CustomControl1.Show("网络异常，请稍后重试");
+                    }
+                    else if (resp.data.success == "1")
+                    {
+                        PmtsMessageBox.CustomControl1.Show(resp.data.message);
+                    }
                 }
             }
             catch (Exception ex)
@@ -304,7 +322,7 @@ namespace PmtsControlLibrary.WEBPlugin
 
             return retArr;
         }
-        
+
         /// <summary>
         /// 更新EP完成状态
         /// </summary>

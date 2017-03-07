@@ -890,9 +890,12 @@ namespace PmtsControlLibrary
 
             if (selectIds.Count > 0)
             {
-                hrvdb.DeleteHrvData(selectIds);
-                refreshHistory(selectIds);
-                OnDataOrPageChanged(_nowPage, _num);
+                if (PmtsMessageBox.CustomControl1.Show("确定要删除选择？") == PmtsMessageBox.ServerMessageBoxResult.OK)
+                {
+                    hrvdb.DeleteHrvData(selectIds);
+                    refreshHistory(selectIds);
+                    OnDataOrPageChanged(_nowPage, _num);
+                }
             }
             else
             {
