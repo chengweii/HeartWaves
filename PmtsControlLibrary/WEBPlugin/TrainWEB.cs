@@ -111,34 +111,6 @@ namespace PmtsControlLibrary.WEBPlugin
         public ArrayList GetTrainHistoryNum()
         {
             ArrayList hArr = new ArrayList();
-            String sqlStr = "SELECT Train_ID , count( * ) as num FROM train_record WHERE User_ID = ?uid  GROUP BY Train_ID ";
-            MySqlCommand cmd = new MySqlCommand(sqlStr, DBCon);
-            try
-            {
-                if (DBCon.State == System.Data.ConnectionState.Closed)
-                {
-                    DBCon.Open();
-                }
-                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserInfo.id;
-                MySqlDataReader myRead = cmd.ExecuteReader();
-                while (myRead.Read())
-                {
-                    Hashtable tmp = new Hashtable();
-                    tmp["num"] = myRead["num"];
-                    tmp["tid"] = myRead["Train_ID"];
-                    hArr.Add(tmp);
-                }
-            }
-            catch (MySqlException ex)
-            {
-                System.Diagnostics.Debug.Write("读取训练记录条数时出错：" + ex.Message + "\n");
-            }
-            finally
-            {
-                cmd.Dispose();
-                DBCon.Close();
-                DBCon.Dispose();
-            }
             return hArr;
         }
 
@@ -147,32 +119,6 @@ namespace PmtsControlLibrary.WEBPlugin
         /// </summary>
         public void OnUpdateTrainDataToUserPara()
         {
-            String sqlStr = "UPDATE users_property SET Observe=?o,Rember=?r,Thinking=?t,Emotion=?e,Willpower=?w WHERE User_ID=?uid";
-            MySqlCommand cmd = new MySqlCommand(sqlStr, DBCon);
-            try
-            {
-                if (DBCon.State == System.Data.ConnectionState.Closed)
-                {
-                    DBCon.Open();
-                }
-                cmd.Parameters.Add("?o", MySqlDbType.Double).Value = UserInfoStatic.O;
-                cmd.Parameters.Add("?r", MySqlDbType.Double).Value = UserInfoStatic.R;
-                cmd.Parameters.Add("?t", MySqlDbType.Double).Value = UserInfoStatic.T;
-                cmd.Parameters.Add("?e", MySqlDbType.Double).Value = UserInfoStatic.E;
-                cmd.Parameters.Add("?w", MySqlDbType.Double).Value = UserInfoStatic.W;
-                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserID;
-                cmd.ExecuteNonQuery();
-            }
-            catch (MySqlException ex)
-            {
-                System.Diagnostics.Debug.Write("更新五项维度数值时出错：" + ex.Message + "\n");
-            }
-            finally
-            {
-                cmd.Dispose();
-                DBCon.Close();
-                DBCon.Dispose();
-            }
         }
 
         /// <summary>
@@ -180,46 +126,6 @@ namespace PmtsControlLibrary.WEBPlugin
         /// </summary>
         public void OnInsertTrainToHistory(Hashtable trInfo)
         {
-            String sqlStr = "INSERT INTO train_record ";
-            //           sqlStr += " (Train_RecordID, Train_ID, User_ID, Train_Gate, Train_Date, Train_Score, Train_DiffNum, Train_Observe, Train_Rember, Train_Thinking, Train_Emotion, Train_Willpower, Base_Observe, Base_Rember, Base_Thinking, Base_Emotion, Base_Willpower) VALUES ";
-            //           sqlStr += " (?trid,?tid,?uid,?gate,now(),?score,?diff,?o,?r,?t,?e,?w,?bo,?br,?bt,?be,?bw)";
-            sqlStr += " (Train_ID, User_ID, Train_Gate, Train_Date, Train_Score, Train_DiffNum, Train_Observe, Train_Rember, Train_Thinking, Train_Emotion, Train_Willpower, Base_Observe, Base_Rember, Base_Thinking, Base_Emotion, Base_Willpower) VALUES ";
-            sqlStr += " (?tid,?uid,?gate,now(),?score,?diff,?o,?r,?t,?e,?w,?bo,?br,?bt,?be,?bw)";
-            MySqlCommand cmd = new MySqlCommand(sqlStr, DBCon);
-            try
-            {
-                if (DBCon.State == System.Data.ConnectionState.Closed)
-                {
-                    DBCon.Open();
-                }
-                //               cmd.Parameters.Add("?trid", MySqlDbType.Int32).Value = trInfo["trid"];
-                cmd.Parameters.Add("?tid", MySqlDbType.Int32).Value = trInfo["tid"];
-                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserInfo.id;
-                cmd.Parameters.Add("?gate", MySqlDbType.Int32).Value = trInfo["gate"];
-                cmd.Parameters.Add("?score", MySqlDbType.Double).Value = trInfo["score"];
-                cmd.Parameters.Add("?diff", MySqlDbType.Double).Value = trInfo["diff"];
-                cmd.Parameters.Add("?o", MySqlDbType.Double).Value = trInfo["o"];
-                cmd.Parameters.Add("?r", MySqlDbType.Double).Value = trInfo["r"];
-                cmd.Parameters.Add("?t", MySqlDbType.Double).Value = trInfo["t"];
-                cmd.Parameters.Add("?e", MySqlDbType.Double).Value = trInfo["e"];
-                cmd.Parameters.Add("?w", MySqlDbType.Double).Value = trInfo["w"];
-                cmd.Parameters.Add("?bo", MySqlDbType.Double).Value = trInfo["bo"];
-                cmd.Parameters.Add("?br", MySqlDbType.Double).Value = trInfo["br"];
-                cmd.Parameters.Add("?bt", MySqlDbType.Double).Value = trInfo["bt"];
-                cmd.Parameters.Add("?be", MySqlDbType.Double).Value = trInfo["be"];
-                cmd.Parameters.Add("?bw", MySqlDbType.Double).Value = trInfo["bw"];
-                cmd.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.Write("插入训练历史记录时出错：" + ex.Message + "\n");
-            }
-            finally
-            {
-                cmd.Dispose();
-                DBCon.Close();
-                DBCon.Dispose();
-            }
         }
 
         /// <summary>
@@ -229,26 +135,6 @@ namespace PmtsControlLibrary.WEBPlugin
         public int GetTrainRecordID()
         {
             int trid = 0;
-            String sqlStr = "SELECT Train_RecordID FROM train_record  ORDER BY Train_RecordID DESC LIMIT 1 ";
-            MySqlCommand cmd = new MySqlCommand(sqlStr, DBCon);
-            try
-            {
-                if (DBCon.State == System.Data.ConnectionState.Closed)
-                {
-                    DBCon.Open();
-                }
-                trid = Convert.ToInt32(cmd.ExecuteScalar()) + 1;
-            }
-            catch (MySqlException ex)
-            {
-                System.Diagnostics.Debug.Write("取得训练记录ID时出错：" + ex.Message + "\n");
-            }
-            finally
-            {
-                cmd.Dispose();
-                DBCon.Close();
-                DBCon.Dispose();
-            }
             return trid;
         }
 
@@ -257,26 +143,6 @@ namespace PmtsControlLibrary.WEBPlugin
         /// </summary>
         public void OnUpdateTrainAll()
         {
-            String sqlStr = "UPDATE users_property SET    TrainAll=1 WHERE User_ID=?uid";
-            MySqlCommand cmd = new MySqlCommand(sqlStr, DBCon);
-            try
-            {
-                if (DBCon.State == System.Data.ConnectionState.Closed)
-                {
-                    DBCon.Open();
-                }
-                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserInfo.id;
-                cmd.ExecuteNonQuery();
-            }
-            catch (MySqlException ex)
-            {
-            }
-            finally
-            {
-                cmd.Dispose();
-                DBCon.Close();
-                DBCon.Dispose();
-            }
         }
 
         /// <summary>
@@ -287,59 +153,6 @@ namespace PmtsControlLibrary.WEBPlugin
         public ArrayList GetHistoryByTID(int tid)
         {
             ArrayList hList = new ArrayList();
-            String sqlStr = "SELECT * FROM train_record JOIN conttrain ON TrainID=Train_ID WHERE Train_ID =?tid AND User_ID = ?uid";
-            MySqlCommand cmd = new MySqlCommand(sqlStr, DBCon);
-            try
-            {
-                if (DBCon.State == System.Data.ConnectionState.Closed)
-                {
-                    DBCon.Open();
-                }
-                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserInfo.id;
-                cmd.Parameters.Add("?tid", MySqlDbType.Int32).Value = tid;
-                MySqlDataReader myRead = cmd.ExecuteReader();
-                while (myRead.Read())
-                {
-                    Hashtable tmp = new Hashtable();
-                    tmp["tid"] = myRead["Train_ID"];
-                    tmp["tname"] = myRead["TrainName"];
-                    tmp["totalGate"] = myRead["TrainGateNum"];
-                    tmp["nowGate"] = myRead["Train_Gate"];
-                    tmp["trid"] = myRead["Train_RecordID"];
-                    tmp["time"] = myRead["Train_Date"];
-                    tmp["gate"] = myRead["Train_Gate"];
-                    tmp["s"] = myRead["Train_Score"];
-                    tmp["o"] = myRead["Train_Observe"];
-                    tmp["r"] = myRead["Train_Rember"];
-                    tmp["t"] = myRead["Train_Thinking"];
-                    tmp["e"] = myRead["Train_Emotion"];
-                    tmp["w"] = myRead["Train_Willpower"];
-                    tmp["to"] = Convert.ToDouble(myRead["Base_Observe"]) + Convert.ToDouble(myRead["Train_Observe"]);
-                    tmp["tr"] = Convert.ToDouble(myRead["Base_Rember"]) + Convert.ToDouble(myRead["Train_Rember"]);
-                    tmp["tt"] = Convert.ToDouble(myRead["Base_Thinking"]) + Convert.ToDouble(myRead["Train_Thinking"]);
-                    tmp["te"] = Convert.ToDouble(myRead["Base_Emotion"]) + Convert.ToDouble(myRead["Train_Emotion"]);
-                    tmp["tw"] = Convert.ToDouble(myRead["Base_Willpower"]) + Convert.ToDouble(myRead["Train_Willpower"]);
-                    ArrayList ts = new ArrayList();
-                    ts.Add(Convert.ToDouble(myRead["Base_Observe"]) + Convert.ToDouble(myRead["Train_Observe"]));
-                    ts.Add(Convert.ToDouble(myRead["Base_Rember"]) + Convert.ToDouble(myRead["Train_Rember"]));
-                    ts.Add(Convert.ToDouble(myRead["Base_Thinking"]) + Convert.ToDouble(myRead["Train_Thinking"]));
-                    ts.Add(Convert.ToDouble(myRead["Base_Emotion"]) + Convert.ToDouble(myRead["Train_Emotion"]));
-                    ts.Add(Convert.ToDouble(myRead["Base_Willpower"]) + Convert.ToDouble(myRead["Train_Willpower"]));
-                    tmp["totals"] = ts;
-                    tmp["diff"] = myRead["Train_DiffNum"];
-                    hList.Add(tmp);
-                }
-            }
-            catch (MySqlException ex)
-            {
-                System.Diagnostics.Debug.Write("取得训练历史记录时出错：" + ex.Message + "\n");
-            }
-            finally
-            {
-                cmd.Dispose();
-                DBCon.Close();
-                DBCon.Dispose();
-            }
             return hList;
         }
 
@@ -350,28 +163,6 @@ namespace PmtsControlLibrary.WEBPlugin
         /// <param name="trid"></param>
         public void OnDeleteRecordOne(int tid, int trid)
         {
-            String sqlStr = "DELETE FROM train_record WHERE Train_RecordID=?trid AND Train_ID=?tid AND User_ID=?uid";
-            MySqlCommand cmd = new MySqlCommand(sqlStr, DBCon);
-            try
-            {
-                if (DBCon.State == System.Data.ConnectionState.Closed)
-                {
-                    DBCon.Open();
-                }
-                cmd.Parameters.Add("?trid", MySqlDbType.Int32).Value = trid;
-                cmd.Parameters.Add("?tid", MySqlDbType.Int32).Value = tid;
-                cmd.Parameters.Add("?uid", MySqlDbType.VarChar).Value = UserInfoStatic.UserInfo.id;
-                cmd.ExecuteNonQuery();
-            }
-            catch (MySqlException ex)
-            {
-            }
-            finally
-            {
-                cmd.Dispose();
-                DBCon.Close();
-                DBCon.Dispose();
-            }
         }
 
         /// <summary>
@@ -381,35 +172,6 @@ namespace PmtsControlLibrary.WEBPlugin
         public ArrayList GetResourcesList()
         {
             ArrayList rList = new ArrayList();
-            String sqlStr = "SELECT * FROM train_resources order by resOrder ";
-            MySqlCommand cmd = new MySqlCommand(sqlStr, DBCon);
-            try
-            {
-                if (DBCon.State == System.Data.ConnectionState.Closed)
-                {
-                    DBCon.Open();
-                }
-                MySqlDataReader myRead = cmd.ExecuteReader();
-                while (myRead.Read())
-                {
-                    Hashtable rInfo = new Hashtable();
-                    rInfo["type"] = myRead["type"];
-                    rInfo["path"] = myRead["path"];
-                    rInfo["order"] = myRead["resOrder"];
-                    rList.Add(rInfo);
-                }
-            }
-            catch (MySqlException ex)
-            {
-                System.Diagnostics.Debug.Write("取得脱敏列表时出错：" + ex.Message + "\n");
-            }
-            finally
-            {
-                cmd.Dispose();
-                DBCon.Close();
-                DBCon.Dispose();
-            }
-
             return rList;
         }
     }
