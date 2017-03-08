@@ -61,7 +61,7 @@ namespace PmtsControlLibrary
             IndexAuthoDatum result = null;
             foreach (var category in categoryList)
             {
-                if (category.name.Equals(categoryName))
+                if (category.is_is.Equals("1")&&category.name.Equals(categoryName))
                 {
                     result = category;
                     break;
