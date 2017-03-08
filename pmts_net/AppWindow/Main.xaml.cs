@@ -524,6 +524,7 @@ namespace pmts_net.AppWindow
         {
             SystemMeg["Mood"] = MoodValue;
             System.Diagnostics.Debug.Write("工作心理返回值：" + MoodValue + "\n");
+            mr.SetEmojByMood();
         }
         /// <summary>
         /// 打开用户信息

@@ -57,6 +57,42 @@ namespace PmtsControlLibrary
 
         }
 
+        public void SetEmojByMood()
+        {
+            string source;
+            double mood = Convert.ToDouble(UserInfoStatic.UserInfo.mood.moodsocre);
+            if (mood <= 5)
+            {
+                source = "../Image/Mood/8.png";
+            }
+            else if (mood <= 15)
+            {
+                source = "../Image/Mood/9.png";
+            }
+            else if (mood <= 32)
+            {
+                source = "../Image/Mood/10.png";
+            }
+            else if (mood <= 50)
+            {
+                source = "../Image/Mood/11.png";
+            }
+            else if (mood <= 67)
+            {
+                source = "../Image/Mood/12.png";
+            }
+            else if (mood <= 85)
+            {
+                source = "../Image/Mood/13.png";
+            }
+            else
+            {
+                source = "../Image/Mood/14.png";
+            }
+
+            usermood.Source = new BitmapImage(new Uri(source, UriKind.Relative));
+        }
+
         private const string WELCOME_MSG = "您好，";
 
         public void OnRefreshInfo()
@@ -120,7 +156,8 @@ namespace PmtsControlLibrary
             get { return this.WorkMoodButton; }
         }
 
-        public void updateUserInfo() {
+        public void updateUserInfo()
+        {
             uInfo = udbWEB.GetUserInfoByUID();
             this.UserNameText.Text = WELCOME_MSG + uInfo["name"].ToString();
             this.SexText.Text = uInfo["sex"].ToString();
@@ -139,7 +176,7 @@ namespace PmtsControlLibrary
         /// <param name="e"></param>
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-        	updateUserInfo();
+            updateUserInfo();
             /*
             if (medal != null)
             {

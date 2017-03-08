@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using System.Collections;
 using pmts_net.AppWindow;
 using PmtsControlLibrary.WEBPlugin;
+using HeartWavesSDK.Model;
 
 namespace PmtsControlLibrary
 {
@@ -81,11 +82,13 @@ namespace PmtsControlLibrary
         {
             if (MoodDB.OnInsertMood(this.MoodValueSlider.Value, this.MoodText.Text))
             {
+                UserInfoStatic.UserInfo.mood = new Mood { moodsocre = Convert.ToString(this.MoodValueSlider.Value), moodmark = this.MoodText.Text, moodtime = DateTime.Now.ToString() };
                 moodValue = this.MoodValueSlider.Value;
                 isInput = true;
                 PmtsMessageBox.CustomControl1.Show("提交成功。", PmtsMessageBox.ServerMessageBoxButtonType.OK);
                 this.MoodText.Clear();
                 this.MoodValueSlider.Value = 50;
+                Main.MoodReturn(moodValue);
             }
         }
 
