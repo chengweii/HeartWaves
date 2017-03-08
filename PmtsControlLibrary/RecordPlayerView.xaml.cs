@@ -232,8 +232,7 @@ namespace PmtsControlLibrary
                 {
                     HMMath hdMath = new HMMath(HRVData, EPData);//计算14项数据，调节指数，稳定指数，综合得分和给出评价报告
                     Hashtable HRVDataCalc = hdMath.HRVCalc();//用于存放HRV测量后计算的相关数据
-                    //                HRVDataCalc["HRVScore"] = EPScore;//HRV得分
-                    HRVDataCalc["HRVScore"] = 0;
+                    HRVDataCalc["HRVScore"] = EPScore;//HRV得分
                     HRVDataCalc["Time"] = (Single)HRVData.Count / 2.0;//测试时间，单位是秒
                     HRVDataCalc["EndTime"] = DateTime.Now;//结束时间，datetime格式
                     HRVDataCalc["StartTime"] = startTime;//开始时间，datetime格式
