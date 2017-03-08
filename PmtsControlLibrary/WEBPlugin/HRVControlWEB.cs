@@ -87,13 +87,13 @@ namespace PmtsControlLibrary.WEBPlugin
                 var resp = HeartWavesSDK.API.APIClient._StopRecord(req);
 
                 if (null == resp || null == resp.data)
-                    MessageBox.Show("网络异常，请稍后重试");
+                    PmtsMessageBox.CustomControl1.Show("网络异常，请稍后重试");
                 else
-                    MessageBox.Show(resp.data.message);
+                    PmtsMessageBox.CustomControl1.Show(resp.data.message);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                PmtsMessageBox.CustomControl1.Show(ex.Message);
             }
         }
 
@@ -105,26 +105,44 @@ namespace PmtsControlLibrary.WEBPlugin
         {
             try
             {
-                var request = new DeleteRecordRequest()
+                if (UserInfoStatic.ipAdd == null)
                 {
-                    user_id = UserInfoStatic.UserInfo.id,
-                    r_id = string.Join(",", ids.ToArray())
-
-                };
-                var resp = HeartWavesSDK.API.APIClient._DeleteRecord(request);
-
-                if (null == resp || null == resp.data)
-                {
-                    MessageBox.Show("网络异常，请稍后重试");
+                    ArrayList removeList = new ArrayList();
+                    foreach (var item in MainRightPerson.TmpHrvRecord)
+                    {
+                        if (ids.Count > 0 && ids.Contains((item as UserHrvRecord).Id))
+                        {
+                            removeList.Add(item);
+                        }
+                    }
+                    foreach (var item in removeList)
+                    {
+                        MainRightPerson.TmpHrvRecord.Remove(item);
+                    }
                 }
-                else if (resp.data.success == "1")
+                else
                 {
-                    MessageBox.Show(resp.data.message);
+                    var request = new DeleteRecordRequest()
+                    {
+                        user_id = UserInfoStatic.UserInfo.id,
+                        r_id = string.Join(",", ids.ToArray())
+
+                    };
+                    var resp = HeartWavesSDK.API.APIClient._DeleteRecord(request);
+
+                    if (null == resp || null == resp.data)
+                    {
+                        PmtsMessageBox.CustomControl1.Show("网络异常，请稍后重试");
+                    }
+                    else if (resp.data.success == "1")
+                    {
+                        PmtsMessageBox.CustomControl1.Show(resp.data.message);
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                PmtsMessageBox.CustomControl1.Show(ex.Message);
             }
         }
 
@@ -147,11 +165,11 @@ namespace PmtsControlLibrary.WEBPlugin
 
                 if (null == resp || null == resp.data)
                 {
-                    MessageBox.Show("网络异常，请稍后重试");
+                    PmtsMessageBox.CustomControl1.Show("网络异常，请稍后重试");
                 }
                 else if (resp.data.success != "1")
                 {
-                    MessageBox.Show(resp.data.message);
+                    PmtsMessageBox.CustomControl1.Show(resp.data.message);
                 }
                 else
                 {
@@ -166,17 +184,15 @@ namespace PmtsControlLibrary.WEBPlugin
                         hInfo["report"] = resp.data.datas.report;
                         hInfo["NB"] = resp.data.datas.nb;
                         hInfo["StartTime"] = resp.data.datas.s_time;
-
-                        ArrayList hrvData = MyJSONHelper.JsonToObject<ArrayList>(resp.data.datas.hrvdata);
-
-                        hInfo["Time"] = hrvData.Count / 2.0;
-                        hInfo["hrvData"] = hrvData;
+                        var hrvdata = CommonUtils.getArrayListFromJson(resp.data.datas.hrvdata);
+                        hInfo["Time"] = hrvdata.Count / 2.0;
+                        hInfo["hrvData"] = resp.data.datas.hrvdata;
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                PmtsMessageBox.CustomControl1.Show(ex.Message);
             }
 
             return hInfo;
@@ -201,19 +217,17 @@ namespace PmtsControlLibrary.WEBPlugin
 
                 if (null == resp || null == resp.data)
                 {
-                    MessageBox.Show("网络异常，请稍后重试");
+                    PmtsMessageBox.CustomControl1.Show("网络异常，请稍后重试");
                 }
                 else if (resp.data.success != "1")
                 {
-                    MessageBox.Show(resp.data.message);
+                    PmtsMessageBox.CustomControl1.Show(resp.data.message);
                 }
                 else
                 {
                     if (resp.data.datas != null)
                     {
-                        ArrayList hrvmark = MyJSONHelper.JsonToObject<ArrayList>(resp.data.datas.hrvmark);
-
-                        foreach (var entity in hrvmark)
+                        foreach (var entity in resp.data.datas.hrvdata)
                         {
                             Hashtable markInfo = new Hashtable();
                             markInfo["Time"] = resp.data.datas.s_time;
@@ -226,7 +240,7 @@ namespace PmtsControlLibrary.WEBPlugin
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                PmtsMessageBox.CustomControl1.Show(ex.Message);
             }
 
             return markList;
@@ -251,21 +265,50 @@ namespace PmtsControlLibrary.WEBPlugin
 
                 if (null == resp || null == resp.data)
                 {
-                    MessageBox.Show("网络异常，请稍后重试");
+                    PmtsMessageBox.CustomControl1.Show("网络异常，请稍后重试");
                 }
                 else if (resp.data.success != "1")
                 {
-                    MessageBox.Show(resp.data.message);
+                    PmtsMessageBox.CustomControl1.Show(resp.data.message);
                 }
                 else
                 {
                     if (resp.data.data != null)
                     {
-                        int i = 0;
                         foreach (var entity in resp.data.data)
                         {
-                            i++;
                             UserHrvRecord hrvRecord = new UserHrvRecord();
+                            hrvRecord.HRVData = CommonUtils.getArrayListFromJson(entity.hrvdata);
+                            hrvRecord.EPData = CommonUtils.getArrayListFromJson(entity.epdata);
+                            hrvRecord.MarkData = CommonUtils.getArrayListFromJson(entity.hrvmark);
+                            hrvRecord.PWRData = CommonUtils.getArrayListFromJson(entity.ibidata);
+                            hrvRecord.TimeData.Add(entity.fmean);
+                            hrvRecord.TimeData.Add(entity.fstddev);
+                            hrvRecord.TimeData.Add(entity.fsdnn);
+                            hrvRecord.TimeData.Add(entity.frmssd);
+                            hrvRecord.TimeData.Add(entity.fsd);
+                            hrvRecord.TimeData.Add(entity.fsdsd);
+                            hrvRecord.TimeData.Add(entity.fpnn);
+                            hrvRecord.FreData.Add(entity.tp);
+                            hrvRecord.FreData.Add(entity.vlf);
+                            hrvRecord.FreData.Add(entity.lf);
+                            hrvRecord.FreData.Add(entity.hf);
+                            hrvRecord.FreData.Add(entity.lhr);
+                            hrvRecord.FreData.Add(entity.lfnorm);
+                            hrvRecord.FreData.Add(entity.hfnorm);
+                            hrvRecord.AnsBalance = Convert.ToDouble(entity.nb);
+                            hrvRecord.Pressure = Convert.ToDouble(entity.pressureindex);
+                            hrvRecord.Adjust = Convert.ToDouble(entity.deflatingindex);
+                            hrvRecord.Stable = Convert.ToDouble(entity.stabilityindex);
+                            hrvRecord.Score = Convert.ToDouble(entity.synthesisscore);
+                            hrvRecord.HrvScore = Convert.ToDouble(entity.hrvscore);
+                            var hrvdata = CommonUtils.getArrayListFromJson(entity.hrvdata);
+                            hrvRecord.TimeLength = Convert.ToDouble(hrvdata.Count / 2.0);
+                            hrvRecord.StartTime = CommonUtils.getDateTime(entity.s_time);
+                            hrvRecord.EndTime = CommonUtils.getDateTime(entity.endtime);
+                            hrvRecord.RecordType = Convert.ToInt32(entity.recordtype);
+                            hrvRecord.Mood = string.IsNullOrWhiteSpace(entity.mood) ? 0 : Convert.ToInt32(entity.mood);
+                            hrvRecord.Report = Convert.ToString(entity.report);
                             hrvRecord.Id = entity.id;
                             retArr.Add(hrvRecord);
                         }
@@ -274,12 +317,12 @@ namespace PmtsControlLibrary.WEBPlugin
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                PmtsMessageBox.CustomControl1.Show(ex.Message);
             }
 
             return retArr;
         }
-        
+
         /// <summary>
         /// 更新EP完成状态
         /// </summary>

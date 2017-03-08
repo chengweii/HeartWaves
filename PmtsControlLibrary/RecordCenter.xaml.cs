@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections;
 using PmtsControlLibrary.WEBPlugin;
+using System.ComponentModel;
 
 namespace PmtsControlLibrary
 {
@@ -25,19 +26,23 @@ namespace PmtsControlLibrary
         private Rectangle mark = null;//屏蔽层
 
         private Grid mainWindow = new Grid();//主窗体中放置控件的层
-        private ArrayList HrvHistoryArr = new ArrayList();
 
+        private ArrayList HrvHistoryArr = new ArrayList();
         private ArrayList TrainHistoryArr = new ArrayList();
         private ArrayList RelaxHistoryArr = new ArrayList();
+
+        private bool HrvHistoryArrState = false;
+        private bool TrainHistoryArrState = false;
+        private bool RelaxHistoryArrState = false;
 
         private int _nowPage = 1;//当前页号
         private int _num = 15;//一页默认数据量
         private double _totalPage = 0;//总页数
 
         private int _showType = 1;//显示模式
-        
+
         private static HRVControlWEB hrvdb = new HRVControlWEB();
-        
+
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -45,18 +50,12 @@ namespace PmtsControlLibrary
         public RecordCenter(Grid Main)
         {
             InitializeComponent();
-            
-            HrvHistoryArr = new ArrayList();
-            GetHrvHistoryData();
-           
-            TrainHistoryArr = new ArrayList();
-            GetTrainHistoryData();
 
-            RelaxHistoryArr = new ArrayList();
-            GetRelaxHistoryData();
+            GetHrvHistoryData();
 
             _showType = 1;
             OnDataOrPageChanged(1, _num);
+
             //button声音
             Grid uiButton = this.Content as Grid;
             UIElementCollection Childrens = uiButton.Children;
@@ -78,44 +77,36 @@ namespace PmtsControlLibrary
         }
         private void GetHrvHistoryData()
         {
- //           historyArr = hrvd.GetConstAndHistoryListData();
+            if (HrvHistoryArrState)
+                return;
+
             if (UserInfoStatic.ipAdd == null)
             {
-                if(MainRightPerson.TmpHrvRecord.Count > 0)
+                if (MainRightPerson.TmpHrvRecord.Count > 0)
                 {
                     UserHrvRecord[] tmpArr = new UserHrvRecord[MainRightPerson.TmpHrvRecord.Count];
                     MainRightPerson.TmpHrvRecord.CopyTo(tmpArr);
                     for (int i = 0; i < MainRightPerson.TmpHrvRecord.Count; i++)
                     {
                         UserHrvRecord tmp = tmpArr[i];
-                        if(tmp.RecordType < 10)
+                        if (tmp.RecordType < 10)
                             HrvHistoryArr.Add(MainRightPerson.TmpHrvRecord[i]);
                     }
                 }
-            }else{
-            	HrvHistoryArr=hrvdb.GetConstAndHistoryListData(1,1,"1","0");
-            }
-  /*          _totalPage = Math.Ceiling(Convert.ToDouble(HrvHistoryArr.Count / Convert.ToDouble(_num)));
-            if (HrvHistoryArr.Count / Convert.ToDouble(_num) > 1)
-            {
-                // this.pageText.Content = "1 / " + _totalPage.ToString();
-                this.PreviousButton.IsEnabled = false;
             }
             else
             {
-                //this.pageText.Content = "1 / 1";
-                this.PreviousButton.IsEnabled = false;
-                this.NextButton.IsEnabled = false;
-                this.GotoPage.IsEnabled = false;
-                this.JumpButton.IsEnabled = false;
+                HrvHistoryArr = hrvdb.GetConstAndHistoryListData(1, 1, "1", "0");
             }
-   */ 
-  //          OnDataOrPageChanged(1, _num);
+
+            HrvHistoryArrState = true;
         }
 
         private void GetTrainHistoryData()
         {
-            //           historyArr = hrvd.GetConstAndHistoryListData();
+            if (TrainHistoryArrState)
+                return;
+
             if (UserInfoStatic.ipAdd == null)
             {
                 if (MainRightPerson.TmpHrvRecord.Count > 0)
@@ -129,13 +120,20 @@ namespace PmtsControlLibrary
                             TrainHistoryArr.Add(MainRightPerson.TmpHrvRecord[i]);
                     }
                 }
-            }else{
-            	TrainHistoryArr=hrvdb.GetConstAndHistoryListData(1,1,"2","0");
             }
+            else
+            {
+                TrainHistoryArr = hrvdb.GetConstAndHistoryListData(1, 1, "2", "0");
+            }
+
+            TrainHistoryArrState = true;
         }
 
         private void GetRelaxHistoryData()
         {
+            if (RelaxHistoryArrState)
+                return;
+
             if (UserInfoStatic.ipAdd == null)
             {
                 if (MainRightPerson.TmpHrvRecord.Count > 0)
@@ -149,9 +147,18 @@ namespace PmtsControlLibrary
                             RelaxHistoryArr.Add(MainRightPerson.TmpHrvRecord[i]);
                     }
                 }
-            }else{
-            	RelaxHistoryArr=hrvdb.GetConstAndHistoryListData(1,1,"3","0");
             }
+            else
+            {
+                RelaxHistoryArr = hrvdb.GetConstAndHistoryListData(1, 1, "3", "0");
+            }
+
+            RelaxHistoryArrState = true;
+        }
+
+        private List<HRVRecordData> getSortList(List<HRVRecordData> dataGridSource)
+        {
+            return dataGridSource = (from c in dataGridSource orderby c.Index ascending select c).ToList();
         }
 
         /// <summary>
@@ -161,7 +168,7 @@ namespace PmtsControlLibrary
         /// <param name="num">每页的条数</param>
         private void OnDataOrPageChanged(int page, int num)
         {
-//            Hashtable[] tmpArr = new Hashtable[num];
+            //            Hashtable[] tmpArr = new Hashtable[num];
             if (_showType == 1)
             {
                 this.HrvDataGrid.Visibility = Visibility.Visible;
@@ -235,8 +242,8 @@ namespace PmtsControlLibrary
                         {
                             Id = tmp.Id,
                             Checked = false,
-                            Index = ((page - 1) * num + i + 1).ToString(),
-                           // Type = tmp.RecordType.ToString(),
+                            Index = (page - 1) * num + i + 1,
+                            // Type = tmp.RecordType.ToString(),
                             Type = strType,
                             StartTime = tmp.StartTime.ToString(),
                             TotalTime = MathTime((int)tmp.TimeLength),
@@ -246,6 +253,7 @@ namespace PmtsControlLibrary
                             Pressure = Convert.ToInt32(tmp.Pressure).ToString(),
                             TotalScore = tmp.HrvScore.ToString()
                         });
+                        dataGridSource = getSortList(dataGridSource);
                     }
                 }
 
@@ -354,7 +362,7 @@ namespace PmtsControlLibrary
                         {
                             Id = tmp.Id,
                             Checked = false,
-                            Index = ((page - 1) * num + i + 1).ToString(),
+                            Index = (page - 1) * num + i + 1,
                             //Type = tmp.RecordType.ToString(),
                             Type = strType,
                             StartTime = tmp.StartTime.ToString(),
@@ -365,6 +373,7 @@ namespace PmtsControlLibrary
                             Pressure = Convert.ToInt32(tmp.Pressure).ToString(),
                             TotalScore = tmp.HrvScore.ToString()
                         });
+                        dataGridSource = getSortList(dataGridSource);
                     }
                 }
 
@@ -437,8 +446,8 @@ namespace PmtsControlLibrary
                         {
                             Id = tmp.Id,
                             Checked = false,
-                            Index = ((page - 1) * num + i + 1).ToString(),
-                           // Type = tmp.RecordType.ToString(),
+                            Index = (page - 1) * num + i + 1,
+                            // Type = tmp.RecordType.ToString(),
                             Type = "放松训练",
                             StartTime = tmp.StartTime.ToString(),
                             TotalTime = MathTime((int)tmp.TimeLength),
@@ -448,6 +457,7 @@ namespace PmtsControlLibrary
                             Pressure = Convert.ToInt32(tmp.Pressure).ToString(),
                             TotalScore = tmp.HrvScore.ToString()
                         });
+                        dataGridSource = getSortList(dataGridSource);
                     }
                 }
 
@@ -580,6 +590,7 @@ namespace PmtsControlLibrary
 
         private void trainbutton_Click(object sender, RoutedEventArgs e)
         {
+            GetTrainHistoryData();
 
             BitmapImage ima = new BitmapImage(new Uri("/PmtsControlLibrary;component/Image/trainrecordbg.png", UriKind.Relative));
             recordCenterImage.Source = ima;
@@ -598,6 +609,7 @@ namespace PmtsControlLibrary
 
         private void relaxbutton_Click(object sender, RoutedEventArgs e)
         {
+            GetRelaxHistoryData();
 
             BitmapImage ima = new BitmapImage(new Uri("/PmtsControlLibrary;component/Image/relaxrecordbg.png", UriKind.Relative));
             recordCenterImage.Source = ima;
@@ -616,11 +628,11 @@ namespace PmtsControlLibrary
 
         private void recordbutton_MouseMove(object sender, MouseEventArgs e)
         {
-            Image img = new Image();  
-            BitmapImage bitmapImg = new BitmapImage();  
-            bitmapImg.BeginInit();  
+            Image img = new Image();
+            BitmapImage bitmapImg = new BitmapImage();
+            bitmapImg.BeginInit();
             bitmapImg.UriSource = new System.Uri("/PmtsControlLibrary;component/Image/monitoringrecords2.png", UriKind.RelativeOrAbsolute);
-            bitmapImg.EndInit();  
+            bitmapImg.EndInit();
             img.Source = bitmapImg;
             recordbutton.Content = img;
 
@@ -736,7 +748,7 @@ namespace PmtsControlLibrary
             Hashtable hInfo = new Hashtable();
 
             UserHrvRecord[] tmp = new UserHrvRecord[1];
-            
+
             if (_showType == 1)
                 HrvHistoryArr.CopyTo(SID - 1, tmp, 0, 1);
             else if (_showType == 2)
@@ -747,18 +759,18 @@ namespace PmtsControlLibrary
             UserHrvRecord tmpRecord = tmp[0];
             if (tmpRecord != null)
             {
-                 hInfo["fMean"] = tmpRecord.TimeData[0];
-                 hInfo["HRVScore"] = tmpRecord.HrvScore;
-                 hInfo["score"] = tmpRecord.Score;
-                 hInfo["Pressure"] = tmpRecord.Pressure;
-                 hInfo["adjust"] = tmpRecord.Adjust;
-                 hInfo["stable"] = tmpRecord.Stable;//稳定
-                 hInfo["report"] = tmpRecord.Report;//评价报告
-                 hInfo["NB"] = tmpRecord.AnsBalance;//神经兴奋性
-                 hInfo["StartTime"] = tmpRecord.StartTime;//开始时间
-                 hInfo["Time"] = tmpRecord.HRVData.Count / 2.0;
-                 hInfo["hrvData"] = tmpRecord.HRVData;
-                 hInfo["HRVMark"] = tmpRecord.MarkData;
+                hInfo["fMean"] = tmpRecord.TimeData[0];
+                hInfo["HRVScore"] = tmpRecord.HrvScore;
+                hInfo["score"] = tmpRecord.Score;
+                hInfo["Pressure"] = tmpRecord.Pressure;
+                hInfo["adjust"] = tmpRecord.Adjust;
+                hInfo["stable"] = tmpRecord.Stable;//稳定
+                hInfo["report"] = tmpRecord.Report;//评价报告
+                hInfo["NB"] = tmpRecord.AnsBalance;//神经兴奋性
+                hInfo["StartTime"] = tmpRecord.StartTime;//开始时间
+                hInfo["Time"] = tmpRecord.HRVData.Count / 2.0;
+                hInfo["hrvData"] = tmpRecord.HRVData;
+                hInfo["HRVMark"] = tmpRecord.MarkData;
             }
             return hInfo;
         }
@@ -772,7 +784,7 @@ namespace PmtsControlLibrary
         {
             Button tmp = (Button)sender;
             int sid = Convert.ToInt32(tmp.Tag);
- //           MessageBox.Show(sid.ToString());
+            //           PmtsMessageBox.CustomControl1.Show(sid.ToString());
             Hashtable hInfo = GetGuestHistoryByID(sid);
 
             if (hInfo.Count > 0)
@@ -787,24 +799,24 @@ namespace PmtsControlLibrary
             }
 
 
- /*           Hashtable hInfo = hrvd.GetHistoryByID(sid);
-            ArrayList markList = hrvd.GetMarkByID(sid);
-            if (hInfo.Count > 0)
-            {
-                hInfo["HRVMark"] = markList;
-                hd = new HRVDetaile(hInfo["hrvData"] as ArrayList, hInfo, this.LayoutRoot);
-                mark = new Rectangle();
-                mark.Fill = Brushes.Transparent;
-                mark.Margin = new Thickness();
-                this.LayoutRoot.Children.Add(mark);
-                this.LayoutRoot.Children.Add(hd);
-                hd.closeButton.Click += OnCloseDetail;
-            }
-            else
-            {
+            /*           Hashtable hInfo = hrvd.GetHistoryByID(sid);
+                       ArrayList markList = hrvd.GetMarkByID(sid);
+                       if (hInfo.Count > 0)
+                       {
+                           hInfo["HRVMark"] = markList;
+                           hd = new HRVDetaile(hInfo["hrvData"] as ArrayList, hInfo, this.LayoutRoot);
+                           mark = new Rectangle();
+                           mark.Fill = Brushes.Transparent;
+                           mark.Margin = new Thickness();
+                           this.LayoutRoot.Children.Add(mark);
+                           this.LayoutRoot.Children.Add(hd);
+                           hd.closeButton.Click += OnCloseDetail;
+                       }
+                       else
+                       {
 
-            }
-  */ 
+                       }
+             */
         }
 
         /// <summary>
@@ -818,6 +830,30 @@ namespace PmtsControlLibrary
             this.mainGrid.Children.Remove(mark);
         }
 
+        private void refreshHistory(ArrayList ids)
+        {
+            ArrayList history = new ArrayList();
+            if (_showType == 1)
+                history = HrvHistoryArr;
+            else if (_showType == 2)
+                history = TrainHistoryArr;
+            else if (_showType == 3)
+                history = RelaxHistoryArr;
+            ArrayList removeList = new ArrayList();
+            foreach (var entity in history)
+            {
+                if (ids.Contains(((UserHrvRecord)entity).Id))
+                {
+                    removeList.Add(entity);
+                }
+            }
+
+            foreach (var entity in removeList)
+            {
+                history.Remove(entity);
+            }
+        }
+
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             if (PmtsMessageBox.CustomControl1.Show("确定要删除选择？") == PmtsMessageBox.ServerMessageBoxResult.OK)
@@ -826,23 +862,14 @@ namespace PmtsControlLibrary
                 ArrayList para = new ArrayList();
                 para.Add(tmp.Tag);
                 hrvdb.DeleteHrvData(para);
-                
-                for (int i = 0; i < HrvHistoryArr.Count; i++)
-                {
-                    string tempstring = (i+1).ToString();
-                    if (tempstring.Equals(tmp.Tag.ToString()))
-                    {
-                        HrvHistoryArr.RemoveAt(i);
-                        break;
-                    }
-                }
+                refreshHistory(para);
                 OnDataOrPageChanged(_nowPage, _num);
             }
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            ArrayList dd = new ArrayList();
+            ArrayList selectIds = new ArrayList();
             for (int i = 0; i < this.HrvDataGrid.Items.Count; i++)
             {
                 var cntr = HrvDataGrid.ItemContainerGenerator.ContainerFromIndex(i);
@@ -852,25 +879,22 @@ namespace PmtsControlLibrary
                     FrameworkElement objElement = HrvDataGrid.Columns[0].GetCellContent(ObjROw);
                     if (objElement != null)
                     {
-                        //if (objElement.GetType().ToString().EndsWith("cRUID"))
-                        //{
                         System.Windows.Controls.CheckBox objChk = (System.Windows.Controls.CheckBox)objElement;
                         if (objChk.IsChecked == true)
                         {
-                            dd.Add(ObjROw.Item);
+                            selectIds.Add(((HRVRecordData)ObjROw.Item).Id);
                         }
-                        //}
                     }
                 }
             }
 
-            if (HrvDataGrid.SelectedItems.Count > 0)
+            if (selectIds.Count > 0)
             {
-                int i = HrvDataGrid.SelectedIndex;
-
-                foreach (var item in HrvDataGrid.SelectedItems)
+                if (PmtsMessageBox.CustomControl1.Show("确定要删除选择？") == PmtsMessageBox.ServerMessageBoxResult.OK)
                 {
-                    MessageBox.Show("1");
+                    hrvdb.DeleteHrvData(selectIds);
+                    refreshHistory(selectIds);
+                    OnDataOrPageChanged(_nowPage, _num);
                 }
             }
             else
@@ -885,7 +909,8 @@ namespace PmtsControlLibrary
             selectAll(HrvDataGrid, objChk.IsChecked);
         }
 
-        private void selectAll(DataGrid grid,bool? isCheck) {
+        private void selectAll(DataGrid grid, bool? isCheck)
+        {
             for (int i = 0; i < grid.Items.Count; i++)
             {
                 var cntr = grid.ItemContainerGenerator.ContainerFromIndex(i);
@@ -900,7 +925,7 @@ namespace PmtsControlLibrary
                     }
                 }
             }
-        } 
+        }
     }
 
     /// <summary>
@@ -910,7 +935,7 @@ namespace PmtsControlLibrary
     {
         public String Id { set; get; }
         public Boolean Checked { set; get; }
-        public String Index { set; get; }
+        public int Index { set; get; }
         public String Type { set; get; }
         public String StartTime { set; get; }
         public String TotalTime { set; get; }

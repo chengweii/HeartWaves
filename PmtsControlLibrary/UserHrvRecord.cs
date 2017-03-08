@@ -8,6 +8,7 @@ namespace PmtsControlLibrary
 {
     public class UserHrvRecord
     {
+        private static int id = 1;
         public UserHrvRecord()
         {
 
@@ -33,7 +34,7 @@ namespace PmtsControlLibrary
         public int RecordType;
         public int Mood;
         public string Report;
-        public string Id;
+        public string Id = Convert.ToString(id++);
     }
 
 }

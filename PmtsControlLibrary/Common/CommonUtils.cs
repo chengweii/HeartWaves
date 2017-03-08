@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HeartWavesSDK.Common;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,5 +70,35 @@ namespace PmtsControlLibrary.Common
         {
             return "1" == sex ? "男" : "女";
         }
+
+        public static ArrayList getArrayListFromJson(string json)
+        {
+            ArrayList result = null;
+            try
+            {
+                result = MyJSONHelper.JsonToObject<ArrayList>(json);
+            }
+            catch (Exception ex)
+            {
+                result = new ArrayList();
+            }
+
+            return result;
+        }
+
+        public static DateTime getDateTime(string datetime)
+        {
+            DateTime result;
+            try
+            {
+                result = Convert.ToDateTime(datetime);
+            }
+            catch (Exception ex)
+            {
+                result = new DateTime();
+            }
+            return result;
+        }
+
     }
 }

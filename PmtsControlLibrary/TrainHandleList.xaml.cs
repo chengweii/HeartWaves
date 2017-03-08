@@ -81,6 +81,10 @@ namespace PmtsControlLibrary
             tInfo = trainInfo;
             PUI = (TrainCenter)parentUI;
             mainWindow = Main;
+            if (!UserInfoStatic.hasAuth(tInfo["tname"].ToString()))
+            {
+                tInfo["open"] = 0;
+            }
             //button声音
             Grid uiButton = this.Content as Grid;
             UIElementCollection Childrens = uiButton.Children;
@@ -106,7 +110,7 @@ namespace PmtsControlLibrary
 
             if (Convert.ToInt32(tInfo["open"]) == 0)
             {
-                this.TrainHandleButton.Tag = "../Image/Train/Lock.png";
+                this.TrainHandleButton.Tag = tInfo["lockPic"].ToString();
                 this.TrainHandleButton.IsEnabled = false;
             }
             else

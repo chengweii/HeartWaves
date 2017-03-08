@@ -83,7 +83,7 @@ namespace PmtsControlLibrary
             {
                 moodValue = this.MoodValueSlider.Value;
                 isInput = true;
-                PmtsMessageBox.CustomControl1.Show("写入数据库成功。", PmtsMessageBox.ServerMessageBoxButtonType.OK);
+                PmtsMessageBox.CustomControl1.Show("提交成功。", PmtsMessageBox.ServerMessageBoxButtonType.OK);
                 this.MoodText.Clear();
                 this.MoodValueSlider.Value = 50;
             }
