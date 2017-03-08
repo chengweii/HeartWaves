@@ -251,7 +251,7 @@ namespace PmtsControlLibrary
                             Adjust = Convert.ToInt32(tmp.Adjust).ToString(),
                             Stable = Convert.ToInt32(tmp.Stable).ToString(),
                             Pressure = Convert.ToInt32(tmp.Pressure).ToString(),
-                            TotalScore = tmp.HrvScore.ToString()
+                            TotalScore = Convert.ToInt32(tmp.Score).ToString()
                         });
                         dataGridSource = getSortList(dataGridSource);
                     }
@@ -371,7 +371,7 @@ namespace PmtsControlLibrary
                             Adjust = Convert.ToInt32(tmp.Adjust).ToString(),
                             Stable = Convert.ToInt32(tmp.Stable).ToString(),
                             Pressure = Convert.ToInt32(tmp.Pressure).ToString(),
-                            TotalScore = tmp.HrvScore.ToString()
+                            TotalScore = Convert.ToInt32(tmp.Score).ToString()
                         });
                         dataGridSource = getSortList(dataGridSource);
                     }
@@ -455,7 +455,7 @@ namespace PmtsControlLibrary
                             Adjust = Convert.ToInt32(tmp.Adjust).ToString(),
                             Stable = Convert.ToInt32(tmp.Stable).ToString(),
                             Pressure = Convert.ToInt32(tmp.Pressure).ToString(),
-                            TotalScore = tmp.HrvScore.ToString()
+                            TotalScore = Convert.ToInt32(tmp.Score).ToString()
                         });
                         dataGridSource = getSortList(dataGridSource);
                     }
