@@ -75,7 +75,7 @@ namespace PmtsControlLibrary.WEBPlugin
                     FreData = CommonUtils.ToString(HRVMathData["FreData"]),
                     Level = CommonUtils.ToString(HRVMathData["Level"]),
                     TimeLength = CommonUtils.ToString(HRVMathData["TimeLength"]),
-                    RecordType = CommonUtils.ToString(HRVMathData["RecordType"]),
+                    RecordType = CommonUtils.ToString(HRVMathData["TimeType"]),
                     Report = CommonUtils.ToString(HRVMathData["report"]),
                     HeartVitalityUpper = CommonUtils.ToString(Convert.ToDouble(HRVMathData["fMean"]) + (Convert.ToSingle(HRVMathData["fStdDev"]) * 1.96)),
                     HeartVitalityDowner = CommonUtils.ToString(Convert.ToDouble(HRVMathData["fMean"]) - (Convert.ToSingle(HRVMathData["fStdDev"]) * 1.96)),
