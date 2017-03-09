@@ -14,7 +14,8 @@ namespace HeartWavesSDK.API
         /// <summary>
         /// 用户接口地址
         /// </summary>
-        public static string m_APIUrl = "http://120.27.98.52/heartwaves/index.php?m=Home&c=Apiuserr&a=";
+    	public static string m_APIBase = "http://120.27.98.52/heartwaves";
+        public static string m_APIUrl = m_APIBase+"/index.php?m=Home&c=Apiuserr&a=";
 
         public static T Post<T>(string url, Object requestModel)
         {

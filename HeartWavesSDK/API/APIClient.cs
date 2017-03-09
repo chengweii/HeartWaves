@@ -260,5 +260,28 @@ namespace HeartWavesSDK.API
         }
 
         #endregion
+        
+        #region 获取二维码
+        /// <summary>
+        /// 获取二维码
+        /// </summary>
+        /// <param name="user_id"></param>
+        /// <param name="r_id"></param>
+        /// <returns></returns>
+        public static string _GetDex(string user_id,string r_id)
+        {
+#if DEBUG
+		user_id = "1";
+		r_id = "1";
+#endif
+			string uri=m_APIBase+"/hahaha/dex.php";
+			if(!string.IsNullOrEmpty(user_id)&&!string.IsNullOrEmpty(r_id)){
+				uri+="?user_id="+user_id+"&r_id="+r_id;
+			}
+			var content = SDKHttpRequest._GET(uri);
+            return content;
+        }
+
+        #endregion
     }
 }
