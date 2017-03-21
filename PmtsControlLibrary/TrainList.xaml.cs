@@ -101,13 +101,18 @@ namespace PmtsControlLibrary
         /// <param name="e"></param>
         private void OnOpenTrain(object sender, RoutedEventArgs e)
         {
-            PUI.Visibility = System.Windows.Visibility.Hidden;
+        	PUI.Visibility = System.Windows.Visibility.Hidden;
             Grid mainGrid = (Grid)PUI.Parent;
             TrainPlayerView tpv = new TrainPlayerView(mainWindow, tInfo, PUI);
-            mainGrid.Children.Add(tpv);
-            mainGrid.Margin = new Thickness(0, 89, 0, 20);
-            mainGrid.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-            mainGrid.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            Grid parent = (Grid)mainWindow.Parent;
+            Grid root = (Grid)parent.Parent;
+            tpv.Width = root.ActualWidth;
+            tpv.Height = root.ActualHeight;
+            root.Children.Add(tpv);
+            //mainGrid.Children.Add(tpv);
+            //mainGrid.Margin = new Thickness(0, 89, 0, 20);
+            //mainGrid.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            //mainGrid.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
         }
         /// <summary>
         /// 打开记录

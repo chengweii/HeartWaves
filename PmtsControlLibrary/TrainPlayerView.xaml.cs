@@ -566,9 +566,9 @@ namespace PmtsControlLibrary
             Grid main = (Grid)this.Parent;
             main.Children.Remove(this);
             tListView.Visibility = System.Windows.Visibility.Visible;
-            main.Margin = new Thickness(0, 69, 0, 0);
-            main.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-            main.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            //main.Margin = new Thickness(0, 69, 0, 0);
+            //main.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            //main.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
         }
         /// <summary>
         /// 界面退出时
